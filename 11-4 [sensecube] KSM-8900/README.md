@@ -1,4 +1,6 @@
 # KSM-8900
+![KakaoTalk_20210625_104303022](https://user-images.githubusercontent.com/37902752/123356182-28271400-d5a2-11eb-8a0c-576a4994f4bb.png)
+
 ## 온습도 토양 센서
 ---
 
