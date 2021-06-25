@@ -1,4 +1,6 @@
 # KSM-8900
+![KakaoTalk_20210625_104303022](https://user-images.githubusercontent.com/37902752/123356182-28271400-d5a2-11eb-8a0c-576a4994f4bb.png)
+
 ## 온습도 토양 센서
 ---
 
@@ -14,8 +16,8 @@
 
 ![1](https://user-images.githubusercontent.com/59568377/122491263-9ad24580-d01e-11eb-92cf-f61cb3d44cd0.jpg)
 
-                      
-
+### 전용모듈 SR100 배선도                      
+![KakaoTalk_20210625_103957707](https://user-images.githubusercontent.com/37902752/123356078-f4e48500-d5a1-11eb-8765-5bf7ec2ad367.png)
 
 ### 전용모듈 SR100으로 사용하기
 1. 센서 연결 후 (보드레이트 이하 다른 설정하고)
