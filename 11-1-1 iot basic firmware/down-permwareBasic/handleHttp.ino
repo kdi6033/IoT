@@ -175,8 +175,7 @@ char Download[] PROGMEM = R"=====(
   <hr>
   <br>현장에서 이 기기만으로 모니터링/제어 하는 프로그램<br>
   <select id='download' name='download' onclick='sendDownOption();'>
-    <option value='down-local-monit-01.bin'>온도</option>";
-    <option value='down-local-monit-02.bin'>습도</option>";
+    <option value='down-local-monit-02.bin'>[sensecube] PE-300</option>";
   </select>
   <br><br>현장에서 mqtt통신을 사용해 로컬서버를 구성하여 모니터링/제어 하는 프로그램<br>
   <select id='downloadMqtt' name='downloadMqtt' onclick='sendDownOptionMqtt();'>
