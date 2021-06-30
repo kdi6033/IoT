@@ -359,19 +359,9 @@ void onAct(uint8_t * payload, size_t length) {
   if(act==1) {
     displayOled(3);
     //GoHome();
+    Serial.println("=======================================");
     download_program("down-permwareBasic.bin");
   }
-  else if(act==2) {
-    const char* nameD = root["value"];
-    nameDownloadFile=nameD;
-    Serial.println(nameDownloadFile);
-  }
-  else if(act==3) {
-    displayOled(3);
-    //GoHome();
-    download_program(nameDownloadFile);
-  }
-    
 }
 
 void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length){

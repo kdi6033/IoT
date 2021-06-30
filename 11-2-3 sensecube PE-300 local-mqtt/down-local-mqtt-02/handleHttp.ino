@@ -121,21 +121,6 @@ char HeadScript[] PROGMEM = R"=====(
     function sendAct(valueIn){
       Socket.send(valueIn);
     }
-    function sendDownOption() {
-      document.getElementById("downFile").innerHTML=document.getElementById("download").value;
-      var s="#"+"{'act':2,'value':'"+document.getElementById("download").value+"'}";
-      Socket.send(s);
-    }
-    function sendDownOptionMqtt() {
-      document.getElementById("downFile").innerHTML=document.getElementById("downloadMqtt").value;
-      var s="#"+"{'act':2,'value':'"+document.getElementById("downloadMqtt").value+"'}";
-      Socket.send(s);
-    }
-    function sendDownOptionAws() {
-      document.getElementById("downFile").innerHTML=document.getElementById("downloadAws").value;
-      var s="#"+"{'act':2,'value':'"+document.getElementById("downloadAws").value+"'}";
-      Socket.send(s);
-    }
     function openNav() {
       document.getElementById("mySidenav").style.width = "150px"; 
     }
@@ -185,30 +170,12 @@ char Menu[] PROGMEM = R"=====(
 )=====";
 
 char Download[] PROGMEM = R"=====(
-  <br><br>다운로드
-  추가된 기기를 다운로드 받으려면 펌웨어 업그레이드를 하세요.
-  <div> <button id="onButton" class='button button-box' onclick="sendAct('#'+'{\'act\':1}');">최신펌웨어 업그레이드</button> </div>  
+  <br><br>
+  새로운 기기가 계속 추가되고 있습니다.
+  추가된 기기를 다운로드 받으려면 펌웨어 업그레이드를 하시고 거기서 원하는 기기의 펌웨어를 선택해서 다운로드 받으세요.
+  <div> <button id="onButton" class='button button-box' onclick="sendAct('#'+'{\'act\':1}');">기기선택 펌웨어 다운로드</button> </div>  
   <hr>
-  <br>현장에서 이 기기만으로 모니터링/제어 하는 프로그램<br>
-  <select id='download' name='download' onclick='sendDownOption();'>
-    <option value='down-local-monit-02.bin'>[sensecube] PE-300</option>";
-  </select>
-  <br><br>현장에서 mqtt통신을 사용해 로컬서버를 구성하여 모니터링/제어 하는 프로그램<br>
-  <select id='downloadMqtt' name='downloadMqtt' onclick='sendDownOptionMqtt();'>
-    <option value='down-local-mqtt-01.bin'>mqtt 온도</option>";
-    <option value='down-local-mqtt-02.bin'>mqtt 습도</option>";
-  </select>
-  <br><br>아마존 서버에 접속하여 크라우드 환경에서 모니터링/제어 하는 프로그램
-  <br>E-mail ID로 회원 가입하여 로그인 하면 자동 접속한 기기를 볼 수 있음
-  <br>접속사이트 : <a href='http://i2r.link/'>http://i2r.link/</a>
-  <br>
-  <select id='downloadAws' name='downloadAws' onclick='sendDownOptionAws();'>
-    <option value='down-aws-monit-01.bin'>aws 온도</option>";
-    <option value='down-aws-monit-02.bin'>aws 습도</option>";
-  </select>
-  <br>다운로드 파일 이름 : <span id="downFile">파일없음</span>
-  <button id="onButton" class='button button-box' onclick="sendAct('#'+'{\'act\':3}');">다운로드</button>
-  <hr>
+
 )=====";
 
 char Manual[] PROGMEM = R"=====(
@@ -304,14 +271,6 @@ void handleWifi() {
   String s=""; 
   String s1= String(ssid);
   s="<h1>Wifi 선택</h1>";
-  /*
-  if (server.client().localIP() == apIP) {
-    s=s+String("<p>연결된 AP: 192.168.4.1") + "</p>";
-  } else {
-    s=s+"<p>연결된 와이파이 " + String(ssid) + "</p>";
-  }
-  */
-
   Serial.println("scan start");
   int n = WiFi.scanNetworks();
   Serial.println("scan done");
