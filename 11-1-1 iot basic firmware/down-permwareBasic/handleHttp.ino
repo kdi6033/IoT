@@ -176,11 +176,16 @@ char Download[] PROGMEM = R"=====(
   <br>현장에서 이 기기만으로 모니터링/제어 하는 프로그램<br>
   <select id='download' name='download' onclick='sendDownOption();'>
     <option value='down-local-monit-02.bin'>[sensecube] PE-300</option>";
+    <option value='down-local-monit-03.bin'>[allsensing] klumi</option>";
+    <option value='down-local-monit-04.bin'>[sensecube] KSM-8900</option>";
+    <option value='down-local-monit-05.bin'>[allsensing] 온도습도센서</option>";
   </select>
   <br><br>현장에서 mqtt통신을 사용해 로컬서버를 구성하여 모니터링/제어 하는 프로그램<br>
   <select id='downloadMqtt' name='downloadMqtt' onclick='sendDownOptionMqtt();'>
-    <option value='down-local-mqtt-01.bin'>mqtt 온도</option>";
-    <option value='down-local-mqtt-02.bin'>mqtt 습도</option>";
+    <option value='down-local-mqtt-02.bin'>[sensecube] PE-300</option>";
+    <option value='down-local-mqtt-03.bin'>[allsensing] klumi</option>";
+    <option value='down-local-mqtt-04.bin'>[sensecube] KSM-8900</option>";
+    <option value='down-local-mqtt-05.bin'>[allsensing] 온도습도센서</option>";
   </select>
   <br><br>아마존 서버에 접속하여 크라우드 환경에서 모니터링/제어 하는 프로그램
   <br>E-mail ID로 회원 가입하여 로그인 하면 자동 접속한 기기를 볼 수 있음
@@ -189,6 +194,11 @@ char Download[] PROGMEM = R"=====(
   <select id='downloadAws' name='downloadAws' onclick='sendDownOptionAws();'>
     <option value='down-aws-monit-01.bin'>aws 온도</option>";
     <option value='down-aws-monit-02.bin'>aws 습도</option>";
+
+    <option value='down-aws-monit-02.bin'>[sensecube] PE-300</option>";
+    <option value='down-aws-monit-03.bin'>[allsensing] klumi</option>";
+    <option value='down-aws-monit-04.bin'>[sensecube] KSM-8900</option>";
+    <option value='down-aws-monit-05.bin'>[allsensing] 온도습도센서</option>";
   </select>
   <br>다운로드 파일 이름 : <span id="downFile">파일없음</span>
   <button id="onButton" class='button button-box' onclick="sendAct('#'+'{\'act\':3}');">다운로드</button>

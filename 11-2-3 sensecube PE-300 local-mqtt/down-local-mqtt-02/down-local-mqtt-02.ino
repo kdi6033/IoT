@@ -197,16 +197,18 @@ void setup() {
   webSocket.begin();
   webSocket.onEvent(webSocketEvent);
   Serial.println("HTTP server started");
-  ticker.attach(3, tick);  //0.1 초도 가능
-  tickerMqtt.attach(timeMqtt, tickMqtt);  
-  //ticker.detach();
 
-  checkPermVersion();
-
-  // mqtt 설정
-  //client.setServer(mqtt_server, 1883);
-  client.setServer(ipMqtt, 1883);
-  client.setCallback(callback);
+  if(bootMode !=1) {
+    ticker.attach(3, tick);  //0.1 초도 가능
+    tickerMqtt.attach(timeMqtt, tickMqtt);  
+    //ticker.detach();
+  
+    checkPermVersion();
+  
+    // mqtt 설정
+    client.setServer(ipMqtt, 1883);
+    client.setCallback(callback);
+  }
 }
 
 void bootWifiAp() {
@@ -428,18 +430,20 @@ void reconnect() {
 }
 
 void loop() {
-  if (!client.connected()) {
-    reconnect();
-  }
-  client.loop();
-  
   webSocket.loop();
   server.handleClient();
-  serialEvent();
 
   //공장리셋
   if ( digitalRead(TRIGGER_PIN) == LOW ) 
     factoryDefault();
+
+  if(bootMode !=1) {
+    serialEvent();
+    if (!client.connected()) {
+      reconnect();
+    }
+    client.loop();
+  }
 }
 
 void serialEvent() {

@@ -21,7 +21,7 @@ HTTPClient http;
 ESP8266WebServer server(80);
 WebSocketsServer webSocket = WebSocketsServer(81);
 
-const String FirmwareVer={"1.1"}; 
+const String FirmwareVer={"1.2"}; 
 String FirmwareVerServer={"0.0"};  // 다운로드 서버 버젼
 String nameDownloadFile="";
 #define URL_fw_Version "http://i2r.link/download/version.txt"

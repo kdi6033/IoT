@@ -301,20 +301,24 @@ String sensWifi(int in) {
 }
 
 void handleWifi() {
-  String s; 
+  String s=""; 
   String s1= String(ssid);
-  s=s+"<h1>Wifi 사양</h1>";
+  s="<h1>Wifi 선택</h1>";
+  /*
   if (server.client().localIP() == apIP) {
     s=s+String("<p>연결된 AP: 192.168.4.1") + "</p>";
   } else {
     s=s+"<p>연결된 와이파이 " + String(ssid) + "</p>";
   }
+  */
 
   Serial.println("scan start");
   int n = WiFi.scanNetworks();
   Serial.println("scan done");
+  delay(100);
 
   if (n > 0) {
+    //s+="검색된 와이파이";
     s+="<select id='ssid' name='ssid' onclick=\"sendOption();\">";
     for (int i = 0; i < n; i++) {
       s+="<option value='"+WiFi.SSID(i)+"'>";
