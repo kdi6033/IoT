@@ -88,8 +88,10 @@ char RootScript[] PROGMEM = R"=====(
       Socket = new WebSocket('ws://' + window.location.hostname + ':81/');
       Socket.onmessage = function(event){
         var data = JSON.parse(event.data);
-        console.log(data.temperature);
-        document.getElementById("temperature").innerHTML = data.temperature;
+        //console.log(data.temp);
+        document.getElementById("ec").innerHTML = data.ec;
+        document.getElementById("ph").innerHTML = data.ph;
+        document.getElementById("temperature").innerHTML = data.temp;
       }
     }
     function openNav() {
@@ -119,16 +121,6 @@ char HeadScript[] PROGMEM = R"=====(
     function sendAct(valueIn){
       Socket.send(valueIn);
     }
-    function sendDownOptionLocal() {
-      document.getElementById("downFile").innerHTML=document.getElementById("downloadLocal").value;
-      var s="#"+"{'act':2,'value':'"+document.getElementById("downloadLocal").value+"'}";
-      Socket.send(s);
-    }
-    function sendDownOptionAws() {
-      document.getElementById("downFile").innerHTML=document.getElementById("downloadAws").value;
-      var s="#"+"{'act':2,'value':'"+document.getElementById("downloadAws").value+"'}";
-      Socket.send(s);
-    }
     function openNav() {
       document.getElementById("mySidenav").style.width = "150px"; 
     }
@@ -141,11 +133,25 @@ char HeadScript[] PROGMEM = R"=====(
 )=====";
 
 char Body[] PROGMEM = R"=====(
-  <br><br>로컬 서버 down-permwareBasic.bin
-  <br>
-  <span class="dht-labels">온도</span> 
-    <span id="temperature">%TEMPERATURE%</span>
-  <sup class="units">&deg;C</sup>
+  <br><br>다운로드 파일명 down-local-02.bin
+  <br><br>
+  <table>
+    <tr>
+      <th><label>EC : </label></th>
+      <th><span id="ec">%EC%</span></th>
+    </tr>
+
+    <tr>
+      <th><label>PH : </label></th>
+      <th><div id="ph">%PH%</div></th>
+    </tr>
+
+    <tr>
+      <th><span class="dht-labels">온도 : </span> </th>
+        <th><span id="temperature">%TEMPERATURE%</span>
+          <sup class="units">&deg;C</sup></th>
+    </tr>
+  </table>
   
 )=====";
 
@@ -164,42 +170,18 @@ char Menu[] PROGMEM = R"=====(
 )=====";
 
 char Download[] PROGMEM = R"=====(
-  <br><br>다운로드
-  추가된 기기를 다운로드 받으려면 펌웨어 업그레이드를 하세요.
-  <div> <button id="onButton" class='button button-box' onclick="sendAct('#'+'{\'act\':1}');">최신펌웨어 업그레이드</button> </div>  
+  <br><br>
+  새로운 기기가 계속 추가되고 있습니다.
+  추가된 기기를 다운로드 받으려면 펌웨어 업그레이드를 하시고 거기서 원하는 기기의 펌웨어를 선택해서 다운로드 받으세요.
+  <div> <button id="onButton" class='button button-box' onclick="sendAct('#'+'{\'act\':1}');">기기선택 펌웨어 다운로드</button> </div>  
   <hr>
-  <br>기기를 선택하면 다운로드 파일 이름이 표시 된 후에 [다운로드] 버튼을 누르세요. 
-  <br>새로운 프로그램이 자동으로 설치 됩니다.<br><br>
 
-  <br>[현장제어 프로그램]
-  <br>- 현장에서 이 기기만으로 모니터링/제어 하거나 MQTT 서버와 연결
-  <br>- 센서계측 값만을 모니터링
-  <br>- 기기 OLED로 센서 값을 모니터링 
-  <br>- MQTT통신을 사용해 로컬서버를 구성하여 모니터링/제어 <br>
-  <select id='downloadLocal' name='downloadLocal' onclick='sendDownOptionLocal();'>
-    <option value='down-local-02.bin'>[sensecube] PE-300</option>";
-    <option value='down-local-03.bin'>[allsensing] klumi</option>";
-    <option value='down-local-04.bin'>[sensecube] KSM-8900</option>";
-    <option value='down-local-05.bin'>[allsensing] 온도습도센서</option>";
-  </select>
-  <br><br>[아마존서버를 이용한 크라우드제어 프로그램]
-  <br>아마존 서버에 접속하여 크라우드 환경에서 모니터링/제어 하는 프로그램
-  <br>E-mail ID로 회원 가입하여 로그인 하면 자동 접속한 기기를 볼 수 있음
-  <br>접속사이트 : <a href='http://i2r.link/'>http://i2r.link/</a>
-  <br>
-  <select id='downloadAws' name='downloadAws' onclick='sendDownOptionAws();'>
-    <option value='down-aws-02.bin'>[sensecube] PE-300</option>";
-    <option value='down-aws-03.bin'>[allsensing] klumi</option>";
-    <option value='down-aws-04.bin'>[sensecube] KSM-8900</option>";
-    <option value='down-aws-05.bin'>[allsensing] 온도습도센서</option>";
-  </select>
-  <br>다운로드 파일 이름 : <span id="downFile">파일없음</span>
-  <button id="onButton" class='button button-box' onclick="sendAct('#'+'{\'act\':3}');">다운로드</button>
-  <hr>
 )=====";
 
 char Manual[] PROGMEM = R"=====(
   <br><br>메뉴얼
+  <a href='https://github.com/kdi6033/IoT/tree/main/11-2-1%20sensecube%20PE-300%20arduino'>PE-300 선연결</a>
+  
 )=====";
 
 char Tail[] PROGMEM = R"=====(
@@ -228,13 +210,12 @@ void handleOn() {
 
   if(act==2) {
     server.arg("ipMqtt").toCharArray(ipMqtt, sizeof(ipMqtt) - 1);
-    server.arg("userMqtt").toCharArray(userMqtt, sizeof(userMqtt) - 1);
-    server.arg("passwordMqtt").toCharArray(passwordMqtt, sizeof(passwordMqtt) - 1);
+    timeMqtt=server.arg("timeMqtt").toInt();
     server.arg("email").toCharArray(email, sizeof(email) - 1);
     Serial.println(ipMqtt);
-    Serial.println(userMqtt);
-    Serial.println(passwordMqtt);
+    Serial.println(timeMqtt);
     Serial.println(email);
+    tickerMqtt.attach(timeMqtt, tickMqtt); 
     saveConfig();
   }
   GoHome();
@@ -258,7 +239,6 @@ void GoHomeWifi() {
     s="<meta http-equiv='refresh' content=\"0;url='http://"+ipS+"/wifi'\">";
   server.send(200, "text/html", s);
 }
-
 
 void handleNotFound() {
   String message = "File Not Found\n\n";
@@ -288,20 +268,16 @@ String sensWifi(int in) {
 }
 
 void handleWifi() {
-  String s; 
+  String s=""; 
   String s1= String(ssid);
-  s=s+"<h1>Wifi 사양</h1>";
-  if (server.client().localIP() == apIP) {
-    s=s+String("<p>연결된 AP: 192.168.4.1") + "</p>";
-  } else {
-    s=s+"<p>연결된 와이파이 " + String(ssid) + "</p>";
-  }
-
+  s="<h1>Wifi 선택</h1>";
   Serial.println("scan start");
   int n = WiFi.scanNetworks();
   Serial.println("scan done");
+  delay(100);
 
   if (n > 0) {
+    //s+="검색된 와이파이";
     s+="<select id='ssid' name='ssid' onclick=\"sendOption();\">";
     for (int i = 0; i < n; i++) {
       s+="<option value='"+WiFi.SSID(i)+"'>";
@@ -360,7 +336,7 @@ void handleWifiSave() {
 
 void handleScan() {
   String s;
-    s="{\"mac\":\""+sMac+"\",\"ip\":\""+WiFi.localIP().toString()+"\",\"\temp\":"+counter+"}";
+  s="{\"mac\":\""+sMac+"\",\"ip\":\""+WiFi.localIP().toString()+"\",\"type\":"+type+",\"ec\":"+ec+",\"ph\":"+ph+",\"temp\":"+temp+"}";
   server.send(200, "text/html", s);
 }
 
@@ -375,14 +351,12 @@ void handleConfig() {
       s+="<th>mqtt서버 IP</th>";
       s+="<th><input type='text' value='"+(String)ipMqtt+"' name='ipMqtt'/></th>";
     s+="</tr>";
+
     s+="<tr>";
-      s+="<th>사용자이름</th>";
-      s+="<th><input ttype='text' value='"+(String)userMqtt+"' name='userMqtt'/></th>";
+      s+="<th>mqtt 통신속도(초)</th>";
+      s+="<th><input type='number' id='timeMqtt' name='timeMqtt' min='1' value='"+(String)timeMqtt+"'/></th>";
     s+="</tr>";
-    s+="<tr>";
-      s+="<th>비밀번호</th>";
-      s+="<th><input type='password' value='"+(String)passwordMqtt+"' name='passwordMqtt'/></th>";
-    s+="</tr>";
+    
     s+="<tr>";
       s+="<th>email</th>";
       s+="<th><input type='text' value='"+(String)email+"' name='email'/></th>";
