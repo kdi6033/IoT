@@ -4,7 +4,7 @@
 ## 온습도 토양 센서
 ---
 
-#!KSM8900 어뎁터는 5V입니다. 5V이상 전류가 흐를시 센서가 고장납니다.!
+
 
 * node-red 불러오기 (node-red.txt이랑 똑같습니다.)
 ```
@@ -16,7 +16,8 @@
 
 ![1](https://user-images.githubusercontent.com/59568377/122491263-9ad24580-d01e-11eb-92cf-f61cb3d44cd0.jpg)
 
-### 전용모듈 SR100 배선도                      
+### 전용모듈 SR100 배선도  
+# !KSM8900 어뎁터는 5V입니다. 5V이상 전류가 흐를시 센서가 고장납니다.!
 ![KakaoTalk_20210625_103957707](https://user-images.githubusercontent.com/37902752/123356078-f4e48500-d5a1-11eb-8765-5bf7ec2ad367.png)
 
 ### 전용모듈 SR100으로 사용하기
