@@ -179,7 +179,7 @@ char Download[] PROGMEM = R"=====(
 
 char Manual[] PROGMEM = R"=====(
   <br><br>메뉴얼
-  <a href='https://github.com/kdi6033/IoT/tree/main/11-2-1%20sensecube%20PE-300%20arduino'>PE-300 선연결</a>
+  <a href='https://github.com/kdi6033/IoT/tree/main/11-4-2%20%5Bsensecube%5D%20KSM-8900%20aws'>AWS 메뉴얼</a>
   
 )=====";
 

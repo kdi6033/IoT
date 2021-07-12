@@ -27,7 +27,7 @@ ESP8266WebServer server(80);
 WebSocketsServer webSocket = WebSocketsServer(81);
 
 int type=2; // 기기 인식번호 -> display에 사용
-const String FirmwareVer={"1.0"}; 
+const String FirmwareVer={"1.4.1"}; 
 String FirmwareVerServer={"0.0"};  // 다운로드 서버 버젼
 String nameDownloadFile="";
 #define URL_fw_Bin "http://i2r.link/download/"
@@ -42,7 +42,7 @@ char email[50] = "";
 char ipMqtt[40]="";
 
 const char *thingId = "";          // 사물 이름 (thing ID) 
-const char *host = "a1uh55iuflfli7-ats.iot.us-west-2.amazonaws.com"; // AWS IoT Core 주소
+const char *host = "a8i4lgiqa43pw-ats.iot.us-west-2.amazonaws.com"; // AWS IoT Core 주소
 const char* outTopic = "/doowon-ksm8900/outTopic"; 
 const char* inTopic = "/doowon-ksm8900/inTopic"; 
 
