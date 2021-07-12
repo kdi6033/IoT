@@ -1,7 +1,8 @@
 #WiFi RS-485 아두이노 보드로 센서값 받기
 ---
 
-### 회로도
+## 회로도
+### !KSM8900 어뎁터는 5V입니다. 5V이상 전류가 흐를시 센서가 고장납니다.!
 ![sensordata](https://user-images.githubusercontent.com/59568377/125215103-5708ee00-e2f5-11eb-8b56-010cafa7767d.jpg)
 
 ### KSM900 이아닌 다른 센서 일 경우
