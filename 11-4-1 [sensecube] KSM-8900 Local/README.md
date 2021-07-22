@@ -14,6 +14,7 @@
 ```
 ### 1. WiFi 연결
 ![mqtt 1](https://user-images.githubusercontent.com/37902752/126635732-45a57837-f648-462f-aa99-325dddd8b12a.JPG)
+
 구매한 RS-485 보드를 컴퓨터에 연결하고 WiFi칸을 보면 i2r-"영어 숫자 랜덤"이 나타나는데 클릭
 ### 2. 주소 접속
 ![mqtt 2](https://user-images.githubusercontent.com/37902752/126635736-32761210-ce8e-4798-b597-c047a19ba356.JPG)
