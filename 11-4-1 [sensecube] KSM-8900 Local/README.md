@@ -21,9 +21,11 @@
 i2r-%% wifi를 연결해주면 OLED에 '192.168.4.1'이 나타나는데 i2r wifi가 `연결된 상태`에서 주소창에 입력
 ### 3. 홈페이지 진입
 ![mqtt 3](https://user-images.githubusercontent.com/37902752/126635740-df27ab89-8d43-439d-a98a-e1f06035fd82.JPG)
+
 홈페이지에 들어온 후에 좌측 상단 햄버거 메뉴를 선택(빨간색 동그라미)
 ### 4. 와이파이 설정-1 단계
 ![mqtt 4](https://user-images.githubusercontent.com/37902752/126635742-fbc5fd0c-9c59-4ea4-9e41-8254f63a2e60.JPG)
+
 메뉴에 들어와 와이파이 설정 클릭
 ### 5. 와이파이 설정-2 단계
 ![mqtt 5](https://user-images.githubusercontent.com/37902752/126635743-76e510b3-9329-47f5-aac0-eb6448c600ae.JPG)
