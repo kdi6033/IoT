@@ -16,6 +16,7 @@
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>
+#include <WiFiUdp.h>
 
 Ticker ticker;
 Ticker tickerMqtt;
@@ -24,12 +25,13 @@ SoftwareSerial mySerial(D7, D4); // RX,
 HTTPClient http;
 ESP8266WebServer server(80);
 WebSocketsServer webSocket = WebSocketsServer(81);
+WiFiUDP Udp;
+
+unsigned int localUdpPort = 4210; // local port to listen on
+char incomingPacket[255]; // buffer for incoming packets
 
 int type=2; // 기기 인식번호 -> display에 사용
-const String FirmwareVer={"1.0"}; 
-String FirmwareVerServer={"0.0"};  // 다운로드 서버 버젼
 String nameDownloadFile="";
-#define URL_fw_Version "http://i2r.link/download/version.txt"
 #define URL_fw_Bin "http://i2r.link/download/"
 
 char ssid[40] = "";
@@ -40,23 +42,28 @@ IPAddress netMsk(255, 255, 255, 0);
 
 char email[50] = "";
 char ipMqtt[40]="";
+unsigned int countTick=0;
+unsigned int countMqtt=0;
+unsigned int countMeasure=0;
 
-//const char* mqtt_server = "192.168.0.3"; //브로커 주소
 const char* outTopic = "/i2r/outTopic"; // 이름이 중복되지 않게 설정 기록
 const char* inTopic = "/i2r/inTopic"; // 이름이 중복되지 않게 설정 기록
 const char* clientName = "";  // setup 함수에서 자동생성
 char msg[100];
+int mqttConnected=0; // 1=연결 0=끊김
 
 String ipAct="";
 char mac[20];  //mac address
 String sMac;
 int act=0;
 int bootMode=0; //0:station  1:AP
-const int led = 2;
 int counter=0;
 String inputString = "";         // 받은 문자열
 int timeMqtt=5;
 float ec=0.,ph=0.,temp=0.;
+
+unsigned long previousMillis = 0;     
+const long interval = 1000;  
 
 //json을 위한 설정
 StaticJsonDocument<200> doc;
@@ -86,9 +93,21 @@ void serialEvent();
 
 void tick()
 {
-  Serial.println ( WiFi.localIP() );
-  counter++;
+  countTick++;
+  if(countTick > 10000)
+    countTick=0;
 
+  if((countTick%3)==0)
+    tickMeasure();
+  if((countTick%5)==0) {
+    countMqtt++;
+    tickMqtt();
+  }
+}
+
+void tickMeasure()
+{
+  Serial.println ( WiFi.localIP() );
   //snprintf (msg, 75, "count #%d", counter);
   //client.publish(outTopic, msg);
 
@@ -115,8 +134,14 @@ void tick()
   oled.putString(s);
 }
 
+
 void tickMqtt()
-{
+{ 
+  if (!client.connected()) {
+    reconnect();
+  }
+  if(mqttConnected != 1)
+    return;
   String json;
   //MQTT로 보냄
   json = "{";
@@ -155,11 +180,14 @@ void displayOled(int no) {
     oled.setTextXY(2,6);             
     oled.putString(" Booting .....    ");
   }
+  else if(no==5) {
+    GoHome();
+    oled.setTextXY(2,6);             
+    oled.putString(" Reset .....    ");
+  }
 }
 
 void setup() {
-  pinMode(led, OUTPUT);
-  digitalWrite(led, 1);
   Serial.begin(38400);
   mySerial.begin(38400);
   //Oled Setup
@@ -198,17 +226,16 @@ void setup() {
   webSocket.onEvent(webSocketEvent);
   Serial.println("HTTP server started");
 
+  //ticker.attach(1, tick);  //0.1 초도 가능
   if(bootMode !=1) {
-    ticker.attach(3, tick);  //0.1 초도 가능
-    tickerMqtt.attach(timeMqtt, tickMqtt);  
+    //tickerMqtt.attach(timeMqtt, tickMqtt);  
     //ticker.detach();
-  
-    checkPermVersion();
   
     // mqtt 설정
     client.setServer(ipMqtt, 1883);
     client.setCallback(callback);
   }
+  Udp.begin(localUdpPort);
 }
 
 void bootWifiAp() {
@@ -225,11 +252,6 @@ void bootWifiAp() {
   delay(500); // Without delay I've seen the IP address blank
   Serial.print("AP IP address: ");
   Serial.println(ipAct);
-  digitalWrite(led, 0); //상태 led로 표시
-  // 접속 성공이면 led 5초간 점등 후 소등
-  digitalWrite(led, 0);
-  delay(5000);
-  digitalWrite(led, 1);
 }
 
 void bootWifiStation() {
@@ -250,18 +272,10 @@ void bootWifiStation() {
       factoryDefault();
   }
   ipAct=WiFi.localIP().toString();
-  digitalWrite(led, 0);
   Serial.println("");
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
   Serial.println(ipAct);
-  // 접속 성공이면 led 5번 점등
-  for(int i=0;i<5;i++) {
-    digitalWrite(led, 0);
-    delay(500);
-    digitalWrite(led, 1);
-    delay(500);
-  }
 }
 
 void update_started() {
@@ -280,33 +294,9 @@ void update_error(int err) {
   Serial.printf("CALLBACK:  HTTP update fatal error code %d\n", err);
 }
 
-int checkPermVersion() {
-  http.begin(URL_fw_Version);
-  delay(100);
-  int httpCode = http.GET();
-  delay(100);
-  if (httpCode == HTTP_CODE_OK)         // if version received
-  {
-    FirmwareVerServer=http.getString();
-    Serial.println("server-"+FirmwareVerServer+"  board-"+FirmwareVer );
-    if(FirmwareVerServer.equals(FirmwareVer)) {
-      return 1;
-    }
-    else
-      return 0;
-  }
-  else
-  {
-    Serial.print("error in downloading version file:");
-    Serial.println(httpCode);
-
-  }
-  return 0;
-}
-
 void download_program(String fileName) {
   Serial.println(fileName);
-  if (WiFi.status() == WL_CONNECTED) {
+  if (WiFi.status() != WL_CONNECT_FAILED) {
     WiFiClient client;
     // The line below is optional. It can be used to blink the LED on the board during flashing
     // The LED will be on during download of one buffer of data from the network. The LED will
@@ -359,7 +349,6 @@ void onAct(uint8_t * payload, size_t length) {
   if(act==1) {
     displayOled(3);
     //GoHome();
-    Serial.println("=======================================");
     download_program("down-permwareBasic.bin");
   }
 }
@@ -395,12 +384,16 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
 // mqtt 통신에 지속적으로 접속한다.
 void reconnect() {
-  if(WiFi.status() != WL_CONNECTED)
-    return;
   if(ipMqtt[0]==0)
     return;
+  Serial.println("reconnect");
+  Serial.println(ipMqtt);
+  //if(WiFi.status() == WL_DISCONNECTED)
+  //  return;
+  Serial.println("====================================");
+  Serial.println(countMqtt);
   // Loop until we're reconnected
-  while (!client.connected()) {
+  //while (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
     // Attempt to connect
     if (client.connect(clientName)) {
@@ -409,19 +402,22 @@ void reconnect() {
       //client.publish(outTopic, "Reconnected");
       // ... and resubscribe
       client.subscribe(inTopic);
+      mqttConnected=1;
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
-      Serial.println(" try again in 5 seconds");
+      Serial.println(" try again in 180 seconds");
+      mqttConnected=0;
       // Wait 5 seconds before retrying
-      delay(5000);
+      //delay(5000);
     }
-  }
+  //}
 }
 
 void loop() {
   webSocket.loop();
   server.handleClient();
+  doTick();
 
   //공장리셋
   if ( digitalRead(TRIGGER_PIN) == LOW ) 
@@ -429,11 +425,40 @@ void loop() {
 
   if(bootMode !=1) {
     serialEvent();
-    if (!client.connected()) {
-      reconnect();
-    }
-    client.loop();
+    udpEvent();
+    if(mqttConnected==1)
+      client.loop();
   }
+
+}
+
+//1초 마다 실행되는 시간함수
+void doTick() {
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis >= interval) {
+    // save the last time you blinked the LED
+    previousMillis = currentMillis;
+    tick();
+  }  
+}
+
+void udpEvent() {
+  int packetSize = Udp.parsePacket();
+  if(packetSize) {
+    // receive incoming UDP packets
+    Serial.printf("Received %d bytes from %s, port %d\n", packetSize, Udp.remoteIP().toString().c_str(), Udp.remotePort());
+    int len = Udp.read(incomingPacket, 255);
+    if(len > 0) {
+      incomingPacket[len] = 0;
+    }
+    Serial.printf("UDP packet contents: %s\n", incomingPacket);
+    deserializeJson(doc,incomingPacket);
+    root = doc.as<JsonObject>();
+    String mqttIp = root["mqttIp"];
+    mqttIp.toCharArray(ipMqtt, mqttIp.length()+1);
+    Serial.println(ipMqtt);
+    saveConfig();
+  }  
 }
 
 void serialEvent() {

@@ -81,6 +81,7 @@ char Head[] PROGMEM = R"=====(
   </style>
 )=====";
 
+// 홈화면에서 실시간 계측값 표시
 char RootScript[] PROGMEM = R"=====(
   <script>
     var Socket;
@@ -88,7 +89,7 @@ char RootScript[] PROGMEM = R"=====(
       Socket = new WebSocket('ws://' + window.location.hostname + ':81/');
       Socket.onmessage = function(event){
         var data = JSON.parse(event.data);
-        //console.log(data.temp);
+        console.log(data.temp);
         document.getElementById("ec").innerHTML = data.ec;
         document.getElementById("ph").innerHTML = data.ph;
         document.getElementById("temperature").innerHTML = data.temp;
@@ -121,21 +122,6 @@ char HeadScript[] PROGMEM = R"=====(
     function sendAct(valueIn){
       Socket.send(valueIn);
     }
-    function sendDownOption() {
-      document.getElementById("downFile").innerHTML=document.getElementById("download").value;
-      var s="#"+"{'act':2,'value':'"+document.getElementById("download").value+"'}";
-      Socket.send(s);
-    }
-    function sendDownOptionMqtt() {
-      document.getElementById("downFile").innerHTML=document.getElementById("downloadMqtt").value;
-      var s="#"+"{'act':2,'value':'"+document.getElementById("downloadMqtt").value+"'}";
-      Socket.send(s);
-    }
-    function sendDownOptionAws() {
-      document.getElementById("downFile").innerHTML=document.getElementById("downloadAws").value;
-      var s="#"+"{'act':2,'value':'"+document.getElementById("downloadAws").value+"'}";
-      Socket.send(s);
-    }
     function openNav() {
       document.getElementById("mySidenav").style.width = "150px"; 
     }
@@ -148,17 +134,24 @@ char HeadScript[] PROGMEM = R"=====(
 )=====";
 
 char Body[] PROGMEM = R"=====(
-  <br><br>다운로드 파일명 down-local-monit-02.bin
   <br><br>
-  <label>EC : </label>
-  <span id="ec">%EC%</span>
-  
-  <br><label>PH : </label>
-  <span id="ph">%PH%</span>
-  
-  <br><span class="dht-labels">온도</span> 
-    <span id="temperature">%TEMPERATURE%</span>
-  <sup class="units">&deg;C</sup>
+  <table>
+    <tr>
+      <th><label>EC : </label></th>
+      <th><span id="ec">%EC%</span></th>
+    </tr>
+
+    <tr>
+      <th><label>PH : </label></th>
+      <th><div id="ph">%PH%</div></th>
+    </tr>
+
+    <tr>
+      <th><span class="dht-labels">온도 : </span> </th>
+        <th><span id="temperature">%TEMPERATURE%</span>
+          <sup class="units">&deg;C</sup></th>
+    </tr>
+  </table>
   
 )=====";
 
@@ -177,34 +170,17 @@ char Menu[] PROGMEM = R"=====(
 )=====";
 
 char Download[] PROGMEM = R"=====(
-  <br><br>다운로드
-  추가된 기기를 다운로드 받으려면 펌웨어 업그레이드를 하세요.
-  <div> <button id="onButton" class='button button-box' onclick="sendAct('#'+'{\'act\':1}');">최신펌웨어 업그레이드</button> </div>  
+  <br><br>다운로드<br>
+  새로운 기기를 다운로드 받으려면 [최신펌웨어 업그레이드]를 하면 기기 리스트가 보입니다.<br> 
+  기기선택 후 업그레이드 하세요.<br>
+  <div> <button id="onButton" class='button button-box' onclick="sendAct('#'+'{\'act\':1}');">기기선택 펌웨어 다운로드</button> </div>  
   <hr>
-  <br>현장에서 이 기기만으로 모니터링/제어 하는 프로그램<br>
-  <select id='download' name='download' onclick='sendDownOption();'>
-    <option value='down-local-monit-02.bin'>[sensecube] PE-300</option>";
-  </select>
-  <br><br>현장에서 mqtt통신을 사용해 로컬서버를 구성하여 모니터링/제어 하는 프로그램<br>
-  <select id='downloadMqtt' name='downloadMqtt' onclick='sendDownOptionMqtt();'>
-    <option value='down-local-mqtt-01.bin'>mqtt 온도</option>";
-    <option value='down-local-mqtt-02.bin'>mqtt 습도</option>";
-  </select>
-  <br><br>아마존 서버에 접속하여 크라우드 환경에서 모니터링/제어 하는 프로그램
-  <br>E-mail ID로 회원 가입하여 로그인 하면 자동 접속한 기기를 볼 수 있음
-  <br>접속사이트 : <a href='http://i2r.link/'>http://i2r.link/</a>
-  <br>
-  <select id='downloadAws' name='downloadAws' onclick='sendDownOptionAws();'>
-    <option value='down-aws-monit-01.bin'>aws 온도</option>";
-    <option value='down-aws-monit-02.bin'>aws 습도</option>";
-  </select>
-  <br>다운로드 파일 이름 : <span id="downFile">파일없음</span>
-  <button id="onButton" class='button button-box' onclick="sendAct('#'+'{\'act\':3}');">다운로드</button>
-  <hr>
+
 )=====";
 
 char Manual[] PROGMEM = R"=====(
   <br><br>메뉴얼
+  <br><br>다운로드 파일명 down-local-monit-02.bin<br>
   <a href='https://github.com/kdi6033/IoT/tree/main/11-2-1%20sensecube%20PE-300%20arduino'>PE-300 선연결</a>
   
 )=====";
@@ -235,13 +211,12 @@ void handleOn() {
 
   if(act==2) {
     server.arg("ipMqtt").toCharArray(ipMqtt, sizeof(ipMqtt) - 1);
-    server.arg("userMqtt").toCharArray(userMqtt, sizeof(userMqtt) - 1);
-    server.arg("passwordMqtt").toCharArray(passwordMqtt, sizeof(passwordMqtt) - 1);
+    timeMqtt=server.arg("timeMqtt").toInt();
     server.arg("email").toCharArray(email, sizeof(email) - 1);
     Serial.println(ipMqtt);
-    Serial.println(userMqtt);
-    Serial.println(passwordMqtt);
+    Serial.println(timeMqtt);
     Serial.println(email);
+    tickerMqtt.attach(timeMqtt, tickMqtt); 
     saveConfig();
   }
   GoHome();
@@ -294,20 +269,16 @@ String sensWifi(int in) {
 }
 
 void handleWifi() {
-  String s; 
+  String s=""; 
   String s1= String(ssid);
-  s=s+"<h1>Wifi 사양</h1>";
-  if (server.client().localIP() == apIP) {
-    s=s+String("<p>연결된 AP: 192.168.4.1") + "</p>";
-  } else {
-    s=s+"<p>연결된 와이파이 " + String(ssid) + "</p>";
-  }
-
+  s="<h1>Wifi 선택</h1>";
   Serial.println("scan start");
   int n = WiFi.scanNetworks();
   Serial.println("scan done");
+  delay(100);
 
   if (n > 0) {
+    //s+="검색된 와이파이";
     s+="<select id='ssid' name='ssid' onclick=\"sendOption();\">";
     for (int i = 0; i < n; i++) {
       s+="<option value='"+WiFi.SSID(i)+"'>";
@@ -361,19 +332,23 @@ void handleWifiSave() {
   Serial.println(ssid);
   Serial.println(password);
   Serial.println("Reset");
+  delay(2000);
   ESP.reset();
+  delay(2000);
 }
 
 void handleScan() {
   String s;
-    s="{\"mac\":\""+sMac+"\",\"ip\":\""+WiFi.localIP().toString()+"\",\"ec\":"+ec+",\"ph\":"+ph+",\"temp\":"+temp+"}";
+  s="{\"mac\":\""+sMac+"\",\"ip\":\""+WiFi.localIP().toString()+"\",\"type\":"+type+",\"ec\":"+ec+",\"ph\":"+ph+",\"temp\":"+temp+"}";
   server.send(200, "text/html", s);
 }
 
 void handleConfig() {
   String s;
-  s="<br><br>현장에서 mqtt 통신을 사용하지 않고 웹페이지 모니터링만 하려면 입력하지 않아도 됩니다.<br>";
-  s+="<br> 아마존 서버 http://i2r.link 접속하려면 회원가입 한 email을 입력하세요.<br>";
+  s="<br><br>현장에서 MQTT 통신을 사용하지 않고 웹페이지 모니터링만 하려면 <br>";
+  s+="<br> 와이파이-485 보드의 리셋키를 누르면 MQTT서버 주소가 지워지고 센서 값만 읽을수 있습니다.<br>";
+  s+="<br> MQTT서버 IP 주소는 서버에서 통신으로 관리되어 입력하지 않아도 됩니다.<br>";
+
   s+="<form action='/on'>";
   s+="<input type='hidden' name='act' value='2'>";
   s+="<table>";
@@ -382,21 +357,10 @@ void handleConfig() {
       s+="<th><input type='text' value='"+(String)ipMqtt+"' name='ipMqtt'/></th>";
     s+="</tr>";
     s+="<tr>";
-      s+="<th>사용자이름</th>";
-      s+="<th><input ttype='text' value='"+(String)userMqtt+"' name='userMqtt'/></th>";
-    s+="</tr>";
-    s+="<tr>";
-      s+="<th>비밀번호</th>";
-      s+="<th><input type='password' value='"+(String)passwordMqtt+"' name='passwordMqtt'/></th>";
-    s+="</tr>";
-    s+="<tr>";
-      s+="<th>email</th>";
-      s+="<th><input type='text' value='"+(String)email+"' name='email'/></th>";
-    s+="</tr>";
-    s+="<tr>";
       s+="<th></th>";
       s+="<th><input type='submit' value='    저  장    ' style='background-color:#ff8000;color: white;border: none;padding: 6px 15px;'/></th>";
     s+="</tr>";
+
   s+="</table>";
   s+="</form>";
 
@@ -414,10 +378,6 @@ void handleDownload() {
   s=FPSTR(Head);
   s+=FPSTR(HeadScript);
   s+=FPSTR(Menu);
-  if(FirmwareVer != FirmwareVerServer) {
-    s+="<br><br>새로운 기기가 추가 되었습니다. 펌웨어 업그레이드 하세요.<br>";
-    s+="새로운 버젼"+FirmwareVerServer+"&emsp; 보드버젼"+FirmwareVer;
-  }
   s+=FPSTR(Download);
   s+=FPSTR(Tail);
   server.send(200, "text/html", s);
