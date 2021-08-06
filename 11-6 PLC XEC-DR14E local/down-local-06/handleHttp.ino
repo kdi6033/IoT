@@ -82,14 +82,14 @@ char Head[] PROGMEM = R"=====(
 )=====";
 
 // 홈화면에서 실시간 계측값 표시
-char RootScript[] PROGMEM = R"=====(
+char ScriptRoot[] PROGMEM = R"=====(
   <script>
     var Socket;
     function init() {
       Socket = new WebSocket('ws://' + window.location.hostname + ':81/');
       Socket.onmessage = function(event){
         var data = JSON.parse(event.data);
-        console.log(data.in0);
+        console.log(data);
         if(data.in0==1)
           document.getElementById("in0").innerHTML = "<th><button class='button button-ledon' ></button></a></th>";
         else
@@ -123,31 +123,34 @@ char RootScript[] PROGMEM = R"=====(
         else
           document.getElementById("in7").innerHTML = "<th><button class='button button-ledoff' ></button></a></th>";
 
-        if(data.out0==1) 
-          document.getElementById("out0").innerHTML = "<th><button type='submit' name='value' value='0' class='button button-on' ></button></a></th>";
+        if(data.out0==1)
+          document.getElementById("out0").innerHTML = "<button class='button button-on' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':0,\\'value\\':0}');\"></button>";
         else
-          document.getElementById("out0").innerHTML = "<th><button type='submit' name='value' value='1' class='button button-off' ></button></a></th>";
-        if(data.out1==1) 
-          document.getElementById("out1").innerHTML = "<th><button type='submit' name='value' value='0' class='button button-on' ></button></a></th>";
+          document.getElementById("out0").innerHTML = "<button class='button button-off' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':0,\\'value\\':1}');\"></button>";
+        if(data.out1==1)
+          document.getElementById("out1").innerHTML = "<button class='button button-on' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':1,\\'value\\':0}');\"></button>";
         else
-          document.getElementById("out1").innerHTML = "<th><button type='submit' name='value' value='1' class='button button-off' ></button></a></th>";
-        if(data.out2==1) 
-          document.getElementById("out2").innerHTML = "<th><button type='submit' name='value' value='0' class='button button-on' ></button></a></th>";
+          document.getElementById("out1").innerHTML = "<button class='button button-off' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':1,\\'value\\':1}');\"></button>";
+        if(data.out2==1)
+          document.getElementById("out2").innerHTML = "<button class='button button-on' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':2,\\'value\\':0}');\"></button>";
         else
-          document.getElementById("out2").innerHTML = "<th><button type='submit' name='value' value='1' class='button button-off' ></button></a></th>";
-        if(data.out3==1) 
-          document.getElementById("out3").innerHTML = "<th><button type='submit' name='value' value='0' class='button button-on' ></button></a></th>";
+          document.getElementById("out2").innerHTML = "<button class='button button-off' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':2,\\'value\\':1}');\"></button>";
+        if(data.out3==1)
+          document.getElementById("out3").innerHTML = "<button class='button button-on' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':3,\\'value\\':0}');\"></button>";
         else
-          document.getElementById("out3").innerHTML = "<th><button type='submit' name='value' value='1' class='button button-off' ></button></a></th>";
-        if(data.out4==1) 
-          document.getElementById("out4").innerHTML = "<th><button type='submit' name='value' value='0' class='button button-on' ></button></a></th>";
+          document.getElementById("out3").innerHTML = "<button class='button button-off' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':3,\\'value\\':1}');\"></button>";
+        if(data.out4==1)
+          document.getElementById("out4").innerHTML = "<button class='button button-on' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':4,\\'value\\':0}');\"></button>";
         else
-          document.getElementById("out4").innerHTML = "<th><button type='submit' name='value' value='1' class='button button-off' ></button></a></th>";
-        if(data.out5==1) 
-          document.getElementById("out5").innerHTML = "<th><button type='submit' name='value' value='0' class='button button-on' ></button></a></th>";
+          document.getElementById("out4").innerHTML = "<button class='button button-off' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':4,\\'value\\':1}');\"></button>";
+        if(data.out5==1)
+          document.getElementById("out5").innerHTML = "<button class='button button-on' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':5,\\'value\\':0}');\"></button>";
         else
-          document.getElementById("out5").innerHTML = "<th><button type='submit' name='value' value='1' class='button button-off' ></button></a></th>";
+          document.getElementById("out5").innerHTML = "<button class='button button-off' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':5,\\'value\\':1}');\"></button>";
       }
+    }
+    function sendAct(valueIn){
+      Socket.send(valueIn);
     }
     function openNav() {
       document.getElementById("mySidenav").style.width = "150px"; 
@@ -160,7 +163,7 @@ char RootScript[] PROGMEM = R"=====(
 <body onload="javascript:init()">
 )=====";
 
-char HeadScript[] PROGMEM = R"=====(
+char ScriptHead[] PROGMEM = R"=====(
   <script>
     var Socket;
     function init() {
@@ -187,7 +190,7 @@ char HeadScript[] PROGMEM = R"=====(
 )=====";
 
 char Body[] PROGMEM = R"=====(
-  <br>입력<table style='width:100%'><br>
+  <br>입력<br>
   <table>
     <tr>
       <th>00</th>
@@ -211,7 +214,7 @@ char Body[] PROGMEM = R"=====(
     </tr>
   </table>
 
-  <br>출력<table style='width:100%'><br>
+  <br>출력<br>
   <table>
     <tr>
       <th>00</th>
@@ -222,48 +225,12 @@ char Body[] PROGMEM = R"=====(
       <th>05</th>
     </tr>
     <tr>
-      <th>
-        <form action='/on'>
-          <input type='hidden' name='act' value='1'>
-          <input type='hidden' name='no' value='0'>
-          <span id="out0"></span>
-        </form>
-      </th>
-      <th>
-        <form action='/on'>
-          <input type='hidden' name='act' value='1'>
-          <input type='hidden' name='no' value='1'>
-          <span id="out1"></span>
-        </form>
-      </th>
-      <th>
-        <form action='/on'>
-          <input type='hidden' name='act' value='1'>
-          <input type='hidden' name='no' value='2'>
-          <span id="out2"></span>
-        </form>
-      </th>
-      <th>
-        <form action='/on'>
-          <input type='hidden' name='act' value='1'>
-          <input type='hidden' name='no' value='3'>
-          <span id="out3"></span>
-        </form>
-      </th>
-      <th>
-        <form action='/on'>
-          <input type='hidden' name='act' value='1'>
-          <input type='hidden' name='no' value='4'>
-          <span id="out4"></span>
-        </form>
-      </th>
-      <th>
-        <form action='/on'>
-          <input type='hidden' name='act' value='1'>
-          <input type='hidden' name='no' value='5'>
-          <span id="out5"></span>
-        </form>
-      </th>
+      <th><span id="out0">0</span></th>
+      <th><span id="out1">1</span></th>
+      <th><span id="out2">2</span></th>
+      <th><span id="out3">3</span></th>
+      <th><span id="out4">4</span></th>
+      <th><span id="out5">5</span></th>
     </tr>
   </table>
 )=====";
@@ -276,7 +243,7 @@ char Menu[] PROGMEM = R"=====(
   <a href='/wifi'>와이파이설정</a>
   <a href='/config'>환경설정</a>
   <a href='/manual'>메뉴얼</a>
-  <a href='http://i2r.link'>김동일홈피</a>
+  <a href='http://i2r.link' target='_blank'>김동일홈피</a>
   </div>
   <span style='font-size:30px;cursor:pointer' onclick='openNav()'>&#9776; </span>
   메뉴열기
@@ -295,7 +262,6 @@ char Manual[] PROGMEM = R"=====(
   <br><br>메뉴얼
   <br><br>다운로드 파일명 down-local-monit-02.bin<br>
   <a href='https://github.com/kdi6033/IoT/tree/main/11-2-1%20sensecube%20PE-300%20arduino'>PE-300 선연결</a>
-  
 )=====";
 
 char Tail[] PROGMEM = R"=====(
@@ -306,7 +272,7 @@ char Tail[] PROGMEM = R"=====(
 void handleRoot() {
   String s;
   s=FPSTR(Head);
-  s+=FPSTR(RootScript);
+  s+=FPSTR(ScriptRoot);
   s+=FPSTR(Menu);
   s+=FPSTR(Body);
   s+=FPSTR(Tail);
@@ -314,6 +280,7 @@ void handleRoot() {
 }
 
 void handleOn() {
+  /*
   actPlc=server.arg("act").toInt();
   //int value=server.arg("value").toInt();
 
@@ -338,6 +305,7 @@ void handleOn() {
     tickerMqtt.attach(timeMqtt, tickMqtt); 
     saveConfig();
   }
+  */
   GoHome();  
 }
 
@@ -426,7 +394,7 @@ void handleWifi() {
     s+="</tr>";
   String sOut;
   sOut=FPSTR(Head);
-  sOut+=FPSTR(HeadScript);
+  sOut+=FPSTR(ScriptHead);
   sOut+=FPSTR(Menu);
   sOut+=s;
   sOut+=FPSTR(Tail);
@@ -458,7 +426,9 @@ void handleWifiSave() {
 
 void handleScan() {
   String s;
-  s="{\"mac\":\""+sMac+"\",\"ip\":\""+WiFi.localIP().toString()+"\",\"type\":"+type+",\"ec\":"+ec+",\"ph\":"+ph+",\"temp\":"+temp+"}";
+  String sIn="";
+  sIn=String(In[0])+String(In[1])+String(In[2])+String(In[3])+String(In[4])+String(In[5])+String(In[6])+String(In[7]);
+  s="{\"mac\":\""+sMac+"\",\"ip\":\""+WiFi.localIP().toString()+"\",\"type\":"+type+",\"in\":\""+sIn+"\"}";
   server.send(200, "text/html", s);
 }
 
@@ -484,7 +454,7 @@ void handleConfig() {
 
   String sOut;
   sOut=FPSTR(Head);
-  sOut+=FPSTR(HeadScript);
+  sOut+=FPSTR(ScriptHead);
   sOut+=FPSTR(Menu);
   sOut+=s;
   sOut+=FPSTR(Tail);
@@ -494,7 +464,7 @@ void handleConfig() {
 void handleDownload() {
   String s;
   s=FPSTR(Head);
-  s+=FPSTR(HeadScript);
+  s+=FPSTR(ScriptHead);
   s+=FPSTR(Menu);
   s+=FPSTR(Download);
   s+=FPSTR(Tail);
@@ -504,7 +474,7 @@ void handleDownload() {
 void handleManual() {
   String s;
   s=FPSTR(Head);
-  s+=FPSTR(HeadScript);
+  s+=FPSTR(ScriptHead);
   s+=FPSTR(Menu);
   s+=FPSTR(Manual);
   s+=FPSTR(Tail);

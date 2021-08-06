@@ -10,7 +10,6 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <WebSocketsServer.h>
-#include <Ticker.h>
 #include <Wire.h>
 #include <ACROBOTIC_SSD1306.h>
 #include <PubSubClient.h>
@@ -18,8 +17,6 @@
 #include <SoftwareSerial.h>
 #include <WiFiUdp.h>
 
-Ticker ticker;
-Ticker tickerMqtt;
 SoftwareSerial mySerial(D7, D4); // RX, 
 #define TRIGGER_PIN 0 // trigger pin 0(D3)
 HTTPClient http;
@@ -467,22 +464,22 @@ void serialEvent() {
   while (mySerial.available()) {
     // get the new byte:
     char inChar = (char)mySerial.read();
-    Serial.print(inChar,HEX);
+    //Serial.print(inChar,HEX);
     // add it to the inputString:
     inputString += inChar;
   }
-  Serial.println("");
+  //Serial.println("");
   if(inputString.length() >= 11) {
     String ss="";
     ss=((float)inputString.charAt(3)*255+(float)inputString.charAt(4));
     ec=ss.toFloat();
-    Serial.print("EC : "); Serial.println(ec);
+    //Serial.print("EC : "); Serial.println(ec);
     ss=((float)inputString.charAt(5)*255+(float)inputString.charAt(6))/100;
     ph=ss.toFloat();
-    Serial.print("PH : "); Serial.println(ph);
+    //Serial.print("PH : "); Serial.println(ph);
     ss=((float)inputString.charAt(7)*255+(float)inputString.charAt(8))/10;
     temp=ss.toFloat();
-    Serial.print("온도 : "); Serial.println(temp);
+    //Serial.print("온도 : "); Serial.println(temp);
     inputString="";
     Serial.println("");
 

@@ -18,8 +18,6 @@
 #include <SoftwareSerial.h>
 #include <WiFiUdp.h>
 
-Ticker ticker;
-Ticker tickerMqtt;
 SoftwareSerial mySerial(D7, D4); // RX, 
 #define TRIGGER_PIN 0 // trigger pin 0(D3)
 HTTPClient http;
@@ -31,7 +29,6 @@ unsigned int localUdpPort = 4210; // local port to listen on
 char incomingPacket[255]; // buffer for incoming packets
 
 int type=6; // 기기 인식번호 -> display에 사용 6= LS PLC XEC-DR14E
-String nameDownloadFile="";
 #define URL_fw_Bin "http://i2r.link/download/"
 
 char ssid[40] = "";
@@ -55,13 +52,11 @@ int mqttConnected=0; // 1=연결 0=끊김
 String ipAct="";
 char mac[20];  //mac address
 String sMac;
-int act=0,actPlc=0;
+int act=0,outPlc=0;
 int bootMode=0; //0:station  1:AP
 int counter=0;
 String inputString = "";         // 받은 문자열
 int timeMqtt=5;
-float ec=0.,ph=0.,temp=0.;
-int sendText=0,errorPlc=0;
 int Out[8]={0},In[10]={0};  // plc 입력과 출력 저장 
 
 unsigned long previousMillis = 0;     
@@ -92,6 +87,7 @@ void handleManual();
 void displayOled(int no);
 void crd16Rtu();
 void serialEvent();
+void upWebSocket();
 
 void tick()
 {
@@ -101,7 +97,7 @@ void tick()
 
   //if((countTick%5)==0)
     tickMeasure();
-  if((countTick%5)==0) {
+  if((countTick%timeMqtt)==0) {
     countMqtt++;
     tickMqtt();
   }
@@ -110,9 +106,13 @@ void tick()
 void tickMeasure()
 {
   Serial.println ( WiFi.localIP() );
-  actPlc=0;
+  //act=0;
+  upWebSocket();
   crd16Rtu();
 
+}
+
+void upWebSocket() {
   //HTML로 보냄
   String json = "{\"in0\":"; json += In[0];
   json += ",\"in1\":"; json += In[1];
@@ -122,6 +122,7 @@ void tickMeasure()
   json += ",\"in5\":"; json += In[5];
   json += ",\"in6\":"; json += In[6];
   json += ",\"in7\":"; json += In[7];
+
   json += ",\"out0\":"; json += Out[0];
   json += ",\"out1\":"; json += Out[1];
   json += ",\"out2\":"; json += Out[2];
@@ -130,7 +131,7 @@ void tickMeasure()
   json += ",\"out5\":"; json += Out[5];
   json += "}";
   webSocket.broadcastTXT(json.c_str(), json.length());
-  //Serial.println(json);
+  //Serial.println(json);  
 }
 
 
@@ -225,9 +226,6 @@ void setup() {
 
   //ticker.attach(1, tick);  //0.1 초도 가능
   if(bootMode !=1) {
-    //tickerMqtt.attach(timeMqtt, tickMqtt);  
-    //ticker.detach();
-  
     // mqtt 설정
     client.setServer(ipMqtt, 1883);
     client.setCallback(callback);
@@ -331,22 +329,6 @@ void download_program(String fileName) {
         Serial.println("HTTP_UPDATE_OK");
         break;
     }
-  }
-}
-
-// act=1 basic firmware를 내려받는다.
-// act=2 내려받을 파일이름을 전역변수 nameDownloadFile 에 저장
-// act=3 nameDownloadFile 파일을 서버에서 내려 받음
-void onAct(uint8_t * payload, size_t length) {
-  String s;
-  deserializeJson(doc,payload);
-  root = doc.as<JsonObject>();
-  int act = root["act"];
-  Serial.println(act);
-  if(act==1) {
-    displayOled(3);
-    //GoHome();
-    download_program("down-permwareBasic.bin");
   }
 }
 
@@ -464,12 +446,12 @@ void serialEvent() {
   while (mySerial.available()) {
     // get the new byte:
     char inChar = (char)mySerial.read();
-    Serial.print(inChar,HEX);
+    //Serial.print(inChar,HEX);
     // add it to the inputString:
     inputString += inChar;
   }
-  Serial.println("");
-  if(actPlc==0 && inputString.length() >= 6) {
+  //Serial.println("");
+  if(outPlc!=1 && inputString.length() >= 6) {
   //if(monit==1 && actPlc==1 && inputString.length() >= 6) {
     int b=1;
     for(int i=1;i<=8;i++) {
@@ -486,28 +468,54 @@ void serialEvent() {
   }
 }
 
+// act=0 plc 입력을 읽어온다.
+// act=1 basic firmware를 내려받는다.
+// act=2 plc 출력 실행
+// act=3 
+void onAct(uint8_t * payload, size_t length) {
+  String s;
+  deserializeJson(doc,payload);
+  root = doc.as<JsonObject>();
+  act = root["act"];
+  int no=0,value=0;
+  Serial.println(act);
+  if(act==1) {
+    displayOled(3);
+    download_program("down-permwareBasic.bin");
+  }
+  if(act==2) {  //plc 출력
+    no=root["no"];
+    value=root["value"];
+    //Serial.println(no);
+    //Serial.println(value);
+    //Serial.println(act);
+    outPlc=1;
+    Out[no]=value;
+    upWebSocket();
+  }
+}
+
 // 아두이노에서 RS485 출력을 내보낸다.
 void crd16Rtu() {
   String s;
   int si,sj,len;
   char str[24];
 
-  if(actPlc == 1) {  //출력
+  outPlc;
+  if(outPlc == 1) {  //출력
     //str[24] =  {0x00,0x0f,0x00,0x00,0x00,0x0a,0x02,0xff,0x00,0x00,0x00};  //비트연속출력 len=9
     str[0]=0x00; str[1]=0x0f; str[2]=0x00; str[3]=0x00; str[4]=0x00;
     str[5]=0x0a; str[6]=0x02; str[7]=0xff; str[8]=0x00; str[9]=0x00; str[10]=0x00;
     len=9;
     str[7]=Out[0]+Out[1]*2+Out[2]*4+Out[3]*8+Out[4]*16+Out[5]*32;
-    actPlc=0;
+    outPlc=0;
   }
-  else if(actPlc==0) {    //입력
+  else {    //입력
     //str[24] =  {0x00,0x02,0x00,0x00,0x00,0x08,0x00,0x00}; // 비트 입력영역 읽기 len=6
     str[0]=0x00; str[1]=0x02; str[2]=0x00; str[3]=0x00; str[4]=0x00;
     str[5]=0x08; str[6]=0x00; str[7]=0x00; 
     len=6;
   }
-  else
-    return;
 
   inputString = "";
   uint8_t * data = (uint8_t *) &str[0];

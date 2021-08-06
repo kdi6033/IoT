@@ -82,7 +82,7 @@ char Head[] PROGMEM = R"=====(
 )=====";
 
 // 홈화면에서 실시간 계측값 표시
-char RootScript[] PROGMEM = R"=====(
+char ScriptRoot[] PROGMEM = R"=====(
   <script>
     var Socket;
     function init() {
@@ -94,6 +94,9 @@ char RootScript[] PROGMEM = R"=====(
         document.getElementById("ph").innerHTML = data.ph;
         document.getElementById("temperature").innerHTML = data.temp;
       }
+    }
+    function sendAct(valueIn){
+      Socket.send(valueIn);
     }
     function openNav() {
       document.getElementById("mySidenav").style.width = "150px"; 
@@ -107,7 +110,7 @@ char RootScript[] PROGMEM = R"=====(
 )=====";
 
 
-char HeadScript[] PROGMEM = R"=====(
+char ScriptHead[] PROGMEM = R"=====(
   <script>
     var Socket;
     function init() {
@@ -163,7 +166,7 @@ char Menu[] PROGMEM = R"=====(
   <a href='/wifi'>와이파이설정</a>
   <a href='/config'>환경설정</a>
   <a href='/manual'>메뉴얼</a>
-  <a href='http://i2r.link'>김동일홈피</a>
+  <a href='http://i2r.link' target='_blank'>김동일홈피</a>
   </div>
   <span style='font-size:30px;cursor:pointer' onclick='openNav()'>&#9776; </span>
   메뉴열기
@@ -193,7 +196,7 @@ char Tail[] PROGMEM = R"=====(
 void handleRoot() {
   String s;
   s=FPSTR(Head);
-  s+=FPSTR(RootScript);
+  s+=FPSTR(ScriptRoot);
   s+=FPSTR(Menu);
   s+=FPSTR(Body);
   s+=FPSTR(Tail);
@@ -216,7 +219,6 @@ void handleOn() {
     Serial.println(ipMqtt);
     Serial.println(timeMqtt);
     Serial.println(email);
-    tickerMqtt.attach(timeMqtt, tickMqtt); 
     saveConfig();
   }
   GoHome();
@@ -307,7 +309,7 @@ void handleWifi() {
     s+="</tr>";
   String sOut;
   sOut=FPSTR(Head);
-  sOut+=FPSTR(HeadScript);
+  sOut+=FPSTR(ScriptHead);
   sOut+=FPSTR(Menu);
   sOut+=s;
   sOut+=FPSTR(Tail);
@@ -366,7 +368,7 @@ void handleConfig() {
 
   String sOut;
   sOut=FPSTR(Head);
-  sOut+=FPSTR(HeadScript);
+  sOut+=FPSTR(ScriptHead);
   sOut+=FPSTR(Menu);
   sOut+=s;
   sOut+=FPSTR(Tail);
@@ -376,7 +378,7 @@ void handleConfig() {
 void handleDownload() {
   String s;
   s=FPSTR(Head);
-  s+=FPSTR(HeadScript);
+  s+=FPSTR(ScriptHead);
   s+=FPSTR(Menu);
   s+=FPSTR(Download);
   s+=FPSTR(Tail);
@@ -386,7 +388,7 @@ void handleDownload() {
 void handleManual() {
   String s;
   s=FPSTR(Head);
-  s+=FPSTR(HeadScript);
+  s+=FPSTR(ScriptHead);
   s+=FPSTR(Menu);
   s+=FPSTR(Manual);
   s+=FPSTR(Tail);

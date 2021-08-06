@@ -17,11 +17,6 @@ void readConfig() {
   ipMqtt[s.length()]=0;
 
   s=f.readStringUntil('\n');
-  timeMqtt = s.toInt();
-  if(timeMqtt < 1)
-    timeMqtt=5;
-
-  s=f.readStringUntil('\n');
   s.toCharArray(email,s.length());
   email[s.length()]=0;
   
@@ -30,7 +25,6 @@ void readConfig() {
   Serial.println("ssid: "+String(ssid));
   Serial.println("pw: "+String(password));
   Serial.println("ipMqtt: "+String(ipMqtt));
-  Serial.println("timeMqtt: "+String(timeMqtt));
   Serial.println("email: "+String(email));
 }
 
@@ -48,7 +42,6 @@ void saveConfig() {
   f.println(ssid);
   f.println(password);
   f.println(ipMqtt);
-  f.println(timeMqtt);
   f.println(email);
   f.close();
   SPIFFS.end();
