@@ -10,7 +10,6 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <WebSocketsServer.h>
-#include <Ticker.h>
 #include <Wire.h>
 #include <ACROBOTIC_SSD1306.h>
 #include <PubSubClient.h>
@@ -18,8 +17,6 @@
 #include <SoftwareSerial.h>
 #include "credentials.h"
 
-Ticker ticker;
-Ticker tickerMqtt;
 SoftwareSerial mySerial(D7, D4); // RX, 
 #define TRIGGER_PIN 0 // trigger pin 0(D3)
 HTTPClient http;
@@ -27,9 +24,6 @@ ESP8266WebServer server(80);
 WebSocketsServer webSocket = WebSocketsServer(81);
 
 int type=2; // 기기 인식번호 -> display에 사용
-const String FirmwareVer={"1.0"}; 
-String FirmwareVerServer={"0.0"};  // 다운로드 서버 버젼
-String nameDownloadFile="";
 #define URL_fw_Bin "http://i2r.link/download/"
 
 char ssid[40] = "";
@@ -37,28 +31,31 @@ char password[50] = "";
 IPAddress apIP(192, 168, 4, 1);
 IPAddress netMsk(255, 255, 255, 0);
 
-
 char email[50] = "";
-char ipMqtt[40]="";
+unsigned int countTick=0;
+unsigned int countMqtt=0;
+unsigned int countMeasure=0;
 
-const char *thingId = "";          // 사물 이름 (thing ID) 
-const char *host = "a8i4lgiqa43pw-ats.iot.us-west-2.amazonaws.com"; // AWS IoT Core 주소
+const char *clientName = "";          // 사물 이름 (thing ID) 자동생성
+const char *host = "*.iot.us-west-2.amazonaws.com"; // AWS IoT Core 주소
 const char* outTopic = "/i2r/outTopic"; 
 const char* inTopic = "/i2r/inTopic"; 
 
-//const char* clientName = "";  // setup 함수에서 자동생성
 char msg[100];
+int mqttConnected=0; // 1=연결 0=끊김
 
 String ipAct="";
 char mac[20];  //mac address
-String sMac;
+String sMac="",sEmail="";
 int act=0;
 int bootMode=0; //0:station  1:AP
-const int led = 2;
-int counter=0;
+int saveValue=0;
 String inputString = "";         // 받은 문자열
-int timeMqtt=60,timeTick=3;
+int timeMqtt=5;
 float ec=0.,ph=0.,temp=0.;
+
+unsigned long previousMillis = 0;     
+const long interval = 1000;  
 
 //json을 위한 설정
 StaticJsonDocument<200> doc;
@@ -82,6 +79,11 @@ void handleManual();
 void displayOled(int no);
 void crd16Rtu();
 void serialEvent();
+void setClock();
+void tick();
+void tickMeasure();
+void tickMqtt();
+void upWebSocket();
 
 // 통신에서 문자가 들어오면 이 함수의 payload 배열에 저장된다.
 void callback(char* topic, byte* payload, unsigned int length) {
@@ -100,23 +102,24 @@ PrivateKey key(key_str);
 WiFiClientSecure wifiClient;
 PubSubClient client(host, 8883, callback, wifiClient); //set  MQTT port number to 8883 as per //standard
 
+void tick() {
+  countTick++;
+  if(countTick > 10000)
+    countTick=0;
 
-void tick()
-{
+  if((countTick%2)==0)
+    tickMeasure();
+
+  if((countTick%timeMqtt)==0) {
+    countMqtt++;
+    tickMqtt();
+  }
+}
+
+void tickMeasure() {
   Serial.println ( WiFi.localIP() );
-  counter++;
-
-  //snprintf (msg, 75, "count #%d", counter);
-  //client.publish(outTopic, msg);
-
-  //HTML로 보냄
-  String json = "{\"ec\":"; json += ec;
-  json += ",\"ph\":"; json += ph;
-  json += ",\"temp\":"; json += temp;
-  json += "}";
-  webSocket.broadcastTXT(json.c_str(), json.length());
-  Serial.println(json);
-
+  //act=0;
+  upWebSocket();
   crd16Rtu();
 
   //OLED로 표시
@@ -132,19 +135,34 @@ void tick()
   oled.putString(s);
 }
 
-void tickMqtt()
-{
-  if (!client.connect(thingId))
+void upWebSocket() {
+  //HTML로 보냄
+  String json = "{\"ec\":"; json += ec;
+  json += ",\"ph\":"; json += ph;
+  json += ",\"temp\":"; json += temp;
+  json += "}";
+  webSocket.broadcastTXT(json.c_str(), json.length());
+  //Serial.println(json); 
+}
+
+void tickMqtt() {
+  if (!client.connected()) {
+    reconnect();
+  }
+  if(mqttConnected != 1)
     return;
+  
   String json;
   //MQTT로 보냄
   json = "{";
-  json += "\"mac\":\""; json += sMac;  json += "\"";
+  json += "\"email\":\""; json += sEmail;  json += "\"";
+  //json += "\"email\":\""; json += "kdi6033@gmail.com";  json += "\"";
+  json += ",\"mac\":\""; json += sMac;  json += "\"";
   json += ",\"ip\":\""; json += WiFi.localIP().toString();  json += "\"";
-  json += ",\"type\":"; json += type;
-  json += ",\"ec\":"; json += ec;
-  json += ",\"ph\":"; json += ph;
-  json += ",\"temp\":"; json += temp;
+  json += ",\"type\":"; json += String(type);
+  json += ",\"ec\":"; json += String(ec);
+  json += ",\"ph\":"; json += String(ph);
+  json += ",\"temp\":"; json += String(temp);
   json += "}";
   json.toCharArray(msg, json.length()+1);
   Serial.println(msg);
@@ -177,8 +195,6 @@ void displayOled(int no) {
 }
 
 void setup() {
-  pinMode(led, OUTPUT);
-  digitalWrite(led, 1);
   Serial.begin(38400);
   mySerial.begin(38400);
   //Oled Setup
@@ -191,8 +207,8 @@ void setup() {
   WiFi.macAddress(macH);
   sprintf(mac,"%02x%02x%02x%02x%02x%02x%c",macH[5], macH[4], macH[3], macH[2], macH[1], macH[0],0);
   sMac=mac;
-  thingId=mac;
-  Serial.println(thingId);
+  clientName=mac;
+  Serial.println(clientName);
   
   readConfig();
   if(ssid[0]==0)
@@ -203,6 +219,7 @@ void setup() {
   }
 
   server.on("/", handleRoot);
+  server.on("/control", handleControl);
   server.on("/on", handleOn);
   server.on("/download", handleDownload);
   server.on("/wifi", handleWifi);
@@ -227,9 +244,7 @@ void setup() {
     //client.setServer(host, 8883);
     client.setCallback(callback);
     delay(3000);
-    ticker.attach(timeTick, tick);  //0.1 초도 가능
-    tickerMqtt.attach(timeMqtt, tickMqtt);  
-    //ticker.detach();
+    reconnect();
   }
 }
 
@@ -247,11 +262,6 @@ void bootWifiAp() {
   delay(500); // Without delay I've seen the IP address blank
   Serial.print("AP IP address: ");
   Serial.println(ipAct);
-  digitalWrite(led, 0); //상태 led로 표시
-  // 접속 성공이면 led 5초간 점등 후 소등
-  digitalWrite(led, 0);
-  delay(5000);
-  digitalWrite(led, 1);
 }
 
 void bootWifiStation() {
@@ -272,19 +282,12 @@ void bootWifiStation() {
       factoryDefault();
   }
   ipAct=WiFi.localIP().toString();
-  digitalWrite(led, 0);
   Serial.println("");
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
   Serial.println(ipAct);
-  // 접속 성공이면 led 5번 점등
-  for(int i=0;i<5;i++) {
-    digitalWrite(led, 0);
-    delay(500);
-    digitalWrite(led, 1);
-    delay(500);
-  }
 }
+
 
 void update_started() {
   Serial.println("CALLBACK:  HTTP update process started");
@@ -380,34 +383,30 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
   }
 }
 
-
 // mqtt 통신에 지속적으로 접속한다.
 void reconnect() {
   if(WiFi.status() != WL_CONNECTED)
     return;
-
-  ticker.detach();
-  tickerMqtt.detach();
   // Loop until we're reconnected
-  while (!client.connected()) {
+  //while (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
     // Attempt to connect
-    if (client.connect(thingId)) {
+    if (client.connect(clientName)) {
       Serial.println("connected");
       // Once connected, publish an announcement...
       //client.publish(outTopic, "Reconnected");
       // ... and resubscribe
       client.subscribe(inTopic);
+      mqttConnected=1;
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
       Serial.println(" try again in 5 seconds");
+      mqttConnected=0;
       // Wait 5 seconds before retrying
       delay(5000);
     }
-  }
-  ticker.attach(timeTick, tick);  //0.1 초도 가능
-  tickerMqtt.attach(timeMqtt, tickMqtt);  
+  //}
 }
 
 // Set time via NTP, as required for x.509 validation
@@ -431,6 +430,7 @@ void setClock() {
 void loop() {
   webSocket.loop();
   server.handleClient();
+  doTick();
 
   //공장리셋
   if ( digitalRead(TRIGGER_PIN) == LOW ) 
@@ -438,11 +438,19 @@ void loop() {
 
   if(bootMode !=1) {
     serialEvent();
-    if (!client.connected()) {
-      reconnect();
-    }
-    client.loop();
+    if(mqttConnected==1)
+      client.loop();
   }
+}
+
+//1초 마다 실행되는 시간함수
+void doTick() {
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis >= interval) {
+    // save the last time you blinked the LED
+    previousMillis = currentMillis;
+    tick();
+  }  
 }
 
 void serialEvent() {
@@ -451,24 +459,24 @@ void serialEvent() {
   while (mySerial.available()) {
     // get the new byte:
     char inChar = (char)mySerial.read();
-    Serial.print(inChar,HEX);
+    //Serial.print(inChar,HEX);
     // add it to the inputString:
     inputString += inChar;
   }
-  Serial.println("");
+  //Serial.println("");
   if(inputString.length() >= 11) {
     String ss="";
     ss=((float)inputString.charAt(3)*255+(float)inputString.charAt(4));
     ec=ss.toFloat();
-    Serial.print("EC : "); Serial.println(ec);
+    //Serial.print("EC : "); Serial.println(ec);
     ss=((float)inputString.charAt(5)*255+(float)inputString.charAt(6))/100;
     ph=ss.toFloat();
-    Serial.print("PH : "); Serial.println(ph);
+    //Serial.print("PH : "); Serial.println(ph);
     ss=((float)inputString.charAt(7)*255+(float)inputString.charAt(8))/10;
     temp=ss.toFloat();
-    Serial.print("온도 : "); Serial.println(temp);
+    //Serial.print("온도 : "); Serial.println(temp);
     inputString="";
-    Serial.println("");
+    //Serial.println("");
 
   }
 }

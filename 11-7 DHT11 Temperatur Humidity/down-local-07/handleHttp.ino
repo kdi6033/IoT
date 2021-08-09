@@ -81,6 +81,7 @@ char Head[] PROGMEM = R"=====(
   </style>
 )=====";
 
+// 홈화면에서 실시간 계측값 표시
 char ScriptRoot[] PROGMEM = R"=====(
   <script>
     var Socket;
@@ -88,11 +89,13 @@ char ScriptRoot[] PROGMEM = R"=====(
       Socket = new WebSocket('ws://' + window.location.hostname + ':81/');
       Socket.onmessage = function(event){
         var data = JSON.parse(event.data);
-        //console.log(data.temp);
-        document.getElementById("ec").innerHTML = data.ec;
-        document.getElementById("ph").innerHTML = data.ph;
+        console.log(data.temp);
+        document.getElementById("humi").innerHTML = data.humi;
         document.getElementById("temperature").innerHTML = data.temp;
       }
+    }
+    function sendAct(valueIn){
+      Socket.send(valueIn);
     }
     function openNav() {
       document.getElementById("mySidenav").style.width = "150px"; 
@@ -133,19 +136,12 @@ char ScriptHead[] PROGMEM = R"=====(
 )=====";
 
 char Body[] PROGMEM = R"=====(
-  <br><br>다운로드 파일명 down-local-monit-02.bin
   <br><br>
   <table>
     <tr>
-      <th><label>EC : </label></th>
-      <th><span id="ec">%EC%</span></th>
+      <th><label>습도 : </label></th>
+      <th><span id="humi">%humi%</span>%</th>
     </tr>
-
-    <tr>
-      <th><label>PH : </label></th>
-      <th><div id="ph">%PH%</div></th>
-    </tr>
-
     <tr>
       <th><span class="dht-labels">온도 : </span> </th>
         <th><span id="temperature">%TEMPERATURE%</span>
@@ -155,16 +151,10 @@ char Body[] PROGMEM = R"=====(
   
 )=====";
 
-char BodyControl[] PROGMEM = R"=====(
-  <br>출력<br>
-
-)=====";
-
 char Menu[] PROGMEM = R"=====(
   <div id='mySidenav' class='sidenav'>
   <a href='javascript:void(0)' class='closebtn' onclick='closeNav()'>&times;</a>
   <a href='/'>홈</a>
-  <a href='/control'>콘트롤</a>
   <a href='/download'>다운로드</a>
   <a href='/wifi'>와이파이설정</a>
   <a href='/config'>환경설정</a>
@@ -186,8 +176,8 @@ char Download[] PROGMEM = R"=====(
 
 char Manual[] PROGMEM = R"=====(
   <br><br>메뉴얼
-  <a href='https://github.com/kdi6033/IoT/tree/main/11-2-1%20sensecube%20PE-300%20arduino'>PE-300 선연결</a>
-  
+  <br><br>다운로드 파일명 down-local-07.bin<br>
+   
 )=====";
 
 char Tail[] PROGMEM = R"=====(
@@ -205,26 +195,25 @@ void handleRoot() {
   server.send(200, "text/html", s);
 }
 
-void handleControl() {
-  String sOut="";
-  sOut=FPSTR(Head);
-  sOut+=FPSTR(ScriptHead);
-  sOut+=FPSTR(Menu);
-  sOut+=FPSTR(BodyControl);
-  sOut+=FPSTR(Tail);
-  server.send(200, "text/html", sOut);
-}
-
 void handleOn() {
-  int actIn=0;
-  actIn=server.arg("act").toInt();
+  act=server.arg("act").toInt();
+  //int value=server.arg("value").toInt();
 
-  if(actIn==2) {
+  Serial.println("----------------------------");
+  Serial.println(act);
+  //Serial.println(no);
+  //Serial.println(value);
+
+  if(act==2) {
+    server.arg("ipMqtt").toCharArray(ipMqtt, sizeof(ipMqtt) - 1);
+    timeMqtt=server.arg("timeMqtt").toInt();
     server.arg("email").toCharArray(email, sizeof(email) - 1);
+    Serial.println(ipMqtt);
+    Serial.println(timeMqtt);
     Serial.println(email);
     saveConfig();
   }
-  GoHome();  
+  GoHome();
 }
 
 void GoHome() {
@@ -337,27 +326,29 @@ void handleWifiSave() {
   Serial.println(ssid);
   Serial.println(password);
   Serial.println("Reset");
+  delay(2000);
   ESP.reset();
   delay(2000);
 }
 
 void handleScan() {
   String s;
-  s="{\"mac\":\""+sMac+"\",\"ip\":\""+WiFi.localIP().toString()+"\",\"type\":"+type+",\"ec\":"+ec+",\"ph\":"+ph+",\"temp\":"+temp+"}";
+  s="{\"mac\":\""+sMac+"\",\"ip\":\""+WiFi.localIP().toString()+"\",\"type\":"+type+",\"humi\":"+humiS+",\"temp\":"+tempS+"}";
   server.send(200, "text/html", s);
 }
 
 void handleConfig() {
   String s;
-  s="<br><br>아마존크라우드서버에서 회원가입을 하세요.<br>";
-  s+="<br> 무료로 모니터링 제어를 할 수 있습니다.<br>";
-  
+  s="<br><br>현장에서 MQTT 통신을 사용하지 않고 웹페이지 모니터링만 하려면 <br>";
+  s+="<br> 와이파이-485 보드의 리셋키를 누르면 MQTT서버 주소가 지워지고 센서 값만 읽을수 있습니다.<br>";
+  s+="<br> MQTT서버 IP 주소는 서버에서 통신으로 관리되어 입력하지 않아도 됩니다.<br>";
+
   s+="<form action='/on'>";
   s+="<input type='hidden' name='act' value='2'>";
   s+="<table>";
     s+="<tr>";
-      s+="<th>email</th>";
-      s+="<th><input type='text' value='"+(String)email+"' name='email'/></th>";
+      s+="<th>mqtt서버 IP</th>";
+      s+="<th><input type='text' value='"+(String)ipMqtt+"' name='ipMqtt'/></th>";
     s+="</tr>";
     s+="<tr>";
       s+="<th></th>";

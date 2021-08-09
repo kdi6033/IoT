@@ -106,7 +106,6 @@ void tick()
 void tickMeasure()
 {
   Serial.println ( WiFi.localIP() );
-  //act=0;
   upWebSocket();
   crd16Rtu();
 
@@ -452,7 +451,6 @@ void serialEvent() {
   }
   //Serial.println("");
   if(outPlc!=1 && inputString.length() >= 6) {
-  //if(monit==1 && actPlc==1 && inputString.length() >= 6) {
     int b=1;
     for(int i=1;i<=8;i++) {
         int c=inputString.charAt(3)&b;
@@ -501,7 +499,6 @@ void crd16Rtu() {
   int si,sj,len;
   char str[24];
 
-  outPlc;
   if(outPlc == 1) {  //출력
     //str[24] =  {0x00,0x0f,0x00,0x00,0x00,0x0a,0x02,0xff,0x00,0x00,0x00};  //비트연속출력 len=9
     str[0]=0x00; str[1]=0x0f; str[2]=0x00; str[3]=0x00; str[4]=0x00;

@@ -12,15 +12,25 @@ void readConfig() {
   s.toCharArray(password,s.length());
   password[s.length()]=0;
 
-  sEmail=f.readStringUntil('\n');
-  sEmail.toCharArray(email,sEmail.length());
-  email[sEmail.length()]=0;
-  sEmail.remove(sEmail.length()-1); 
+  s=f.readStringUntil('\n');
+  s.toCharArray(ipMqtt,s.length());
+  ipMqtt[s.length()]=0;
+
+  s=f.readStringUntil('\n');
+  timeMqtt = s.toInt();
+  if(timeMqtt < 1)
+    timeMqtt=5;
+
+  s=f.readStringUntil('\n');
+  s.toCharArray(email,s.length());
+  email[s.length()]=0;
   
   f.close();
   SPIFFS.end();
   Serial.println("ssid: "+String(ssid));
   Serial.println("pw: "+String(password));
+  Serial.println("ipMqtt: "+String(ipMqtt));
+  Serial.println("timeMqtt: "+String(timeMqtt));
   Serial.println("email: "+String(email));
 }
 
@@ -37,20 +47,25 @@ void saveConfig() {
   }
   f.println(ssid);
   f.println(password);
+  f.println(ipMqtt);
+  f.println(timeMqtt);
   f.println(email);
   f.close();
   SPIFFS.end();
   delay(2000);
+  ESP.reset();
+  delay(2000);
 }
-
 
 // trigger pin 0(D3) 2(D4)
 void factoryDefault() {
     Serial.println("AP mode as Factory Deafault");
     Serial.println("Please wait over 3 min");
+    displayOled(5);
     SPIFFS.begin();
     SPIFFS.format();
     SPIFFS.end();
+    delay(1000);
     ESP.reset();
-    ESP.restart();
+    delay(1000);
 }

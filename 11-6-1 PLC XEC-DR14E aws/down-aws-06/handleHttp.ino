@@ -81,6 +81,7 @@ char Head[] PROGMEM = R"=====(
   </style>
 )=====";
 
+// 홈화면에서 실시간 계측값 표시
 char ScriptRoot[] PROGMEM = R"=====(
   <script>
     var Socket;
@@ -88,11 +89,43 @@ char ScriptRoot[] PROGMEM = R"=====(
       Socket = new WebSocket('ws://' + window.location.hostname + ':81/');
       Socket.onmessage = function(event){
         var data = JSON.parse(event.data);
-        //console.log(data.temp);
-        document.getElementById("ec").innerHTML = data.ec;
-        document.getElementById("ph").innerHTML = data.ph;
-        document.getElementById("temperature").innerHTML = data.temp;
+        console.log(data);
+        if(data.in0==1)
+          document.getElementById("in0").innerHTML = "<button class='button button-ledon' ></button>";
+        else
+          document.getElementById("in0").innerHTML = "<button class='button button-ledoff' ></button>";
+        if(data.in1==1)
+          document.getElementById("in1").innerHTML = "<button class='button button-ledon' ></button>";
+        else
+          document.getElementById("in1").innerHTML = "<button class='button button-ledoff' ></button>";
+        if(data.in2==1)
+          document.getElementById("in2").innerHTML = "<button class='button button-ledon' ></button>";
+        else
+          document.getElementById("in2").innerHTML = "<button class='button button-ledoff' ></button>";
+        if(data.in3==1)
+          document.getElementById("in3").innerHTML = "<button class='button button-ledon' ></button>";
+        else
+          document.getElementById("in3").innerHTML = "<button class='button button-ledoff' ></button>";
+        if(data.in4==1)
+          document.getElementById("in4").innerHTML = "<button class='button button-ledon' ></button>";
+        else
+          document.getElementById("in4").innerHTML = "<button class='button button-ledoff' ></button>";
+        if(data.in5==1)
+          document.getElementById("in5").innerHTML = "<button class='button button-ledon' ></button>";
+        else
+          document.getElementById("in5").innerHTML = "<button class='button button-ledoff' ></button>";
+        if(data.in6==1)
+          document.getElementById("in6").innerHTML = "<button class='button button-ledon' ></button>";
+        else
+          document.getElementById("in6").innerHTML = "<button class='button button-ledoff' ></button>";
+        if(data.in7==1)
+          document.getElementById("in7").innerHTML = "<button class='button button-ledon' ></button>";
+        else
+          document.getElementById("in7").innerHTML = "<button class='button button-ledoff' ></button>";
       }
+    }
+    function sendAct(valueIn){
+      Socket.send(valueIn);
     }
     function openNav() {
       document.getElementById("mySidenav").style.width = "150px"; 
@@ -105,6 +138,54 @@ char ScriptRoot[] PROGMEM = R"=====(
 <body onload="javascript:init()">
 )=====";
 
+char ScriptControl[] PROGMEM = R"=====(
+  <script>
+    var Socket;
+    function init() {
+      Socket = new WebSocket('ws://' + window.location.hostname + ':81/');
+      Socket.onmessage = function(event){
+        var data = JSON.parse(event.data);
+        console.log(data);
+        console.log('**************');
+        if(data.out0==1)
+          document.getElementById("out0").innerHTML = "<button class='button button-on' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':0,\\'value\\':0}');\"></button>";
+        else
+          document.getElementById("out0").innerHTML = "<button class='button button-off' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':0,\\'value\\':1}');\"></button>";
+        if(data.out1==1)
+          document.getElementById("out1").innerHTML = "<button class='button button-on' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':1,\\'value\\':0}');\"></button>";
+        else
+          document.getElementById("out1").innerHTML = "<button class='button button-off' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':1,\\'value\\':1}');\"></button>";
+        if(data.out2==1)
+          document.getElementById("out2").innerHTML = "<button class='button button-on' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':2,\\'value\\':0}');\"></button>";
+        else
+          document.getElementById("out2").innerHTML = "<button class='button button-off' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':2,\\'value\\':1}');\"></button>";
+        if(data.out3==1)
+          document.getElementById("out3").innerHTML = "<button class='button button-on' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':3,\\'value\\':0}');\"></button>";
+        else
+          document.getElementById("out3").innerHTML = "<button class='button button-off' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':3,\\'value\\':1}');\"></button>";
+        if(data.out4==1)
+          document.getElementById("out4").innerHTML = "<button class='button button-on' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':4,\\'value\\':0}');\"></button>";
+        else
+          document.getElementById("out4").innerHTML = "<button class='button button-off' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':4,\\'value\\':1}');\"></button>";
+        if(data.out5==1)
+          document.getElementById("out5").innerHTML = "<button class='button button-on' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':5,\\'value\\':0}');\"></button>";
+        else
+          document.getElementById("out5").innerHTML = "<button class='button button-off' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':5,\\'value\\':1}');\"></button>";
+      }
+    }
+    function sendAct(valueIn){
+      Socket.send(valueIn);
+    }
+    function openNav() {
+      document.getElementById("mySidenav").style.width = "150px"; 
+    }
+    function closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+    }
+  </script> 
+</head>
+<body onload="javascript:init()">
+)=====";
 
 char ScriptHead[] PROGMEM = R"=====(
   <script>
@@ -133,32 +214,55 @@ char ScriptHead[] PROGMEM = R"=====(
 )=====";
 
 char Body[] PROGMEM = R"=====(
-  <br><br>다운로드 파일명 down-local-monit-02.bin
-  <br><br>
+  <br>입력<br>
   <table>
     <tr>
-      <th><label>EC : </label></th>
-      <th><span id="ec">%EC%</span></th>
+      <th>00</th>
+      <th>01</th>
+      <th>02</th>
+      <th>03</th>
+      <th>04</th>
+      <th>05</th>
+      <th>06</th>
+      <th>07</th>
     </tr>
-
     <tr>
-      <th><label>PH : </label></th>
-      <th><div id="ph">%PH%</div></th>
-    </tr>
-
-    <tr>
-      <th><span class="dht-labels">온도 : </span> </th>
-        <th><span id="temperature">%TEMPERATURE%</span>
-          <sup class="units">&deg;C</sup></th>
+      <th><span id="in0">0</span></th>
+      <th><span id="in1">1</span></th>
+      <th><span id="in2">2</span></th>
+      <th><span id="in3">3</span></th>
+      <th><span id="in4">4</span></th>
+      <th><span id="in5">5</span></th>
+      <th><span id="in6">6</span></th>
+      <th><span id="in7">7</span></th>
     </tr>
   </table>
-  
 )=====";
+
 
 char BodyControl[] PROGMEM = R"=====(
   <br>출력<br>
+  <table>
+    <tr>
+      <th>00</th>
+      <th>01</th>
+      <th>02</th>
+      <th>03</th>
+      <th>04</th>
+      <th>05</th>
+    </tr>
+    <tr>
+      <th><span id="out0">0</span></th>
+      <th><span id="out1">1</span></th>
+      <th><span id="out2">2</span></th>
+      <th><span id="out3">3</span></th>
+      <th><span id="out4">4</span></th>
+      <th><span id="out5">5</span></th>
+    </tr>
+  </table>
 
 )=====";
+
 
 char Menu[] PROGMEM = R"=====(
   <div id='mySidenav' class='sidenav'>
@@ -186,9 +290,10 @@ char Download[] PROGMEM = R"=====(
 
 char Manual[] PROGMEM = R"=====(
   <br><br>메뉴얼
-  <a href='https://github.com/kdi6033/IoT/tree/main/11-2-1%20sensecube%20PE-300%20arduino'>PE-300 선연결</a>
-  
+  <br><br>다운로드 파일명 down-local-monit-02.bin<br>
 )=====";
+//  <a href='https://github.com/kdi6033/IoT/tree/main/11-2-1%20sensecube%20PE-300%20arduino'>PE-300 선연결</a>
+
 
 char Tail[] PROGMEM = R"=====(
 </body>
@@ -196,19 +301,19 @@ char Tail[] PROGMEM = R"=====(
 )=====";
 
 void handleRoot() {
-  String s;
-  s=FPSTR(Head);
-  s+=FPSTR(ScriptRoot);
-  s+=FPSTR(Menu);
-  s+=FPSTR(Body);
-  s+=FPSTR(Tail);
-  server.send(200, "text/html", s);
+  String sOut="";
+  sOut=FPSTR(Head);
+  sOut+=FPSTR(ScriptRoot);
+  sOut+=FPSTR(Menu);
+  sOut+=FPSTR(Body);
+  sOut+=FPSTR(Tail);
+  server.send(200, "text/html", sOut);
 }
 
 void handleControl() {
   String sOut="";
   sOut=FPSTR(Head);
-  sOut+=FPSTR(ScriptHead);
+  sOut+=FPSTR(ScriptControl);
   sOut+=FPSTR(Menu);
   sOut+=FPSTR(BodyControl);
   sOut+=FPSTR(Tail);
@@ -229,6 +334,7 @@ void handleOn() {
 
 void GoHome() {
   String s;
+  ipAct=WiFi.localIP().toString();
   s="<meta http-equiv='refresh' content=\"0;url='http://"+ipAct+"/'\">";
   server.send(200, "text/html", s);
 }
@@ -337,13 +443,16 @@ void handleWifiSave() {
   Serial.println(ssid);
   Serial.println(password);
   Serial.println("Reset");
+  delay(2000);
   ESP.reset();
   delay(2000);
 }
 
 void handleScan() {
   String s;
-  s="{\"mac\":\""+sMac+"\",\"ip\":\""+WiFi.localIP().toString()+"\",\"type\":"+type+",\"ec\":"+ec+",\"ph\":"+ph+",\"temp\":"+temp+"}";
+  String sIn="";
+  sIn=String(In[0])+String(In[1])+String(In[2])+String(In[3])+String(In[4])+String(In[5])+String(In[6])+String(In[7]);
+  s="{\"mac\":\""+sMac+"\",\"ip\":\""+WiFi.localIP().toString()+"\",\"type\":"+type+",\"in\":\""+sIn+"\"}";
   server.send(200, "text/html", s);
 }
 

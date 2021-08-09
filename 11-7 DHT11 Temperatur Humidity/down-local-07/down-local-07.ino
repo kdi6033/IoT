@@ -16,8 +16,15 @@
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>
 #include <WiFiUdp.h>
+#include "DHTesp.h"
 
-SoftwareSerial mySerial(D7, D4); // RX, 
+#ifdef ESP32
+#pragma message(THIS EXAMPLE IS FOR ESP8266 ONLY!)
+#error Select ESP8266 board.
+#endif
+
+DHTesp dht;
+
 #define TRIGGER_PIN 0 // trigger pin 0(D3)
 HTTPClient http;
 ESP8266WebServer server(80);
@@ -27,7 +34,7 @@ WiFiUDP Udp;
 unsigned int localUdpPort = 4210; // local port to listen on
 char incomingPacket[255]; // buffer for incoming packets
 
-int type=2; // 기기 인식번호 -> display에 사용
+int type=7; // 기기 인식번호 -> display에 사용
 String nameDownloadFile="";
 #define URL_fw_Bin "http://i2r.link/download/"
 
@@ -57,7 +64,7 @@ int bootMode=0; //0:station  1:AP
 int counter=0;
 String inputString = "";         // 받은 문자열
 int timeMqtt=5;
-float ec=0.,ph=0.,temp=0.;
+String humiS,tempS;
 
 unsigned long previousMillis = 0;     
 const long interval = 1000;  
@@ -85,8 +92,6 @@ void handleConfig();
 void handleDownload();
 void handleManual();
 void displayOled(int no);
-void crd16Rtu();
-void serialEvent();
 void upWebSocket();
 
 void tick()
@@ -106,30 +111,31 @@ void tick()
 void tickMeasure()
 {
   Serial.println ( WiFi.localIP() );
+  delay(dht.getMinimumSamplingPeriod());
+  float humidity = dht.getHumidity();
+  float temperature = dht.getTemperature();
+  humiS=String(humidity,1);
+  tempS=String(temperature,1);
+
   upWebSocket();
-  crd16Rtu();
 
   //OLED로 표시
   String s;
-  s="EC  "+(String)ec;
+  s="Humi  "+humiS;
   oled.setTextXY(4,7);              // Set cursor position, start of line 0
   oled.putString(s);
-  s="PH  "+(String)ph;
-  oled.setTextXY(5,7);              // Set cursor position, start of line 0
-  oled.putString(s);
-  s="Temp  "+(String)temp;
+  s="Temp  "+tempS;
   oled.setTextXY(6,7);              // Set cursor position, start of line 0
   oled.putString(s);
 }
 
 void upWebSocket() {
   //HTML로 보냄
-  String json = "{\"ec\":"; json += ec;
-  json += ",\"ph\":"; json += ph;
-  json += ",\"temp\":"; json += temp;
+  String json = "{\"humi\":"; json += humiS;
+  json += ",\"temp\":"; json += tempS;
   json += "}";
   webSocket.broadcastTXT(json.c_str(), json.length());
-  Serial.println(json);
+  //Serial.println(json);
 }
 
 void tickMqtt()
@@ -145,9 +151,8 @@ void tickMqtt()
   json += "\"mac\":\""; json += sMac;  json += "\"";
   json += ",\"ip\":\""; json += WiFi.localIP().toString();  json += "\"";
   json += ",\"type\":"; json += type;
-  json += ",\"ec\":"; json += ec;
-  json += ",\"ph\":"; json += ph;
-  json += ",\"temp\":"; json += temp;
+  json += ",\"humi\":"; json += humiS;
+  json += ",\"temp\":"; json += tempS;
   json += "}";
   json.toCharArray(msg, json.length()+1);
   Serial.println(msg);
@@ -185,8 +190,7 @@ void displayOled(int no) {
 }
 
 void setup() {
-  Serial.begin(38400);
-  mySerial.begin(38400);
+  Serial.begin(115200);
   //Oled Setup
   Wire.begin(); 
   displayOled(1);
@@ -233,6 +237,7 @@ void setup() {
     client.setCallback(callback);
   }
   Udp.begin(localUdpPort);
+  dht.setup(D4, DHTesp::DHT11); // Connect DHT sensor to GPIO 17
 }
 
 void bootWifiAp() {
@@ -421,7 +426,6 @@ void loop() {
     factoryDefault();
 
   if(bootMode !=1) {
-    serialEvent();
     udpEvent();
     if(mqttConnected==1)
       client.loop();
@@ -456,53 +460,4 @@ void udpEvent() {
     Serial.println(ipMqtt);
     saveConfig();
   }  
-}
-
-void serialEvent() {
-  if(mySerial.available() == false)
-    return;
-  while (mySerial.available()) {
-    // get the new byte:
-    char inChar = (char)mySerial.read();
-    //Serial.print(inChar,HEX);
-    // add it to the inputString:
-    inputString += inChar;
-  }
-  //Serial.println("");
-  if(inputString.length() >= 11) {
-    String ss="";
-    ss=((float)inputString.charAt(3)*255+(float)inputString.charAt(4));
-    ec=ss.toFloat();
-    //Serial.print("EC : "); Serial.println(ec);
-    ss=((float)inputString.charAt(5)*255+(float)inputString.charAt(6))/100;
-    ph=ss.toFloat();
-    //Serial.print("PH : "); Serial.println(ph);
-    ss=((float)inputString.charAt(7)*255+(float)inputString.charAt(8))/10;
-    temp=ss.toFloat();
-    //Serial.print("온도 : "); Serial.println(temp);
-    inputString="";
-    Serial.println("");
-
-  }
-}
-
-// 아두이노에서 RS485 출력을 내보낸다.
-void crd16Rtu() {
-  char str[24] =  {0x1f,0x04,0x00,0x01,0x00,0x03,0x00,0x00,0x00};  //[31,4,0,1,0,3,0,0]
-  String s;
-  int si,sj,len;
-
-  len=6;
-  
-  uint8_t * data = (uint8_t *) &str[0];
-  si=crc16(data, len, 0x8005, 0xFFFF, 0x0000, true,  true  );
-  sj=si&0xff;
-  str[len]=sj;
-  sj=si>>8;
-  str[len+1]=sj;
-
-  for(int i=0;i<len+2;i++) {
-    mySerial.print(str[i]);
-    //Serial.println((int)str[i]);
-  }
 }
