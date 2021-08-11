@@ -90,9 +90,8 @@ char ScriptRoot[] PROGMEM = R"=====(
       Socket.onmessage = function(event){
         var data = JSON.parse(event.data);
         console.log(data.temp);
-        document.getElementById("mo").innerHTML = data.mo;
-        document.getElementById("tem").innerHTML = data.tem;
-        document.getElementById("ec").innerHTML = data.ec;
+        document.getElementById("RH").innerHTML = data.RH;
+        document.getElementById("TEMP").innerHTML = data.TEMP;
       }
     }
     function sendAct(valueIn){
@@ -136,24 +135,18 @@ char ScriptHead[] PROGMEM = R"=====(
 )=====";
 
 char Body[] PROGMEM = R"=====(
-  <br><br>다운로드 파일명 down-local-04.bin
+  <br><br>다운로드 파일명 down-local-05.bin
   <br><br>
   <table>
     <tr>
       <th><label>습도 : </label></th>
-      <th><span id="mo">%MO%</span></th>
+      <th><span id="RH">%RH%</span></th>
     </tr>
 
     <tr>
       <th><label>온도 : </label></th>
-      <th><span id="tem">%TEM%</span></th>
+      <th><div id="TEMP">%TEMP%</div></th>
     </tr>
-        
-    <tr>
-      <th><label>EC : </label></th>
-      <th><div id="ec">%EC%</div></th>
-    </tr>
- 
   </table>
   
 )=====";
@@ -182,7 +175,7 @@ char Download[] PROGMEM = R"=====(
 
 char Manual[] PROGMEM = R"=====(
   <br><br>메뉴얼
-  <a href='https://github.com/kdi6033/IoT/tree/main/11-4-1%20%5Bsensecube%5D%20KSM-8900%20Local'>Local 통신</a>
+  <a href='https://github.com/kdi6033/IoT/tree/main/11-5-1%20%5Ballsensing%5D%20temperature%20humidity%20sensor%20Local'>올센싱 메뉴얼</a>
   
 )=====";
 
@@ -336,9 +329,10 @@ void handleWifiSave() {
   ESP.reset();
 }
 
+
 void handleScan() {
   String s;
-  s="{\"mac\":\""+sMac+"\",\"ip\":\""+WiFi.localIP().toString()+"\",\"type\":"+type+",\"mo\":"+mo+",\"tem\":"+tem+",\"ec\":"+ec+"}";
+  s="{\"mac\":\""+sMac+"\",\"ip\":\""+WiFi.localIP().toString()+"\",\"type\":"+type+",\"RH\":"+RH+",\"TEMP\":"+TEMP+"}";
   server.send(200, "text/html", s);
 }
 

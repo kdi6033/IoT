@@ -1,4 +1,4 @@
-// 햄버거 메뉴 https://youtu.be/yPOYlaGloMk
+// 햄버거 메뉴 https://youtu.be/yPOYlaGloMk 
 // 웹소켙 https://youtu.be/77qg_aaFGoI   https://youtu.be/TUU0CSBfgos
 // SPIFFS https://youtu.be/5wgZIapHPxs  https://youtu.be/FRIgp7JI7IY
 // ota 참조유튜브 https://www.youtube.com/watch?v=UiAc3yYBsNU
@@ -27,7 +27,7 @@ WiFiUDP Udp;
 unsigned int localUdpPort = 4210; // local port to listen on
 char incomingPacket[255]; // buffer for incoming packets
 
-int type=4; // 기기 인식번호 -> display에 사용
+int type=5; // 기기 인식번호 -> display에 사용
 String nameDownloadFile="";
 #define URL_fw_Bin "http://i2r.link/download/"
 
@@ -57,7 +57,7 @@ int bootMode=0; //0:station  1:AP
 int counter=0;
 String inputString = "";         // 받은 문자열
 int timeMqtt=5;
-float mo=0.,tem=0.,ec=0.;
+float RH=0.,TEMP=0.;
 
 unsigned long previousMillis = 0;     
 const long interval = 1000;  
@@ -109,9 +109,8 @@ void tickMeasure()
   //client.publish(outTopic, msg);
 
   //HTML로 보냄
-  String json = "{\"mo\":"; json += mo;
-  json += ",\"tem\":"; json += tem;
-  json += ",\"ec\":"; json += ec;
+  String json = "{\"RH\":"; json += RH;
+  json += ",\"TEMP\":"; json += TEMP;
   json += "}";
   webSocket.broadcastTXT(json.c_str(), json.length());
   Serial.println(json);
@@ -120,14 +119,11 @@ void tickMeasure()
 
   //OLED로 표시
   String s;
-  s="EC  "+(String)mo;
+  s="RH  "+(String)RH;
   oled.setTextXY(4,7);              // Set cursor position, start of line 0
   oled.putString(s);
-  s="PH  "+(String)tem;
+  s="TEMP  "+(String)TEMP;
   oled.setTextXY(5,7);              // Set cursor position, start of line 0
-  oled.putString(s);
-  s="Temp  "+(String)ec;
-  oled.setTextXY(6,7);              // Set cursor position, start of line 0
   oled.putString(s);
 }
 
@@ -145,9 +141,8 @@ void tickMqtt()
   json += "\"mac\":\""; json += sMac;  json += "\"";
   json += ",\"ip\":\""; json += WiFi.localIP().toString();  json += "\"";
   json += ",\"type\":"; json += type;
-  json += ",\"mo\":"; json += mo;
-  json += ",\"tem\":"; json += tem;
-  json += ",\"ec\":"; json += ec;
+  json += ",\"RH\":"; json += RH;
+  json += ",\"TEMP\":"; json += TEMP;
   json += "}";
   json.toCharArray(msg, json.length()+1);
   Serial.println(msg);
@@ -185,8 +180,8 @@ void displayOled(int no) {
 }
 
 void setup() {
-  Serial.begin(115200);
-  mySerial.begin(115200);
+  Serial.begin(9600);
+  mySerial.begin(9600);
   //Oled Setup
   Wire.begin(); 
   displayOled(1);
@@ -468,39 +463,34 @@ void serialEvent() {
     inputString += inChar;
   }
   Serial.println("");
-  if(inputString.length() >= 11) {
-    String ss="";
-    ss=((float)inputString.charAt(3)*255+(float)inputString.charAt(4))/100;
-    mo=ss.toFloat();
-    Serial.print("습도 : "); Serial.print(mo); Serial.println(" %VWC");
-    ss=((float)inputString.charAt(5)*255+(float)inputString.charAt(6))/100;
-    tem=ss.toFloat();
-    Serial.print("온도 : "); Serial.print(tem); Serial.println(" °C");
-    ss=((float)inputString.charAt(7)*255+(float)inputString.charAt(8))/100;
-    ec=ss.toFloat();
-    Serial.print("EC : "); Serial.print(ec); Serial.println(" dS/m");
+ if(inputString.length() >= 23) {     
+    String rh= "습도 : ";
+    String temp="온도 : ";
+    
+    String a = inputString.substring(7,11);
+    String b = inputString.substring(11,15);  
+
+    String A = "0x" + a;
+    String B = "0x" + b;
+
+    RH = (A.toFloat())/100;
+    TEMP = (B.toFloat())/100;
+    
+    String Z = rh+RH+" %RH";
+    String E = temp+TEMP+" °C";
+    Serial.println(Z);
+    Serial.println(E);
     inputString="";
     Serial.println("");
-  } 
+
+  }
 }
 
 // 아두이노에서 RS485 출력을 내보낸다.
 void crd16Rtu() {
-  char str[24] =  {0x01,0x04,0x00,0x07,0x00,0x03,0x00,0x00};  //[1,4,0,7,0,3,0,0],[1,4,0,1,0,6,0,0]
-  String s;
-  int si,sj,len;
+  char str[24] =  {0x3A,0x38,0x30,0x30,0x34,0x30,0x30,0x30,0x34,0x30,0x30,0x30,0x32,0x37,0x36,0x0D,0x0A};  //:80040004000276\r\n
 
-  len=6;
-  
-  uint8_t * data = (uint8_t *) &str[0];
-  si=crc16(data, len, 0x8005, 0xFFFF, 0x0000, true,  true  );
-  sj=si&0xff;
-  str[len]=sj;
-  sj=si>>8;
-  str[len+1]=sj;
-
-  for(int i=0;i<len+2;i++) {
+  for(int i=0;i<23;i++) {
     mySerial.print(str[i]);
-    //Serial.println((int)str[i]);
   }
 }
