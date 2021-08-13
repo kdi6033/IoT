@@ -177,10 +177,12 @@ char Download[] PROGMEM = R"=====(
   <br>- 기기 OLED로 센서 값을 모니터링 
   <br>- MQTT통신을 사용해 로컬서버를 구성하여 모니터링/제어 <br>
   <select id='downloadLocal' name='downloadLocal' onclick='sendDownOptionLocal();'>
-    <option value='down-local-02.bin'>[sensecube] PE-300</option>";
-    <option value='down-local-03.bin'>[allsensing] klumi</option>";
-    <option value='down-local-04.bin'>[sensecube] KSM-8900</option>";
-    <option value='down-local-05.bin'>[allsensing] 온도습도센서</option>";
+    <option value='down-local-02.bin'>2 [sensecube] PE-300</option>";
+    <option value='down-local-03.bin'>3 [allsensing] klumi</option>";
+    <option value='down-local-04.bin'>4 [sensecube] KSM-8900</option>";
+    <option value='down-local-05.bin'>5 [allsensing] 온도습도센서</option>";
+    <option value='down-local-06.bin'>6 [LS산전] XGB XEC-DR14E </option>";
+    <option value='down-local-07.bin'>7 [D1 mini shield] 온도습도센서 DHT11</option>";
   </select>
   <br><br>[아마존서버를 이용한 크라우드제어 프로그램]
   <br>아마존 서버에 접속하여 크라우드 환경에서 모니터링/제어 하는 프로그램
@@ -188,10 +190,12 @@ char Download[] PROGMEM = R"=====(
   <br>접속사이트 : <a href='http://i2r.link/'>http://i2r.link/</a>
   <br>
   <select id='downloadAws' name='downloadAws' onclick='sendDownOptionAws();'>
-    <option value='down-aws-02.bin'>[sensecube] PE-300</option>";
-    <option value='down-aws-03.bin'>[allsensing] klumi</option>";
-    <option value='down-aws-04.bin'>[sensecube] KSM-8900</option>";
-    <option value='down-aws-05.bin'>[allsensing] 온도습도센서</option>";
+    <option value='down-aws-02.bin'>2 [sensecube] PE-300</option>";
+    <option value='down-aws-03.bin'>3 [allsensing] klumi</option>";
+    <option value='down-aws-04.bin'>4 [sensecube] KSM-8900</option>";
+    <option value='down-aws-05.bin'>5 [allsensing] 온도습도센서</option>";
+    <option value='down-aws-06.bin'>6 [LS산전] XGB XEC-DR14E </option>";
+    <option value='down-aws-07.bin'>7 [D1 mini shield] 온도습도센서 DHT11</option>";
   </select>
   <br>다운로드 파일 이름 : <span id="downFile">파일없음</span>
   <button id="onButton" class='button button-box' onclick="sendAct('#'+'{\'act\':3}');">다운로드</button>
