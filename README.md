@@ -9,4 +9,4 @@
 |b|1|2|3|4||
 |c|1|2|3|4||
 |8|RY-WSY301|<img src = "https://user-images.githubusercontent.com/37902752/129312381-0a46e6b7-17c5-4e57-bcbe-e59221eb55bd.jpg" width="100" height="100">|down-local-08, down-aws-08|습도, 온도, 기압|[RY-WSY301](https://github.com/kdi6033/IoT/blob/main/11-0%20manual/RY-WSY3011.pdf)|[Handan Yunnong](https://en.nong-iot.com/)
-|9|508E|<img src = "https://user-images.githubusercontent.com/37902752/129312385-053a8389-4ecc-497d-864c-6427dfcfae8e.png" width="100" height="100">|down-local-09, down-aws-09|지중: 온도, 습도, 염도|[MP-508E](https://github.com/kdi6033/IoT/blob/main/11-0%20manual/MP-508El.pdf)|[Handan Yunnong](https://en.nong-iot.com/)
+|9|508E|<img src = "https://user-images.githubusercontent.com/37902752/129312385-053a8389-4ecc-497d-864c-6427dfcfae8e.png" width="100" height="100">|down-local-09, down-aws-09|지중: 온도, 습도, 염도|[MP-508E](https://github.com/kdi6033/IoT/blob/main/11-0%20manual/MP-508El.pdf)|[효림솔루션][Handan Yunnong](https://en.nong-iot.com/)
