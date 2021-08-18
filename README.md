@@ -1,5 +1,5 @@
 # IoT 센서 모음    
-김동일교수 유튜브보기
+[김동일교수 유튜브보기](http://i2r.link)
 
 
 |Type|이름|<center>사진</center>|<center>파일이름</center>|<center>측정값</center>|<center>메뉴얼</center>|회사이름
