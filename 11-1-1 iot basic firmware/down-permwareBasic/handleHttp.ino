@@ -156,8 +156,8 @@ char Menu[] PROGMEM = R"=====(
   <a href='/download'>다운로드</a>
   <a href='/wifi'>와이파이설정</a>
   <a href='/config'>환경설정</a>
-  <a href='/manual'>메뉴얼</a>
-  <a href='http://i2r.link'>김동일홈피</a>
+  <a href='https://github.com/kdi6033/IoT' target='_blank'>메뉴얼</a>
+  <a href='http://i2r.link' target='_blank'>김동일홈피</a>
   </div>
   <span style='font-size:30px;cursor:pointer' onclick='openNav()'>&#9776; </span>
   메뉴열기
@@ -183,6 +183,8 @@ char Download[] PROGMEM = R"=====(
     <option value='down-local-05.bin'>5 [allsensing] 온도습도센서</option>";
     <option value='down-local-06.bin'>6 [LS산전] XGB XEC-DR14E </option>";
     <option value='down-local-07.bin'>7 [D1 mini shield] 온도습도센서 DHT11</option>";
+    <option value='down-local-08.bin'>8 [효림] RY-WSY301</option>";
+    <option value='down-local-09.bin'>9 [효림] MP-508E</option>";
   </select>
   <br><br>[아마존서버를 이용한 크라우드제어 프로그램]
   <br>아마존 서버에 접속하여 크라우드 환경에서 모니터링/제어 하는 프로그램
@@ -196,6 +198,8 @@ char Download[] PROGMEM = R"=====(
     <option value='down-aws-05.bin'>5 [allsensing] 온도습도센서</option>";
     <option value='down-aws-06.bin'>6 [LS산전] XGB XEC-DR14E </option>";
     <option value='down-aws-07.bin'>7 [D1 mini shield] 온도습도센서 DHT11</option>";
+    <option value='down-aws-08.bin'>8 [효림] RY-WSY301</option>";
+    <option value='down-aws-09.bin'>9 [효림] MP-508E</option>";
   </select>
   <br>다운로드 파일 이름 : <span id="downFile">파일없음</span>
   <button id="onButton" class='button button-box' onclick="sendAct('#'+'{\'act\':3}');">다운로드</button>
