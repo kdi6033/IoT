@@ -7,7 +7,8 @@
 ## 키우미센서 프로토콜
 >
 보드레이트 : 9600   
-문자데이타로 입력하세요   
+문자데이터로 입력하세요
+
 주소확인 :FFFB0000000006\r\n   
 온도요청 :010400010001F9\r\n   
 습도요청 :010400020001F8\r\n   
@@ -17,7 +18,7 @@ CO2요청 :010400030001F7\r\n
 온도,습도,CO2요청 :010400010003F7\r\n   
 
 ## 배선도
-![018](https://user-images.githubusercontent.com/83691399/124417589-68517800-dd94-11eb-8e46-ad3d20f0020b.png)
+![1111](https://user-images.githubusercontent.com/37902752/130716248-827ba40e-9641-435c-b018-999aec72e095.png)
 
 
 * Local mqtt 통신 node-red flow 

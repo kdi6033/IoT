@@ -18,7 +18,7 @@ CO2요청 :010400030001F7\r\n
 온도,습도,CO2요청	:010400010003F7\r\n   
 
 ## 1.3 키우미센서 배선도
-![image](https://user-images.githubusercontent.com/37902752/123354979-ab933600-d59f-11eb-8664-4a0685a991a1.png)
+![1111](https://user-images.githubusercontent.com/37902752/130716248-827ba40e-9641-435c-b018-999aec72e095.png)
 
 ## 1.4 노드레드 소스 코드
 노드레드 소스 코드는 상단 ino파일을 참고 하세요~!!
