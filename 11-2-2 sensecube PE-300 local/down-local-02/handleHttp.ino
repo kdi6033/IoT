@@ -165,7 +165,7 @@ char Menu[] PROGMEM = R"=====(
   <a href='/download'>다운로드</a>
   <a href='/wifi'>와이파이설정</a>
   <a href='/config'>환경설정</a>
-  <a href='/manual'>메뉴얼</a>
+  <a href='https://github.com/kdi6033/IoT' target='_blank'>메뉴얼</a>
   <a href='http://i2r.link' target='_blank'>김동일홈피</a>
   </div>
   <span style='font-size:30px;cursor:pointer' onclick='openNav()'>&#9776; </span>
