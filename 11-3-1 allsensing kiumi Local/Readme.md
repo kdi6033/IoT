@@ -17,7 +17,7 @@ CO2요청 :010400030001F7\r\n
 온도,습도,CO2요청 :010400010003F7\r\n   
 
 ## 배선도
-![018](https://user-images.githubusercontent.com/83691399/124417589-68517800-dd94-11eb-8e46-ad3d20f0020b.png)
+![1111](https://user-images.githubusercontent.com/37902752/130716248-827ba40e-9641-435c-b018-999aec72e095.png)
 
 
 * Local mqtt 통신 node-red flow 
