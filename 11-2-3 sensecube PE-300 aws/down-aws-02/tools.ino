@@ -41,6 +41,8 @@ void saveConfig() {
   f.close();
   SPIFFS.end();
   delay(2000);
+  ESP.reset();
+  delay(2000);
 }
 
 
