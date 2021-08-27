@@ -52,16 +52,20 @@ void saveConfig() {
   f.println(email);
   f.close();
   SPIFFS.end();
-  //ESP.reset();
+  delay(2000);
+  ESP.reset();
+  delay(2000);
 }
 
 // trigger pin 0(D3) 2(D4)
 void factoryDefault() {
     Serial.println("AP mode as Factory Deafault");
     Serial.println("Please wait over 3 min");
+    displayOled(5);
     SPIFFS.begin();
     SPIFFS.format();
     SPIFFS.end();
+    delay(1000);
     ESP.reset();
-    ESP.restart();
+    delay(1000);
 }
