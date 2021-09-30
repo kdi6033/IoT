@@ -25,7 +25,7 @@
 |----|---------------:|
 |modbus 릴레이|<img src = "https://user-images.githubusercontent.com/37902752/135489115-6b66567c-bef4-4f96-aaab-b480730262d1.jpg" width="200" height="150">|
 |FTDI 232 |<img src = "https://user-images.githubusercontent.com/37902752/135489157-7df4ba48-7daf-4e98-a7f2-330f4ffde4b9.png" width="200" height="100">|
-|mini 5pin|<img src = "https://user-images.githubusercontent.com/37902752/135489076-78177efc-cc55-4dd5-95e0-9ecb2f3c8d79.PNG" width="200" height="100">|
+|usb mini 5pin|<img src = "https://user-images.githubusercontent.com/37902752/135489076-78177efc-cc55-4dd5-95e0-9ecb2f3c8d79.PNG" width="200" height="100">|
 * 방법1. TTL 레벨 UART 통신 인터페이스 232
 <img src = "https://user-images.githubusercontent.com/37902752/135487431-45de551c-484b-4903-bb72-433fd338c564.png" width="550" height="300">
 
