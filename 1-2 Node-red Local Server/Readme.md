@@ -1083,7 +1083,7 @@
         "type": "function",
         "z": "f4a7d5ccddfb4a78",
         "name": "",
-        "func": "var server=msg.payload[3].address;\nglobal.set(\"serverIp\",server);\nmsg.server=server;\nreturn msg;",
+        "func": "var server=msg.payload[1].address;\nglobal.set(\"serverIp\",server);\nmsg.server=server;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
