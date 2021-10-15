@@ -11,5 +11,5 @@ msg.payload=buf;
 return msg;
 ```
 배선도
-
+* 주의 TRX+ TRX- 선을 A+ B-랑 잘못 연결하면 릴레이의 485보드가 고장납니다.
 ![T13Motor](https://user-images.githubusercontent.com/37902752/137422739-71364d93-68f6-4799-9f55-e9dc4b9ff8a6.jpg)
