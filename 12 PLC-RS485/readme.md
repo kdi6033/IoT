@@ -30,7 +30,7 @@
 
 * 방법1. Rs485 통신 (권장)
 가장 많이 사용되며 병렬로 연결하여 추가로 사용가능
-<img src = "https://user-images.githubusercontent.com/37902752/137487547-d1346db7-8682-4aaf-acf2-eae678f38967.jpg" width="650" height="400">
+<img src = "https://user-images.githubusercontent.com/37902752/137487547-d1346db7-8682-4aaf-acf2-eae678f38967.jpg" width="650" height="300">
 
 ### TTL레벨의 rs485,232통신은 기계가 동작가능한지 확인을 위한 부분이므로 테스트용으로만 사용
 * 방법2. Rs485와 TTL 직렬 포트
