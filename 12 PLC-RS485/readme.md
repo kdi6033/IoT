@@ -42,4 +42,4 @@ TTL 레벨의 232 통신으로 단거리 통신이 가능하며 30cm 정도 까�
 현장에서 가장많이쓰는 통신으로
 4km정도로 통신이 가능하고 병렬로 연결하여 사용하기 편하다는 장점이 있다
 
-<img src = "https://user-images.githubusercontent.com/37902752/137436202-1d19d03f-4978-439e-b2b2-7b22ac29d3eb.jp" width="550" height="300">
+<img src = "https://user-images.githubusercontent.com/37902752/137436202-1d19d03f-4978-439e-b2b2-7b22ac29d3eb.jpg" width="550" height="300">
