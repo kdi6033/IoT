@@ -6,7 +6,7 @@
 ```
 
 *  flow 사진
- <img src = "https://user-images.githubusercontent.com/37902752/135479568-292109bd-87aa-4cae-b9d2-4ab2c97e9139.PNG" width="550" height="300">
+ <img src = "https://user-images.githubusercontent.com/37902752/135479568-292109bd-87aa-4cae-b9d2-4ab2c97e9139.PNG" width="550" height="200">
 
 ### 2. 프로토콜 UI 제어
 * NODE-RED FLOW
