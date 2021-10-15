@@ -30,14 +30,14 @@
 
 * 방법1. Rs485 통신 (권장)
 가장 많이 사용되며 병렬로 연결하여 추가로 사용가능
-<img src = "https://user-images.githubusercontent.com/37902752/137487547-d1346db7-8682-4aaf-acf2-eae678f38967.jpg" width="650" height="300">
+<img src = "https://user-images.githubusercontent.com/37902752/137487547-d1346db7-8682-4aaf-acf2-eae678f38967.jpg" width="650" height="350">
 
 ### TTL레벨의 rs485,232통신은 기계가 동작가능한지 확인을 위한 부분이므로 테스트용으로만 사용
 * 방법2. Rs485와 TTL 직렬 포트
-<img src = "https://user-images.githubusercontent.com/37902752/137488642-6bd0b301-5d5d-4d5c-8cda-362bd89183f7.png" width="650" height="400">
+<img src = "https://user-images.githubusercontent.com/37902752/137488642-6bd0b301-5d5d-4d5c-8cda-362bd89183f7.png" width="650" height="350">
 
 * 방법3. TTL 레벨 UART 통신 인터페이스 232
-<img src = "https://user-images.githubusercontent.com/37902752/137488651-ca05a3c1-7b0b-4054-8789-668a6e576e89.png" width="650" height="400">
+<img src = "https://user-images.githubusercontent.com/37902752/137488651-ca05a3c1-7b0b-4054-8789-668a6e576e89.png" width="650" height="350">
 
 
 
