@@ -26,12 +26,24 @@
 |modbus 릴레이|<img src = "https://user-images.githubusercontent.com/37902752/135489115-6b66567c-bef4-4f96-aaab-b480730262d1.jpg" width="200" height="150">|
 |FTDI 232 |<img src = "https://user-images.githubusercontent.com/37902752/135489157-7df4ba48-7daf-4e98-a7f2-330f4ffde4b9.png" width="200" height="100">|
 |usb mini 5pin|<img src = "https://user-images.githubusercontent.com/37902752/135489076-78177efc-cc55-4dd5-95e0-9ecb2f3c8d79.PNG" width="200" height="100">|
-* 방법1. TTL 레벨 UART 통신 인터페이스 232
-<img src = "https://user-images.githubusercontent.com/37902752/135487431-45de551c-484b-4903-bb72-433fd338c564.png" width="550" height="300">
+## 4CH 릴레이보드 배선도
 
+* 방법1. Rs485 통신 (권장)
+가장 많이 사용되며 병렬로 연결하여 추가로 사용가능
+<img src = "https://user-images.githubusercontent.com/37902752/137487547-d1346db7-8682-4aaf-acf2-eae678f38967.jpg" width="650" height="400">
+
+### TTL레벨의 rs485,232통신은 기계가 동작가능한지 확인을 위한 부분이므로 테스트용으로만 사용
 * 방법2. Rs485와 TTL 직렬 포트
-<img src = "https://user-images.githubusercontent.com/37902752/135487715-01a301e0-e3df-4e46-88bc-51c423bd3397.png" width="550" height="300">
-## 배선도
+<img src = "https://user-images.githubusercontent.com/37902752/137488642-6bd0b301-5d5d-4d5c-8cda-362bd89183f7.png" width="650" height="400">
+
+* 방법3. TTL 레벨 UART 통신 인터페이스 232
+<img src = "https://user-images.githubusercontent.com/37902752/137488651-ca05a3c1-7b0b-4054-8789-668a6e576e89.png" width="650" height="400">
+
+
+
+
+
+## 2CH 릴레이보드 배선도
 
 ### 485 통신
 현장에서 가장많이쓰는 통신으로
