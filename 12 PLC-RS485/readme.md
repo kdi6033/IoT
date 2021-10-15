@@ -33,11 +33,6 @@
 <img src = "https://user-images.githubusercontent.com/37902752/135487715-01a301e0-e3df-4e46-88bc-51c423bd3397.png" width="550" height="300">
 ## 배선도
 
-### 232 통신
-TTL 레벨의 232 통신으로 단거리 통신이 가능하며 30cm 정도 까지 가능하다. 
-직렬통신으로 신호를 TRX한선으로 보내어 통신 효율이 좋다.
-<img src = "https://user-images.githubusercontent.com/37902752/135493308-40d097c2-0a31-4487-9737-0e973ae1bd81.jpg" width="550" height="300">
-
 ### 485 통신
 현장에서 가장많이쓰는 통신으로
 4km정도로 통신이 가능하고 병렬로 연결하여 사용하기 편하다는 장점이 있다
