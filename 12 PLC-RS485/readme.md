@@ -40,6 +40,7 @@
 |modbus 2CH 릴레이|<img src = "https://user-images.githubusercontent.com/37902752/137663546-e9fbc48f-8331-4529-a5d8-c1323e582ec9.jpg" width="200" height="150">|
 |FTDI 232 |<img src = "https://user-images.githubusercontent.com/37902752/135489157-7df4ba48-7daf-4e98-a7f2-330f4ffde4b9.png" width="200" height="100">|
 |usb mini 5pin|<img src = "https://user-images.githubusercontent.com/37902752/135489076-78177efc-cc55-4dd5-95e0-9ecb2f3c8d79.PNG" width="200" height="100">|
+
 [4CH 릴레이 구매링크(7~24V)](https://ko.aliexpress.com/item/1005002356037000.html?spm=a2g0s.9042311.0.0.27424c4dpXx4Xh) 
 [2CH 릴레이 구매링크(12V)](https://ko.aliexpress.com/item/1005001665868860.html?spm=a2g0o.productlist.0.0.17e37ef4BEAYsf&algo_pvid=96484fdf-20e6-45d2-9cb7-54e51467da72&algo_exp_id=96484fdf-20e6-45d2-9cb7-54e51467da72-5&pdp_ext_f=%7B%22sku_id%22%3A%2212000017043959065%22%7D)
 
@@ -59,4 +60,4 @@
 현장에서 가장많이쓰는 통신으로
 4km정도로 통신이 가능하고 병렬로 연결하여 사용하기 편하다는 장점이 있다
 
-<img src = "https://user-images.githubusercontent.com/37902752/137436202-1d19d03f-4978-439e-b2b2-7b22ac29d3eb.jpg" width="750" height="300">
+<img src = "https://user-images.githubusercontent.com/37902752/137664424-6446f3e4-0ef4-42ed-8dde-59ec76545136.jpg" width="750" height="300">
