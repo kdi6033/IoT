@@ -36,7 +36,8 @@
 ### 준비물
 |이름|사진|
 |----|---------------:|
-|modbus 릴레이|<img src = "https://user-images.githubusercontent.com/37902752/135489115-6b66567c-bef4-4f96-aaab-b480730262d1.jpg" width="200" height="150">|
+|modbus 4CH 릴레이|<img src = "https://user-images.githubusercontent.com/37902752/135489115-6b66567c-bef4-4f96-aaab-b480730262d1.jpg" width="200" height="150">|
+|modbus 2CH 릴레이|<img src = "https://user-images.githubusercontent.com/37902752/135489115-6b66567c-bef4-4f96-aaab-b480730262d1.jpg" width="200" height="150">|
 |FTDI 232 |<img src = "https://user-images.githubusercontent.com/37902752/135489157-7df4ba48-7daf-4e98-a7f2-330f4ffde4b9.png" width="200" height="100">|
 |usb mini 5pin|<img src = "https://user-images.githubusercontent.com/37902752/135489076-78177efc-cc55-4dd5-95e0-9ecb2f3c8d79.PNG" width="200" height="100">|
 ## 4CH 릴레이보드 배선도
