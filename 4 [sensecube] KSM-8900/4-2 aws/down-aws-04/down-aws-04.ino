@@ -42,7 +42,7 @@ char email[50] = "";
 char ipMqtt[40]="";
 
 const char *thingId = "";          // 사물 이름 (thing ID) 
-const char *host = "a8i4lgiqa43pw-ats.iot.us-west-2.amazonaws.com"; // AWS IoT Core 주소
+const char *host = ""; // AWS IoT Core 주소
 const char* outTopic = "/i2r/outTopic"; 
 const char* inTopic = "/i2r/inTopic"; 
 
