@@ -43,8 +43,8 @@ char ipMqtt[40]="";
 
 const char *thingId = "";          // 사물 이름 (thing ID) 
 const char *host = "a8i4lgiqa43pw-ats.iot.us-west-2.amazonaws.com"; // AWS IoT Core 주소
-const char* outTopic = "/doowon-ksm8900/outTopic"; 
-const char* inTopic = "/doowon-ksm8900/inTopic"; 
+const char* outTopic = "/i2r/outTopic"; 
+const char* inTopic = "/i2r/inTopic"; 
 
 //const char* clientName = "";  // setup 함수에서 자동생성
 char msg[100];
