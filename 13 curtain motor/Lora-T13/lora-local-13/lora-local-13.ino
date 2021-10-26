@@ -37,6 +37,7 @@ char ipMqtt[40]="";
 unsigned int countTick=0;
 unsigned int countMqtt=0;
 unsigned int countMeasure=0;
+unsigned int countwifi=0;
 
 const char* outTopic = "/i2r/outTopic"; // 이름이 중복되지 않게 설정 기록
 const char* inTopic = "/i2r/inTopic"; // 이름이 중복되지 않게 설정 기록
@@ -96,7 +97,7 @@ void tick()
   countTick++;
   if(countTick > 10000)
     countTick=0;  
-  if((countTick%2)==0) {
+  if((countTick%3)==0) {
   Serial.println ( WiFi.localIP() ); 
     tickMeasure();
   }
@@ -278,6 +279,12 @@ void bootWifiStation() {
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
+    countwifi++;
+    //wifi 연결안될시 재부팅
+    if(countwifi==4){
+    countwifi=0;   
+    ESP.restart();
+    }
     //공장리셋
     if ( digitalRead(TRIGGER_PIN) == LOW ) 
       factoryDefault();
