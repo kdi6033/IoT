@@ -3,7 +3,7 @@
 
 SoftwareSerial mySerial(D7, D4); // RX, TX
 
-int outPlc=1;
+int outPlc=0;
 unsigned long previousMillis = 0;   
 const long interval = 3000; 
 String inputString = "";         // 받은 문자열
@@ -42,12 +42,11 @@ void serialEvent() {
   while (mySerial.available()) {
     // get the new byte:
     char inChar = (char)mySerial.read();
-    Serial.print(inChar,HEX);
+    //Serial.print(inChar,HEX);
     // add it to the inputString:
     inputString += inChar;
   }
-  Serial.println("");
-  /*
+  //Serial.println("");
   if(outPlc!=1 && inputString.length() >= 6) {
     int b=1;
     for(int i=1;i<=8;i++) {
@@ -62,7 +61,7 @@ void serialEvent() {
     inputString="";
     Serial.println("");
   }
-  */
+
 }
 
 // 아두이노에서 RS485 출력을 내보낸다.
