@@ -15,13 +15,13 @@
 |모든 릴레이off|FF 00 00 00 08 01 00 70 5D|FF 00 00 00 08 41 D3|모든 릴레이 0V 출력|
 |통신속도 4800|FF 10 03 E9 00 01 02 00 02 4A 0C|FF 10 03 E9 00 01 C5 A7|9번째 문자에 따른 통신독도 0x02=4800 0x03=9600 0x04=19200|    
 
-예제
+예제 (와이파이-RS485 보드를 이용한 제어)
 |예제번호|설명|
 |----|----|
 |PlcRs485-01|(function code 05) 한개 릴레이 출력|
 |PlcRs485-02|(function code 0f) 모든 릴레이 출력|
 |PlcRs485-03|(function code 02) 입력포트 읽기|
-
+보드구매처: https://smartstore.naver.com/i2r/products/4584482642
 
 * NODE-RED FLOW  
 ```
