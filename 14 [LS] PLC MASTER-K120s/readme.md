@@ -5,8 +5,7 @@ PLC 번호는 0x01로 프로그램, 출력에서 0은 0V 1은 24V 입니다.
 [Google](https://github.com/kdi6033/plc/blob/master/LS-Manual/XGB%20Cnet_V1.8_Korean.pdf, "google link")    
 [Google](https://google.com, "google link")    
 
-Link: [Google][googlelink]
-[googlelink]: https://google.com "Go google"
+<a href="https://github.com/kdi6033/plc/blob/master/LS-Manual/XGB%20Cnet_V1.8_Korean.pdf">link text</a>
 
 |기능|보냄|설명|
 |----|----|-------|
