@@ -21,6 +21,7 @@
 |PlcRs485-01|(function code 05) 한개 릴레이 출력|
 |PlcRs485-02|(function code 0f) 모든 릴레이 출력|
 |PlcRs485-03|(function code 02) 입력포트 읽기|     
+
 보드구매처: https://smartstore.naver.com/i2r/products/4584482642
 
 * NODE-RED FLOW  
