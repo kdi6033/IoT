@@ -28,7 +28,7 @@ WiFiUDP Udp;
 unsigned int localUdpPort = 4210; // local port to listen on
 char incomingPacket[255]; // buffer for incoming packets
 
-int type=12; // 기기 인식번호 -> display에 사용 6= LS PLC XEC-DR14E
+int type=6; // 기기 인식번호 -> display에 사용 6= LS PLC XEC-DR14E
 #define URL_fw_Bin "http://i2r.link/download/"
 
 char ssid[40] = "";
@@ -56,13 +56,12 @@ int act=0,outPlc=0;
 int bootMode=0; //0:station  1:AP
 int counter=0;
 String inputString = "";         // 받은 문자열
-int timeMqtt=5;
 int Out[8]={0},In[10]={0};  // plc 입력과 출력 저장 
-String sInPre=""; // 입력값이 다르면 mqtt 통신으로 보내기 위해 이점 값 기록
 int noOut=0,valueOut=0;
 
 unsigned long previousMillis = 0;     
 const long interval = 1000;  
+int timeMqtt=2;
 
 //json을 위한 설정
 StaticJsonDocument<200> doc;
@@ -97,11 +96,12 @@ void tick()
   if(countTick > 10000)
     countTick=0;
 
-  tickMeasure();
-  //if((countTick%timeMqtt)==0) {
+  //if((countTick%5)==0)
+    tickMeasure();
+  if((countTick%timeMqtt)==0) {
     countMqtt++;
     tickMqtt();
-  //}
+  }
 }
 
 void tickMeasure()
@@ -142,22 +142,17 @@ void tickMqtt()
   }
   if(mqttConnected != 1)
     return;
-  String json,sIn;
-  sIn=String(In[0])+String(In[1])+String(In[2])+String(In[3])+String(In[4])+String(In[5])+String(In[6])+String(In[7]);
-  
+  String json;
   //MQTT로 보냄
-  if(sIn != sInPre) {
-    json = "{";
-    json += "\"mac\":\""; json += sMac;  json += "\"";
-    json += ",\"ip\":\""; json += WiFi.localIP().toString();  json += "\"";
-    json += ",\"type\":"; json += type;
-    json += ",\"in\":\""; json += sIn+"\"";
-    json += "}";
-    json.toCharArray(msg, json.length()+1);
-    Serial.println(msg);
-    client.publish(outTopic, msg);
-  }
-  sInPre=sIn;
+  json = "{";
+  json += "\"mac\":\""; json += sMac;  json += "\"";
+  json += ",\"ip\":\""; json += WiFi.localIP().toString();  json += "\"";
+  json += ",\"type\":"; json += type;
+  json += ",\"in\":\""; json += String(In[0])+String(In[1])+String(In[2])+String(In[3])+String(In[4])+String(In[5])+String(In[6])+String(In[7])+"\"";
+  json += "}";
+  json.toCharArray(msg, json.length()+1);
+  Serial.println(msg);
+  client.publish(outTopic, msg);
 }
 
 void displayOled(int no) {
