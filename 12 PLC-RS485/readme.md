@@ -22,7 +22,9 @@
 |PlcRs485-02|(function code 0f) 모든 릴레이 출력|
 |PlcRs485-03|(function code 02) 입력포트 읽기|     
 
-보드구매처: https://smartstore.naver.com/i2r/products/4584482642
+Wifi-Rs485 보드구매처: https://smartstore.naver.com/i2r/products/4584482642     
+PLC 구매처 : https://ko.aliexpress.com/item/1005002356037000.html?spm=a2g0s.9042311.0.0.27424c4dpXx4Xh     
+            https://ko.aliexpress.com/item/1005001665868860.html?spm=a2g0o.productlist.0.0.17e37ef4BEAYsf&algo_pvid=96484fdf-20e6-45d2-9cb7-54e51467da72&algo_exp_id=96484fdf-20e6-45d2-9cb7-54e51467da72-
 
 * NODE-RED FLOW  
 ```
