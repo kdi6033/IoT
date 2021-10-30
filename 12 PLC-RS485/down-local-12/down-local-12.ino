@@ -28,7 +28,7 @@ WiFiUDP Udp;
 unsigned int localUdpPort = 4210; // local port to listen on
 char incomingPacket[255]; // buffer for incoming packets
 
-int type=6; // 기기 인식번호 -> display에 사용 6= LS PLC XEC-DR14E
+int type=12; // 기기 인식번호 -> display에 사용 6= LS PLC XEC-DR14E
 #define URL_fw_Bin "http://i2r.link/download/"
 
 char ssid[40] = "";
