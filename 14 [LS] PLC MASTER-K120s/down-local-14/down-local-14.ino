@@ -118,15 +118,11 @@ void upWebSocket() {
   json += ",\"in3\":"; json += In[3];
   json += ",\"in4\":"; json += In[4];
   json += ",\"in5\":"; json += In[5];
-  json += ",\"in6\":"; json += In[6];
-  json += ",\"in7\":"; json += In[7];
 
   json += ",\"out0\":"; json += Out[0];
   json += ",\"out1\":"; json += Out[1];
   json += ",\"out2\":"; json += Out[2];
   json += ",\"out3\":"; json += Out[3];
-  json += ",\"out4\":"; json += Out[4];
-  json += ",\"out5\":"; json += Out[5];
   json += "}";
   webSocket.broadcastTXT(json.c_str(), json.length());
   //Serial.println(json);  
@@ -146,7 +142,7 @@ void tickMqtt()
   json += "\"mac\":\""; json += sMac;  json += "\"";
   json += ",\"ip\":\""; json += WiFi.localIP().toString();  json += "\"";
   json += ",\"type\":"; json += type;
-  json += ",\"in\":\""; json += String(In[0])+String(In[1])+String(In[2])+String(In[3])+String(In[4])+String(In[5])+String(In[6])+String(In[7])+"\"";
+  json += ",\"in\":\""; json += String(In[0])+String(In[1])+String(In[2])+String(In[3])+String(In[4])+String(In[5])+"\"";
   json += "}";
   json.toCharArray(msg, json.length()+1);
   Serial.println(msg);
@@ -432,7 +428,7 @@ void serialEvent() {
   //Serial.println("");
   if(outPlc!=1 && inputString.length() >= 6) {
     int b=1;
-    for(int i=1;i<=8;i++) {
+    for(int i=1;i<=6;i++) {
         int c=inputString.charAt(3)&b;
         if(c!=0)
           c=0x01;
@@ -492,7 +488,7 @@ void crd16Rtu() {
     str[0]=0x01; str[1]=0x0f; str[2]=0x00; str[3]=0x40; str[4]=0x00;
     str[5]=0x0a; str[6]=0x02; str[7]=0xff; str[8]=0x00; str[9]=0x00; str[10]=0x00;
     len=9;
-    str[7]=Out[0]+Out[1]*2+Out[2]*4+Out[3]*8+Out[4]*16+Out[5]*32;
+    str[7]=Out[0]+Out[1]*2+Out[2]*4+Out[3]*8;
     outPlc=0;
   }
   else {    //입력

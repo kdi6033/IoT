@@ -373,7 +373,7 @@ void handleWifiSave() {
 void handleScan() {
   String s;
   String sIn="";
-  sIn=String(In[0])+String(In[1])+String(In[2])+String(In[3])+String(In[4])+String(In[5])+String(In[6])+String(In[7]);
+  sIn=String(In[0])+String(In[1])+String(In[2])+String(In[3])+String(In[4])+String(In[5]);
   s="{\"mac\":\""+sMac+"\",\"ip\":\""+WiFi.localIP().toString()+"\",\"type\":"+type+",\"in\":\""+sIn+"\"}";
   server.send(200, "text/html", s);
 }
