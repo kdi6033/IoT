@@ -74,7 +74,6 @@ void readConfig();
 void saveConfig();
 void factoryDefault();
 void handleRoot();
-void handleOn();
 void GoHome();
 void GoHomeWifi();
 void handleNotFound();
@@ -106,7 +105,7 @@ void tick()
 void tickMeasure()
 {
   Serial.println ( WiFi.localIP() );
-  upWebSocket();
+  //upWebSocket();
   crd16Rtu();
 
 }
@@ -209,7 +208,6 @@ void setup() {
   }
 
   server.on("/", handleRoot);
-  server.on("/on", handleOn);
   server.on("/download", handleDownload);
   server.on("/wifi", handleWifi);
   server.on("/wifisave", handleWifiSave);
@@ -331,24 +329,6 @@ void download_program(String fileName) {
   }
 }
 
-void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length){
-  if(type == WStype_TEXT){
-    if(payload[0] == '#'){
-      for(int i = 0; i < length; i++)
-        payload[i]=payload[i+1];
-      payload[length]=0;
-      for(int i = 0; i < length; i++)
-        Serial.print((char) payload[i]);
-      onAct(payload,length);
-    }
-    else {
-      for(int i = 0; i < length; i++)
-        Serial.print((char) payload[i]);
-      Serial.println();
-    }
-  }
-}
-
 // 통신에서 문자가 들어오면 이 함수의 payload 배열에 저장된다.
 void callback(char* topic, byte* payload, unsigned int length) {
   Serial.print("Message arrived [");
@@ -461,15 +441,23 @@ void serialEvent() {
         Serial.print(" ");
         b*=2;
       }
+    upWebSocket();
     inputString="";
     Serial.println("");
   }
 }
 
-// act=0 plc 입력을 읽어온다.
+//웹페이지에서 출력버튼을 실행한다.
+void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length){
+  if(type == WStype_TEXT){
+    for(int i = 0; i < length; i++)
+      Serial.print((char) payload[i]);
+    Serial.println();
+    onAct(payload,length);
+  }
+}
 // act=1 basic firmware를 내려받는다.
 // act=2 plc 출력 실행
-// act=3 
 void onAct(uint8_t * payload, size_t length) {
   String s;
   deserializeJson(doc,payload);
