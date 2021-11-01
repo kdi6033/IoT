@@ -75,7 +75,6 @@ void readConfig();
 void saveConfig();
 void factoryDefault();
 void handleRoot();
-void handleOn();
 void GoHome();
 void GoHomeWifi();
 void handleNotFound();
@@ -107,7 +106,6 @@ void tick()
 void tickMeasure()
 {
   Serial.println ( WiFi.localIP() );
-  upWebSocket();
   crd16Rtu();
 
 }
@@ -210,7 +208,6 @@ void setup() {
   }
 
   server.on("/", handleRoot);
-  server.on("/on", handleOn);
   server.on("/download", handleDownload);
   server.on("/wifi", handleWifi);
   server.on("/wifisave", handleWifiSave);
@@ -332,24 +329,6 @@ void download_program(String fileName) {
   }
 }
 
-void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length){
-  if(type == WStype_TEXT){
-    if(payload[0] == '#'){
-      for(int i = 0; i < length; i++)
-        payload[i]=payload[i+1];
-      payload[length]=0;
-      for(int i = 0; i < length; i++)
-        Serial.print((char) payload[i]);
-      onAct(payload,length);
-    }
-    else {
-      for(int i = 0; i < length; i++)
-        Serial.print((char) payload[i]);
-      Serial.println();
-    }
-  }
-}
-
 // 통신에서 문자가 들어오면 이 함수의 payload 배열에 저장된다.
 void callback(char* topic, byte* payload, unsigned int length) {
   Serial.print("Message arrived [");
@@ -463,8 +442,39 @@ void serialEvent() {
         Serial.print(" ");
         b*=2;
       }
+    upWebSocket();
     inputString="";
     Serial.println("");
+  }
+}
+
+//웹페이지에서 출력버튼을 실행한다.
+// act=1 basic firmware를 내려받는다.
+// act=2 plc 출력 실행
+void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length){
+  if(type == WStype_TEXT){
+    for(int i = 0; i < length; i++)
+      Serial.print((char) payload[i]);
+    Serial.println();
+  }
+  deserializeJson(doc,payload);
+  root = doc.as<JsonObject>();
+  act = root["act"];
+  //int no=0,value=0;
+  Serial.println(act);
+  if(act==1) {
+    displayOled(3);
+    download_program("down-permwareBasic.bin");
+  }
+  if(act==2) {  //plc 출력
+    noOut=root["no"];
+    valueOut=root["value"];
+    //Serial.println(no);
+    //Serial.println(value);
+    //Serial.println(act);
+    outPlc=1;
+    Out[noOut]=valueOut;
+    upWebSocket();
   }
 }
 
