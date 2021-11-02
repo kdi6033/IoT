@@ -55,9 +55,10 @@ String sMac;
 int act=0,outPlc=0;
 int bootMode=0; //0:station  1:AP
 int counter=0;
-String inputString = "";         // 받은 문자열
+String inputString = "";    // 받은 문자열
 int Out[8]={0},In[10]={0};  // plc 입력과 출력 저장 
-int noOut=0,valueOut=0;
+String sIn="",sInPre="";  // 입력값이 달라질 때만 mqtt로 송신
+int noOut=0,valueOut=0; //mqtt로 수신된 plc출력 명령 noOut=출력핀번호 valueOut=출력값
 
 unsigned long previousMillis = 0;     
 const long interval = 1000;  
@@ -97,17 +98,12 @@ void tick()
 
   //if((countTick%5)==0)
     tickMeasure();
-  if((countTick%timeMqtt)==0) {
-    countMqtt++;
-    tickMqtt();
-  }
 }
 
 void tickMeasure()
 {
   Serial.println ( WiFi.localIP() );
   crd16Rtu();
-
 }
 
 void upWebSocket() {
@@ -132,12 +128,8 @@ void upWebSocket() {
   //Serial.println(json);  
 }
 
-
 void tickMqtt()
 { 
-  if (!client.connected()) {
-    reconnect();
-  }
   if(mqttConnected != 1)
     return;
   String json;
@@ -146,7 +138,7 @@ void tickMqtt()
   json += "\"mac\":\""; json += sMac;  json += "\"";
   json += ",\"ip\":\""; json += WiFi.localIP().toString();  json += "\"";
   json += ",\"type\":"; json += type;
-  json += ",\"in\":\""; json += String(In[0])+String(In[1])+String(In[2])+String(In[3])+String(In[4])+String(In[5])+String(In[6])+String(In[7])+"\"";
+  json += ",\"in\":\""; json += sIn+"\"";
   json += "}";
   json.toCharArray(msg, json.length()+1);
   Serial.println(msg);
@@ -338,6 +330,15 @@ void callback(char* topic, byte* payload, unsigned int length) {
     Serial.print((char)payload[i]);
   }
   Serial.println();
+  deserializeJson(doc,payload);
+  root = doc.as<JsonObject>();
+  String macIn = root["mac"];
+  if(macIn==sMac){
+    noOut = root["outNo"];
+    int value = root["value"];
+    outPlc=1;
+    Out[noOut]=value;
+  }
 }
 
 // mqtt 통신에 지속적으로 접속한다.
@@ -373,6 +374,9 @@ void reconnect() {
 }
 
 void loop() {
+  if (!client.connected()) {
+    reconnect();
+  }
   webSocket.loop();
   server.handleClient();
   doTick();
@@ -433,18 +437,24 @@ void serialEvent() {
   //if(outPlc!=1 && inputString.length() >= 6) {
   if(outPlc!=1 && inputString.length() >= 6 && inputString.charAt(1)==0x02) {
     int b=1;
+    sIn="";
     for(int i=1;i<=8;i++) {
         int c=inputString.charAt(3)&b;
         if(c!=0)
           c=0x01;
         In[i-1]=c;
-        Serial.print(c,HEX);
-        Serial.print(" ");
+        sIn+=c;
+        //Serial.print(c,HEX);
+        //Serial.print(" ");
         b*=2;
       }
     upWebSocket();
     inputString="";
-    Serial.println("");
+    if(sIn!=sInPre) {
+      Serial.println(sIn);
+      tickMqtt();
+    }
+    sInPre=sIn;
   }
 }
 
@@ -460,34 +470,6 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
   deserializeJson(doc,payload);
   root = doc.as<JsonObject>();
   act = root["act"];
-  //int no=0,value=0;
-  Serial.println(act);
-  if(act==1) {
-    displayOled(3);
-    download_program("down-permwareBasic.bin");
-  }
-  if(act==2) {  //plc 출력
-    noOut=root["no"];
-    valueOut=root["value"];
-    //Serial.println(no);
-    //Serial.println(value);
-    //Serial.println(act);
-    outPlc=1;
-    Out[noOut]=valueOut;
-    upWebSocket();
-  }
-}
-
-// act=0 plc 입력을 읽어온다.
-// act=1 basic firmware를 내려받는다.
-// act=2 plc 출력 실행
-// act=3 
-void onAct(uint8_t * payload, size_t length) {
-  String s;
-  deserializeJson(doc,payload);
-  root = doc.as<JsonObject>();
-  act = root["act"];
-  //int no=0,value=0;
   Serial.println(act);
   if(act==1) {
     displayOled(3);
