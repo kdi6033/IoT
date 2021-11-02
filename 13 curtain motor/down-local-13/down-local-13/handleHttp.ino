@@ -98,56 +98,20 @@ char ScriptRoot[] PROGMEM = R"=====(
           document.getElementById("in1").innerHTML = "<th><button class='button button-ledon' ></button></a></th>";
         else
           document.getElementById("in1").innerHTML = "<th><button class='button button-ledoff' ></button></a></th>";
-        if(data.in2==1)
-          document.getElementById("in2").innerHTML = "<th><button class='button button-ledon' ></button></a></th>";
-        else
-          document.getElementById("in2").innerHTML = "<th><button class='button button-ledoff' ></button></a></th>";
-        if(data.in3==1)
-          document.getElementById("in3").innerHTML = "<th><button class='button button-ledon' ></button></a></th>";
-        else
-          document.getElementById("in3").innerHTML = "<th><button class='button button-ledoff' ></button></a></th>";
-        if(data.in4==1)
-          document.getElementById("in4").innerHTML = "<th><button class='button button-ledon' ></button></a></th>";
-        else
-          document.getElementById("in4").innerHTML = "<th><button class='button button-ledoff' ></button></a></th>";
-        if(data.in5==1)
-          document.getElementById("in5").innerHTML = "<th><button class='button button-ledon' ></button></a></th>";
-        else
-          document.getElementById("in5").innerHTML = "<th><button class='button button-ledoff' ></button></a></th>";
-        if(data.in6==1)
-          document.getElementById("in6").innerHTML = "<th><button class='button button-ledon' ></button></a></th>";
-        else
-          document.getElementById("in6").innerHTML = "<th><button class='button button-ledoff' ></button></a></th>";
-        if(data.in7==1)
-          document.getElementById("in7").innerHTML = "<th><button class='button button-ledon' ></button></a></th>";
-        else
-          document.getElementById("in7").innerHTML = "<th><button class='button button-ledoff' ></button></a></th>";
-
+        
         if(data.out0==1)
-          document.getElementById("out0").innerHTML = "<button class='button button-on' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':0,\\'value\\':0}');\"></button>";
+          document.getElementById("out0").innerHTML = "<button class='button button-on' onclick=\"sendAct('{\\'act\\':2,\\'no\\':0,\\'value\\':0}');\"></button>";
         else
-          document.getElementById("out0").innerHTML = "<button class='button button-off' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':0,\\'value\\':1}');\"></button>";
+          document.getElementById("out0").innerHTML = "<button class='button button-off' onclick=\"sendAct('{\\'act\\':2,\\'no\\':0,\\'value\\':1}');\"></button>";
         if(data.out1==1)
-          document.getElementById("out1").innerHTML = "<button class='button button-on' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':1,\\'value\\':0}');\"></button>";
+          document.getElementById("out1").innerHTML = "<button class='button button-on' onclick=\"sendAct('{\\'act\\':2,\\'no\\':1,\\'value\\':0}');\"></button>";
         else
-          document.getElementById("out1").innerHTML = "<button class='button button-off' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':1,\\'value\\':1}');\"></button>";
+          document.getElementById("out1").innerHTML = "<button class='button button-off' onclick=\"sendAct('{\\'act\\':2,\\'no\\':1,\\'value\\':1}');\"></button>";
         if(data.out2==1)
-          document.getElementById("out2").innerHTML = "<button class='button button-on' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':2,\\'value\\':0}');\"></button>";
+          document.getElementById("out2").innerHTML = "<button class='button button-on' onclick=\"sendAct('{\\'act\\':2,\\'no\\':2,\\'value\\':0}');\"></button>";
         else
-          document.getElementById("out2").innerHTML = "<button class='button button-off' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':2,\\'value\\':1}');\"></button>";
-        if(data.out3==1)
-          document.getElementById("out3").innerHTML = "<button class='button button-on' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':3,\\'value\\':0}');\"></button>";
-        else
-          document.getElementById("out3").innerHTML = "<button class='button button-off' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':3,\\'value\\':1}');\"></button>";
-        if(data.out4==1)
-          document.getElementById("out4").innerHTML = "<button class='button button-on' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':4,\\'value\\':0}');\"></button>";
-        else
-          document.getElementById("out4").innerHTML = "<button class='button button-off' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':4,\\'value\\':1}');\"></button>";
-        if(data.out5==1)
-          document.getElementById("out5").innerHTML = "<button class='button button-on' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':5,\\'value\\':0}');\"></button>";
-        else
-          document.getElementById("out5").innerHTML = "<button class='button button-off' onclick=\"sendAct('#'+'{\\'act\\':2,\\'no\\':5,\\'value\\':1}');\"></button>";
-      }
+          document.getElementById("out2").innerHTML = "<button class='button button-off' onclick=\"sendAct('{\\'act\\':2,\\'no\\':2,\\'value\\':1}');\"></button>";
+        }
     }
     function sendAct(valueIn){
       Socket.send(valueIn);
@@ -195,22 +159,10 @@ char Body[] PROGMEM = R"=====(
     <tr>
       <th>00</th>
       <th>01</th>
-      <th>02</th>
-      <th>03</th>
-      <th>04</th>
-      <th>05</th>
-      <th>06</th>
-      <th>07</th>
     </tr>
     <tr>
       <th><span id="in0"></span></th>
       <th><span id="in1"></span></th>
-      <th><span id="in2"></span></th>
-      <th><span id="in3"></span></th>
-      <th><span id="in4"></span></th>
-      <th><span id="in5"></span></th>
-      <th><span id="in6"></span></th>
-      <th><span id="in7"></span></th>
     </tr>
   </table>
 
@@ -220,17 +172,11 @@ char Body[] PROGMEM = R"=====(
       <th>정지</th>
       <th>올림</th>
       <th>내림</th>
-      <th>03</th>
-      <th>04</th>
-      <th>05</th>
     </tr>
     <tr>
       <th><span id="out0">0</span></th>
       <th><span id="out1">1</span></th>
       <th><span id="out2">2</span></th>
-      <th><span id="out3">3</span></th>
-      <th><span id="out4">4</span></th>
-      <th><span id="out5">5</span></th>
     </tr>
   </table>
 )=====";
@@ -277,36 +223,6 @@ void handleRoot() {
   s+=FPSTR(Body);
   s+=FPSTR(Tail);
   server.send(200, "text/html", s);
-}
-
-void handleOn() {
-  /*
-  actPlc=server.arg("act").toInt();
-  //int value=server.arg("value").toInt();
-
-  Serial.println("----------------------------");
-  Serial.println(act);
-  //Serial.println(no);
-  //Serial.println(value);
-
-  if(actPlc==1) {
-    int no=server.arg("no").toInt();
-    int value=server.arg("value").toInt();
-    Out[no]=value;
-    crd16Rtu();
-  }
-  else if(actPlc==2) {
-    server.arg("ipMqtt").toCharArray(ipMqtt, sizeof(ipMqtt) - 1);
-    timeMqtt=server.arg("timeMqtt").toInt();
-    server.arg("email").toCharArray(email, sizeof(email) - 1);
-    Serial.println(ipMqtt);
-    Serial.println(timeMqtt);
-    Serial.println(email);
-    tickerMqtt.attach(timeMqtt, tickMqtt); 
-    saveConfig();
-  }
-  */
-  GoHome();  
 }
 
 void GoHome() {

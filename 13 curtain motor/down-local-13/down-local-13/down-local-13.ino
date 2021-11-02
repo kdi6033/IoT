@@ -61,7 +61,8 @@ int Out[8]={0},In[10]={0};  // plc 입력과 출력 저장
 int noOut=0,valueOut=0;
 int orderCurtain=0,orderCurtainPre=0; //0=stop, 1=up, 2=down  plc입력
 int orderCurtainWeb=0,orderCurtainWebPre=0; //0=stop, 1=up, 2=down  cpu의 web
-int orderCurtainNow=0;
+int orderCurtainMqtt=0,orderCurtainMqttPre=0; //0=stop, 1=up, 2=down  mqtt입력
+int orderCurtainNow=0,orderCurtainNowPre=0; //실행 값
 int OutLed[3]={0};
   
 unsigned long previousMillis = 0;     
@@ -79,7 +80,6 @@ void readConfig();
 void saveConfig();
 void factoryDefault();
 void handleRoot();
-void handleOn();
 void GoHome();
 void GoHomeWifi();
 void handleNotFound();
@@ -104,11 +104,10 @@ void tick()
   actCurtain();
   //if((countTick%5)==0)
     tickMeasure();
-  if((countTick%timeMqtt)==0) {
-    Serial.println("$$$$$$$$$$$$$$$$$$$$$$$");
-    countMqtt++;
-    tickMqtt();
-  }
+  //if((countTick%timeMqtt)==0) {
+  //  countMqtt++;
+  //  tickMqtt();
+  //}
 }
 
 void tickMeasure()
@@ -122,12 +121,6 @@ void upWebSocket() {
   //HTML로 보냄
   String json = "{\"in0\":"; json += In[0];
   json += ",\"in1\":"; json += In[1];
-  json += ",\"in2\":"; json += In[2];
-  json += ",\"in3\":"; json += In[3];
-  json += ",\"in4\":"; json += In[4];
-  json += ",\"in5\":"; json += In[5];
-  json += ",\"in6\":"; json += In[6];
-  json += ",\"in7\":"; json += In[7];
 
   json += ",\"out0\":"; json += OutLed[0];
   json += ",\"out1\":"; json += OutLed[1];
@@ -137,12 +130,8 @@ void upWebSocket() {
   //Serial.println(json);  
 }
 
-
 void tickMqtt()
 { 
-  if (!client.connected()) {
-    reconnect();
-  }
   if(mqttConnected != 1)
     return;
   String json;
@@ -213,7 +202,6 @@ void setup() {
   }
 
   server.on("/", handleRoot);
-  server.on("/on", handleOn);
   server.on("/download", handleDownload);
   server.on("/wifi", handleWifi);
   server.on("/wifisave", handleWifiSave);
@@ -335,21 +323,32 @@ void download_program(String fileName) {
   }
 }
 
+//웹페이지에서 출력버튼을 실행한다.
+// act=1 basic firmware를 내려받는다.
+// act=2 plc 출력 실행
 void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length){
   if(type == WStype_TEXT){
-    if(payload[0] == '#'){
-      for(int i = 0; i < length; i++)
-        payload[i]=payload[i+1];
-      payload[length]=0;
-      for(int i = 0; i < length; i++)
-        Serial.print((char) payload[i]);
-      onAct(payload,length);
-    }
-    else {
-      for(int i = 0; i < length; i++)
-        Serial.print((char) payload[i]);
-      Serial.println();
-    }
+    for(int i = 0; i < length; i++)
+      Serial.print((char) payload[i]);
+    Serial.println();
+  }
+  deserializeJson(doc,payload);
+  root = doc.as<JsonObject>();
+  act = root["act"];
+  Serial.println(act);
+  if(act==1) {
+    displayOled(3);
+    download_program("down-permwareBasic.bin");
+  }
+  if(act==2) {  //plc 출력
+    noOut=root["no"];
+    valueOut=root["value"];
+    orderCurtainWeb=noOut;
+    OutLed[0]=0;OutLed[1]=0;OutLed[2]=0;
+    OutLed[noOut]=1;
+    //Out[noOut]=valueOut;
+    upWebSocket();
+    actCurtain();
   }
 }
 
@@ -362,6 +361,9 @@ void callback(char* topic, byte* payload, unsigned int length) {
     Serial.print((char)payload[i]);
   }
   Serial.println();
+  deserializeJson(doc,payload);
+  root = doc.as<JsonObject>();
+  orderCurtainMqtt = root["state"];
 }
 
 // mqtt 통신에 지속적으로 접속한다.
@@ -397,6 +399,9 @@ void reconnect() {
 }
 
 void loop() {
+  if (!client.connected()) {
+    reconnect();
+  }
   webSocket.loop();
   server.handleClient();
   doTick();
@@ -478,47 +483,34 @@ void switchCurtain() {
     orderCurtain=2;
   else 
     orderCurtain=0;
-  Serial.println("");
-  Serial.printf("orderCurtain = %d",orderCurtain);
+  //Serial.println("");
+  //Serial.printf("orderCurtain = %d",orderCurtain);
 }
 
 void actCurtain() {
+  if(orderCurtainMqtt != orderCurtainMqttPre) {
+    orderCurtainMqttPre = orderCurtainMqtt;
+    orderCurtainNow=orderCurtainMqtt;
+  }
   if(orderCurtainWeb != orderCurtainWebPre) {
     orderCurtainWebPre = orderCurtainWeb;
-    //Serial.println("web======================");
-    //Serial.println(orderCurtainWeb);
-    if(orderCurtainWeb==1) {
-      Out[0]=1;
-      Out[1]=0;
-    }
-    else if(orderCurtainWeb==2) {
-      Out[0]=0;
-      Out[1]=1;
-    }
-    else {
-      Out[0]=0;
-      Out[1]=0;
-    }
-    outPlc = 1;
-    for(int i=0;i<2;i++) {
-      outPlc = 1;
-      noOut=i;
-      crd16Rtu();
-      delay(200);
-    };
-    if(orderCurtainWeb!=0)
-      orderCurtainNow=orderCurtainWeb;
+    orderCurtainNow=orderCurtainWeb;
   }
   
   if(orderCurtain != orderCurtainPre) {
     orderCurtainPre = orderCurtain;
-    //Serial.println("======================");
-    //Serial.println(orderCurtain);
-    if(orderCurtain==1) {
+    orderCurtainNow=orderCurtain;
+  }
+  if(orderCurtainNow != orderCurtainNowPre) {
+    Serial.println("");
+    Serial.printf("orderCurtainNow = %d",orderCurtainNow);
+    Serial.println("");
+    //tickMqtt();
+    if(orderCurtainNow==1) {
       Out[0]=1;
       Out[1]=0;
     }
-    else if(orderCurtain==2) {
+    else if(orderCurtainNow==2) {
       Out[0]=0;
       Out[1]=1;
     }
@@ -526,55 +518,14 @@ void actCurtain() {
       Out[0]=0;
       Out[1]=0;
     }
-    outPlc = 1;
     for(int i=0;i<2;i++) {
       outPlc = 1;
       noOut=i;
       crd16Rtu();
       delay(200);
     };
-    if(orderCurtain!=0)
-      orderCurtainNow=orderCurtain;
   }
-
-
-}
-
-// act=0 plc 입력을 읽어온다.
-// act=1 basic firmware를 내려받는다.
-// act=2 plc 출력 실행
-// act=3 
-void onAct(uint8_t * payload, size_t length) {
-  String s;
-  deserializeJson(doc,payload);
-  root = doc.as<JsonObject>();
-  act = root["act"];
-  //int no=0,value=0;
-  Serial.println(act);
-  if(act==1) {
-    displayOled(3);
-    download_program("down-permwareBasic.bin");
-  }
-  if(act==2) {  //plc 출력
-    noOut=root["no"];
-    valueOut=root["value"];
-    //Serial.println(no);
-    //Serial.println(value);
-    //Serial.println(act);
-    if(noOut==0) { //정지
-      orderCurtainWeb = 0;
-    }
-    else if(noOut==1) {  // 올림
-      orderCurtainWeb = 1;
-    }
-    if(noOut==2) {  // 내림
-      orderCurtainWeb = 2;
-    }
-    //outPlc=1;
-    OutLed[0]=0;OutLed[1]=0;OutLed[2]=0;
-    OutLed[noOut]=1;
-    upWebSocket();
-  }
+  orderCurtainNowPre=orderCurtainNow;
 }
 
 // 아두이노에서 RS485 출력을 내보낸다.
