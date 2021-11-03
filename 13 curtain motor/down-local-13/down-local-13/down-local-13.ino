@@ -56,7 +56,6 @@ int act=0,outPlc=0;
 int bootMode=0; //0:station  1:AP
 int counter=0;
 String inputString = "";         // 받은 문자열
-int timeMqtt=5;
 int Out[8]={0},In[10]={0};  // plc 입력과 출력 저장 
 int noOut=0,valueOut=0;
 int orderCurtain=0,orderCurtainPre=0; //0=stop, 1=up, 2=down  plc입력
@@ -104,10 +103,9 @@ void tick()
   actCurtain();
   //if((countTick%5)==0)
     tickMeasure();
-  //if((countTick%timeMqtt)==0) {
-  //  countMqtt++;
-  //  tickMqtt();
-  //}
+  // 접속하면 서버에 자동 등록하기 위해 10회 통신하고 그 다음 부터는 값이 변할 때만 전송한다.
+  if(countMqtt<5)
+    tickMqtt();
 }
 
 void tickMeasure()
@@ -145,6 +143,7 @@ void tickMqtt()
   json.toCharArray(msg, json.length()+1);
   Serial.println(msg);
   client.publish(outTopic, msg);
+  countMqtt++;
 }
 
 void displayOled(int no) {
