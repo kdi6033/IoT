@@ -62,7 +62,6 @@ int noOut=0,valueOut=0; //mqtt로 수신된 plc출력 명령 noOut=출력핀번�
 
 unsigned long previousMillis = 0;     
 const long interval = 1000;  
-int timeMqtt=2;
 
 //json을 위한 설정
 StaticJsonDocument<200> doc;
@@ -72,22 +71,25 @@ JsonObject root;
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-void readConfig();
-void saveConfig();
+void crd16Rtu();
+void displayOled(int no);
 void factoryDefault();
-void handleRoot();
 void GoHome();
 void GoHomeWifi();
-void handleNotFound();
-void handleWifi();
-void handleWifiSave();
-void handleScan();
 void handleConfig();
 void handleDownload();
 void handleManual();
-void displayOled(int no);
-void crd16Rtu();
+void handleNotFound();
+void handleRoot();
+void handleScan();
+void handleWifi();
+void handleWifiSave();
+void readConfig();
+void saveConfig();
 void serialEvent();
+void tick();
+void tickMeasure();
+void tickMqtt();
 void upWebSocket();
 
 void tick()
@@ -95,9 +97,11 @@ void tick()
   countTick++;
   if(countTick > 10000)
     countTick=0;
-
   //if((countTick%5)==0)
     tickMeasure();
+    // 접속하면 서버에 자동 등록하기 위해 10회 통신하고 그 다음 부터는 값이 변할 때만 전송한다.
+  if(countMqtt<5)
+    tickMqtt();
 }
 
 void tickMeasure()
@@ -143,6 +147,7 @@ void tickMqtt()
   json.toCharArray(msg, json.length()+1);
   Serial.println(msg);
   client.publish(outTopic, msg);
+  countMqtt++;
 }
 
 void displayOled(int no) {
