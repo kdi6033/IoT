@@ -99,8 +99,8 @@ void tick()
     countTick=0;
   //if((countTick%5)==0)
     tickMeasure();
-    // 접속하면 서버에 자동 등록하기 위해 10회 통신하고 그 다음 부터는 값이 변할 때만 전송한다.
-  if(countMqtt<5)
+  // 접속하면 서버에 자동 등록하기 위해 10회 통신하고 그 다음 부터는 값이 변할 때만 전송한다.
+  if((countTick%3)==0 && countMqtt<5)
     tickMqtt();
 }
 
@@ -235,7 +235,7 @@ void bootWifiAp() {
   WiFi.softAPConfig(apIP, apIP, netMsk);
   char i2rMac[30];
   sMac="i2r-"+sMac;
-  sMac.toCharArray(i2rMac, sMac.length());
+  sMac.toCharArray(i2rMac, sMac.length()+1);
   WiFi.softAP(i2rMac, "");
     ipAct=WiFi.softAPIP().toString();
   delay(500); // Without delay I've seen the IP address blank
