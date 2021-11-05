@@ -96,9 +96,7 @@ void displayOled(int no) {
     oled.putString(" 192.168.4.1");
   }
   else if(no==2) {
-    oled.setTextXY(2,6);              
-    oled.putString(" Connected    ");
-    oled.setTextXY(4,6);
+    oled.setTextXY(2,6);
     oled.putString(WiFi.localIP().toString());    
   }
   else if(no==3) {
@@ -110,7 +108,13 @@ void displayOled(int no) {
     oled.setTextXY(2,6);             
     oled.putString(" Booting .....    ");
   }
+  else if(no==5) {
+    GoHome();
+    oled.setTextXY(2,6);             
+    oled.putString(" Reset .....    ");
+  }
 }
+
 
 void setup() {
   pinMode(led, OUTPUT);
@@ -166,7 +170,7 @@ void bootWifiAp() {
   WiFi.softAPConfig(apIP, apIP, netMsk);
   char i2rMac[30];
   sMac="i2r-"+sMac;
-  sMac.toCharArray(i2rMac, sMac.length());
+  sMac.toCharArray(i2rMac, sMac.length()+1);
   WiFi.softAP(i2rMac, "");
     ipAct=WiFi.softAPIP().toString();
   delay(500); // Without delay I've seen the IP address blank

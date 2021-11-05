@@ -185,6 +185,11 @@ char Download[] PROGMEM = R"=====(
     <option value='down-local-07.bin'>7 [D1 mini shield] 온도습도센서 DHT11</option>";
     <option value='down-local-08.bin'>8 [효림] RY-WSY301</option>";
     <option value='down-local-09.bin'>9 [효림] MP-508E</option>";
+    <option value='down-local-10.bin'>10 사운드센서</option>";
+    <option value='down-local-11.bin'>11 충격센서</option>";
+    <option value='down-local-12.bin'>12 PLC-RS485</option>";
+    <option value='down-local-13.bin'>13 [효림]차양모터</option>";
+    <option value='down-local-14.bin'>14 [LS산전] MASTER-K120s</option>";
   </select>
   <br><br>[아마존서버를 이용한 크라우드제어 프로그램]
   <br>아마존 서버에 접속하여 크라우드 환경에서 모니터링/제어 하는 프로그램
