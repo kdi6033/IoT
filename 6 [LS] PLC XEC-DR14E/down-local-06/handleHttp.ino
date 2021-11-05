@@ -279,36 +279,6 @@ void handleRoot() {
   server.send(200, "text/html", s);
 }
 
-void handleOn() {
-  /*
-  actPlc=server.arg("act").toInt();
-  //int value=server.arg("value").toInt();
-
-  Serial.println("----------------------------");
-  Serial.println(act);
-  //Serial.println(no);
-  //Serial.println(value);
-
-  if(actPlc==1) {
-    int no=server.arg("no").toInt();
-    int value=server.arg("value").toInt();
-    Out[no]=value;
-    crd16Rtu();
-  }
-  else if(actPlc==2) {
-    server.arg("ipMqtt").toCharArray(ipMqtt, sizeof(ipMqtt) - 1);
-    timeMqtt=server.arg("timeMqtt").toInt();
-    server.arg("email").toCharArray(email, sizeof(email) - 1);
-    Serial.println(ipMqtt);
-    Serial.println(timeMqtt);
-    Serial.println(email);
-    tickerMqtt.attach(timeMqtt, tickMqtt); 
-    saveConfig();
-  }
-  */
-  GoHome();  
-}
-
 void GoHome() {
   String s;
   s="<meta http-equiv='refresh' content=\"0;url='http://"+ipAct+"/'\">";
