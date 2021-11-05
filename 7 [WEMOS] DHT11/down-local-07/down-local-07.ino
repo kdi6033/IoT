@@ -248,7 +248,7 @@ void bootWifiAp() {
   WiFi.softAPConfig(apIP, apIP, netMsk);
   char i2rMac[30];
   sMac="i2r-"+sMac;
-  sMac.toCharArray(i2rMac, sMac.length());
+  sMac.toCharArray(i2rMac, sMac.length()+1);
   WiFi.softAP(i2rMac, "");
     ipAct=WiFi.softAPIP().toString();
   delay(500); // Without delay I've seen the IP address blank
