@@ -461,7 +461,7 @@ void serialEvent() {
     inputString += inChar;
   }
   //Serial.println("");
-  if(outPlc!=1 && inputString.length() >= 6) {
+  if(inputString.charAt(1)==0x02 && inputString.length() >= 6) {
     int b=1;
     sIn="";
     for(int i=1;i<=8;i++) {
