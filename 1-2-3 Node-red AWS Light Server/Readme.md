@@ -1,4 +1,7 @@
 # node red program
+IoT core 설치
+node-red 설치     
+mongoDB 설치
 ```
 [
     {
