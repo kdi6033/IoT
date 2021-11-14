@@ -10,8 +10,8 @@
 - 인터넷은 연결되어 있지 않아도 되며 AP에서 DHCP로 할당되는 주소를 사용 함으로 192.168.*.* 을 사용 함으로 이론상으로 256 * 256 개의 기기를 연결할수 있습니다. 
 - 시스템을 구성하기 위해서는 아래 3가지 프로그램을 설치해야 합니다.
 - [node-red](https://youtu.be/nL3qdDtZC98)
-- 모스키토
-- mongoDB
+- [모스키토](https://youtu.be/27mBMakaPuY)
+- [mongoDB](https://youtu.be/ltLJx28tDOs)
 
 
 
