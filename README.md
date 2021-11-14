@@ -9,7 +9,7 @@
 - 같은 AP 즉 무선공유기에 연결되어 있는 기기들을 모니터링/제어 합니다. 
 - 인터넷은 연결되어 있지 않아도 되며 AP에서 DHCP로 할당되는 주소를 사용 함으로 192.168.*.* 을 사용 함으로 이론상으로 256 * 256 개의 기기를 연결할수 있습니다. 
 - 시스템을 구성하기 위해서는 아래 3가지 프로그램을 설치해야 합니다.
-- 아두이노 프로그램은 down-local-* 을 다운로드 받는다.
+- 아두이노 프로그램은 down-local-* 을 다운로드 받는다. [유튜브보기](https://www.youtube.com/watch?v=8n9ETHVoJKM)
 - [node-red](https://youtu.be/nL3qdDtZC98)
 - [모스키토](https://youtu.be/27mBMakaPuY)
 - [mongoDB](https://youtu.be/ltLJx28tDOs)
@@ -21,11 +21,11 @@
 - 프로그램이 사용자 ID와 데이터베이스가 함계 운용되어 복잡하다.
 - 아마존 크라우드 https://i2r.link/ 에 접속하여 상단 메뉴에서 "아마존크라우드 IoT"를 선택하면 프로그램 하지 않아도 시스템을 구성할 수 있다.
 - [아마존크라우드 IoT 접속](http://18.237.189.188:1880/login)    
-- - 아두이노 프로그램은 down-aws-* 을 다운로드 받는다.
+- 아두이노 프로그램은 down-aws-* 을 다운로드 받는다. [유튜브보기](https://www.youtube.com/watch?v=8n9ETHVoJKM)
 
 ### 3. 아마존크라우드(AWS) 서버프로그램 (개인 사용자) 
 - 개인이 아마존크라우드에서 node-red 불러오기를 이용해 서버를 구성해 프로그램 하지 않아도 시스템을 만들 수 있다.
-- 아두이노 프로그램은 down-awsLight-* 을 다운로드 받는다.
+- 아두이노 프로그램은 down-awsLight-* 을 다운로드 받는다. [유튜브보기](https://www.youtube.com/watch?v=8n9ETHVoJKM)
 - 아래 순서로 아마존 크라우드 서버를 만든다.
 - [EC2 인스턴스 설치](https://youtu.be/voWEBY1nbb8)
 - [인바운드 설정](https://youtu.be/GPHIZjJIsFA)
