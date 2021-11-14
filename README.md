@@ -47,5 +47,6 @@
 |10|sound|<img src = "https://user-images.githubusercontent.com/37902752/133548055-3d3c8029-809a-4185-ae31-194b7422e0dc.png" width="100" height="50">|down-local-10<br> down-aws-10|소음,소리크기|-|-
 |11|진동|<img src = "" width="100" height="50">|down-local-11<br> down-aws-11|진동|-|-
 |12|PLC-RS485|<img src = "" width="100" height="50">|down-local-12<br> down-aws-12|PLC 무선제어|-|- 
-|13|curtain motor|<img src = "" width="100" height="50">|down-local-12<br> down-aws-12|모터 무선제어|-|- 
+|13|curtain motor|<img src = "" width="100" height="50">|down-local-13<br> down-aws-13|모터 무선제어|-|- 
+|14|MASTER-K120s|<img src = "" width="100" height="50">|down-local-14<br> down-aws-14|PLC입출력|-|[LS산전](https://www.ls-electric.com/ko/product/category/CCC001)
 
