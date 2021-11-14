@@ -11,7 +11,8 @@
 - 시스템을 구성하기 위해서는 아래 3가지 프로그램을 설치해야 합니다.
 - [node-red](https://youtu.be/nL3qdDtZC98)
 - [모스키토](https://youtu.be/27mBMakaPuY)
-- [mongoDB](https://youtu.be/ltLJx28tDOs)    
+- [mongoDB](https://youtu.be/ltLJx28tDOs)
+- [node red 로컬서버 소스프로그램설치](https://github.com/kdi6033/IoT/tree/main/1-2-3%20Node-red%20AWS%20Light%20Server)    
 
 ### 2. 아마존크라우드(AWS) 서버프로그램 (다수의 사용자)    
 - 아마존 크라우드에서 동작하여 인터넷을 이용하여 세계 어느 곳에서든지 사용할 수 있다.    
@@ -28,7 +29,7 @@
 - [IoT Core 설치](https://youtu.be/0PnrpBVUjJQ)
 - [Node-RED 설치](https://youtu.be/7CwXjkSA6HE)
 - [MongoDB 설치](https://youtu.be/jbly92YECBw)
-- [node red 서버소스프로그램설치]()
+- [node red 아마존서버 소스프로그램설치](https://github.com/kdi6033/IoT/tree/main/1-2-3%20Node-red%20AWS%20Light%20Server)
 
 |Type|이름|<center>사진</center>|<center>파일이름</center>|<center>측정값</center>|<center>메뉴얼</center>|회사이름
 |----|----|---------------:|:--------------------|:---------------------:|:---------------------:|:---------------------:
