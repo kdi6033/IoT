@@ -35,7 +35,824 @@ PLC 구매처 : https://ko.aliexpress.com/item/1005002356037000.html?spm=a2g0s.9
 
 * NODE-RED FLOW  
 ```
-[{"id":"96ba48de328c0ff7","type":"tab","label":"프로토콜 통신 확인","disabled":false,"info":""},{"id":"1e2eedde.461722","type":"function","z":"96ba48de328c0ff7","name":"7 주소읽기","func":"var buf = Buffer.alloc(8);\n//장치 주소를 읽기: 00 03 00 00 00 01 85 DB \nbuf[0]=0x00;\nbuf[1]=0x03;\nbuf[2]=0x00;\nbuf[3]=0x00;\nbuf[4]=0x00;\nbuf[5]=0x01;\n//buf[6]=0x85;\n//buf[7]=0xdb;\n\nmsg.payload=buf;\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":290,"y":380,"wires":[["df74654652cc11c7"]]},{"id":"74920e84.0f63c","type":"serial out","z":"96ba48de328c0ff7","name":"COM8","serial":"63957752.49a888","x":655,"y":140,"wires":[],"l":false},{"id":"7bb34e4a.b9515","type":"inject","z":"96ba48de328c0ff7","name":"","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payload":"","payloadType":"date","x":140,"y":380,"wires":[["1e2eedde.461722"]]},{"id":"44401ca3.772024","type":"serial in","z":"96ba48de328c0ff7","name":"","serial":"63957752.49a888","x":550,"y":220,"wires":[["981615afbfce4ca9"]]},{"id":"981615afbfce4ca9","type":"debug","z":"96ba48de328c0ff7","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","targetType":"msg","statusVal":"","statusType":"auto","x":710,"y":220,"wires":[]},{"id":"df74654652cc11c7","type":"function","z":"96ba48de328c0ff7","name":"modbus cal","func":"var auchCRCHi = [\n        0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0,\n        0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41,\n        0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0,\n        0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40,\n        0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1,\n        0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41,\n        0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1,\n        0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41,\n        0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0,\n        0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40,\n        0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1,\n        0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40,\n        0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0,\n        0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40,\n        0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0,\n        0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40,\n        0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0,\n        0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41,\n        0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0,\n        0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41,\n        0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0,\n        0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40,\n        0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1,\n        0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41,\n        0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0,\n        0x80, 0x41, 0x00, 0xC1, 0x81, 0x40\n      ];\n\n      /* Table of CRC values for low-order byte */\n    var auchCRCLo = [\n        0x00, 0xC0, 0xC1, 0x01, 0xC3, 0x03, 0x02, 0xC2, 0xC6, 0x06,\n        0x07, 0xC7, 0x05, 0xC5, 0xC4, 0x04, 0xCC, 0x0C, 0x0D, 0xCD,\n        0x0F, 0xCF, 0xCE, 0x0E, 0x0A, 0xCA, 0xCB, 0x0B, 0xC9, 0x09,\n        0x08, 0xC8, 0xD8, 0x18, 0x19, 0xD9, 0x1B, 0xDB, 0xDA, 0x1A,\n        0x1E, 0xDE, 0xDF, 0x1F, 0xDD, 0x1D, 0x1C, 0xDC, 0x14, 0xD4,\n        0xD5, 0x15, 0xD7, 0x17, 0x16, 0xD6, 0xD2, 0x12, 0x13, 0xD3,\n        0x11, 0xD1, 0xD0, 0x10, 0xF0, 0x30, 0x31, 0xF1, 0x33, 0xF3,\n        0xF2, 0x32, 0x36, 0xF6, 0xF7, 0x37, 0xF5, 0x35, 0x34, 0xF4,\n        0x3C, 0xFC, 0xFD, 0x3D, 0xFF, 0x3F, 0x3E, 0xFE, 0xFA, 0x3A,\n        0x3B, 0xFB, 0x39, 0xF9, 0xF8, 0x38, 0x28, 0xE8, 0xE9, 0x29,\n        0xEB, 0x2B, 0x2A, 0xEA, 0xEE, 0x2E, 0x2F, 0xEF, 0x2D, 0xED,\n        0xEC, 0x2C, 0xE4, 0x24, 0x25, 0xE5, 0x27, 0xE7, 0xE6, 0x26,\n        0x22, 0xE2, 0xE3, 0x23, 0xE1, 0x21, 0x20, 0xE0, 0xA0, 0x60,\n        0x61, 0xA1, 0x63, 0xA3, 0xA2, 0x62, 0x66, 0xA6, 0xA7, 0x67,\n        0xA5, 0x65, 0x64, 0xA4, 0x6C, 0xAC, 0xAD, 0x6D, 0xAF, 0x6F,\n        0x6E, 0xAE, 0xAA, 0x6A, 0x6B, 0xAB, 0x69, 0xA9, 0xA8, 0x68,\n        0x78, 0xB8, 0xB9, 0x79, 0xBB, 0x7B, 0x7A, 0xBA, 0xBE, 0x7E,\n        0x7F, 0xBF, 0x7D, 0xBD, 0xBC, 0x7C, 0xB4, 0x74, 0x75, 0xB5,\n        0x77, 0xB7, 0xB6, 0x76, 0x72, 0xB2, 0xB3, 0x73, 0xB1, 0x71,\n        0x70, 0xB0, 0x50, 0x90, 0x91, 0x51, 0x93, 0x53, 0x52, 0x92,\n        0x96, 0x56, 0x57, 0x97, 0x55, 0x95, 0x94, 0x54, 0x9C, 0x5C,\n        0x5D, 0x9D, 0x5F, 0x9F, 0x9E, 0x5E, 0x5A, 0x9A, 0x9B, 0x5B,\n        0x99, 0x59, 0x58, 0x98, 0x88, 0x48, 0x49, 0x89, 0x4B, 0x8B,\n        0x8A, 0x4A, 0x4E, 0x8E, 0x8F, 0x4F, 0x8D, 0x4D, 0x4C, 0x8C,\n        0x44, 0x84, 0x85, 0x45, 0x87, 0x47, 0x46, 0x86, 0x82, 0x42,\n        0x43, 0x83, 0x41, 0x81, 0x80, 0x40\n      ];\n\n//var data=Buffer.from([1,15,0,0,0,10,2,255,0,0,0]);\nvar data=Buffer.from(msg.payload);\nvar nTemp;\nvar wCRCWord = 0xFFFF;\n//data=msg.payload;\nvar len=data.length-2;\nvar crc = [0xFF, 0xFF];\n    var nextByte = 0;\n    var uIndex; /* will index into CRC lookup*/ /* table */\n    /* pass through message buffer */\n    for (var i = 0; i < len && i < data.length; i++) {\n      nextByte = 0xFF & (data[i]);\n      uIndex = crc[0] ^ nextByte; //*puchMsg++; /* calculate the CRC */\n      crc[0] = crc[1] ^ auchCRCHi[uIndex];\n      crc[1] = auchCRCLo[uIndex];\n    }\n\ndata[len]=crc[0];\ndata[len+1]=crc[1];\nmsg.payload= data;\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":550,"y":140,"wires":[["74920e84.0f63c"]]},{"id":"e813ace9efaa8a1d","type":"function","z":"96ba48de328c0ff7","name":"3 모든 릴레이 on","func":"//Relay on: FF 0F 00 00 00 08 01 FF 30 1D\nvar buf = Buffer.alloc(10);\nbuf=[0xff,0x0f,0x00,0x00,0x00,0x08,0x00,0xff,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":310,"y":220,"wires":[["df74654652cc11c7"]]},{"id":"3b5ddf0c94cbab8d","type":"inject","z":"96ba48de328c0ff7","name":"","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payloadType":"date","x":140,"y":220,"wires":[["e813ace9efaa8a1d"]]},{"id":"bf20c6085cd88c0d","type":"function","z":"96ba48de328c0ff7","name":"4 모든 릴레이 off","func":"//Relay on: FF 0F 00 00 00 08 01 FF 30 1D\nvar buf = Buffer.alloc(10);\nbuf=[0xff,0x0f,0x00,0x00,0x00,0x08,0x01,0x00,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":310,"y":260,"wires":[["df74654652cc11c7"]]},{"id":"0f395cdab3d81aa8","type":"inject","z":"96ba48de328c0ff7","name":"","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payloadType":"date","x":140,"y":260,"wires":[["bf20c6085cd88c0d"]]},{"id":"7e65f67ec0655992","type":"function","z":"96ba48de328c0ff7","name":"14 일정시간 on 후에 off","func":"//14. 1 릴레이를 켜십시오 (플래시 닫기 모드 2 초)\n//Relay1 on: FF 10 00 03 00 02 04 00 04 00 14 C5 9F\nvar buf = Buffer.alloc(13);\nbuf=[0xff,0x10,0x00,0x03,0x00,0x02,0x04,0x00,0x04,0x00,0x14,0x00,0x00];\n\n/*\nbuf[0]=0xff;\nbuf[1]=0x10;\nbuf[2]=0x00;\nbuf[3]=0x03;\nbuf[4]=0x00;\nbuf[5]=0x02;\nbuf[6]=0x04;\nbuf[7]=0x00;\nbuf[8]=0x04;\nbuf[9]=0x00;\nbuf[10]=0x14;\n*/\n\nmsg.payload=buf;\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":370,"y":1220,"wires":[[]]},{"id":"77ffdb72aa0f4c34","type":"inject","z":"96ba48de328c0ff7","name":"","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payload":"","payloadType":"date","x":160,"y":1220,"wires":[["7e65f67ec0655992"]]},{"id":"3c5b166a892e84a0","type":"function","z":"96ba48de328c0ff7","name":"4번 on","func":"//Relay on: FF 0F 00 00 00 08 01 FF 30 1D\nvar buf = Buffer.alloc(8);\nbuf=[0xff,0x05,0x00,0x03,0xff,0x00,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":790,"y":500,"wires":[[]]},{"id":"4223e038f4a9eab2","type":"inject","z":"96ba48de328c0ff7","name":"","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payloadType":"date","x":640,"y":500,"wires":[["3c5b166a892e84a0"]]},{"id":"c6093c8f5c735da1","type":"function","z":"96ba48de328c0ff7","name":"15 일정시간 off 후에 on","func":"//14. 1 릴레이를 켜십시오 (플래시 닫기 모드 2 초)\n//Relay1 on: FF 10 00 03 00 02 04 00 04 00 14 C5 9F\nvar buf = Buffer.alloc(8);\nbuf=[0xff,0x05,0x00,0x00,0x55,0x00,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":370,"y":1280,"wires":[[]]},{"id":"c56ed9168a68e063","type":"inject","z":"96ba48de328c0ff7","name":"","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payload":"","payloadType":"date","x":160,"y":1280,"wires":[["c6093c8f5c735da1"]]},{"id":"ce9dd92ebd4c3408","type":"function","z":"96ba48de328c0ff7","name":"14 일정시간 on 후에 off","func":"//14. 1 릴레이를 켜십시오 (플래시 닫기 모드 2 초)\n//Relay1 on: FF 10 00 03 00 02 04 00 04 00 14 C5 9F\nvar buf = Buffer.alloc(13);\nbuf=[0xff,0x10,0x00,0x03,0x00,0x02,0x04,0x00,0x04,0x00,0x14,0x00,0x00];\n\n/*\nbuf[0]=0xff;\nbuf[1]=0x10;\nbuf[2]=0x00;\nbuf[3]=0x03;\nbuf[4]=0x00;\nbuf[5]=0x02;\nbuf[6]=0x04;\nbuf[7]=0x00;\nbuf[8]=0x04;\nbuf[9]=0x00;\nbuf[10]=0x14;\n*/\n\nmsg.payload=buf;\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":370,"y":1320,"wires":[[]]},{"id":"84670dbf5fbdfb10","type":"inject","z":"96ba48de328c0ff7","name":"","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payload":"","payloadType":"date","x":160,"y":1320,"wires":[["ce9dd92ebd4c3408"]]},{"id":"9dd99832eab3b3ea","type":"function","z":"96ba48de328c0ff7","name":"14 일정시간 on 후에 off","func":"//14. 1 릴레이를 켜십시오 (플래시 닫기 모드 2 초)\n//Relay1 on: FF 10 00 03 00 02 04 00 04 00 14 C5 9F\nvar buf = Buffer.alloc(13);\nbuf=[0xff,0x10,0x00,0x03,0x00,0x02,0x04,0x00,0x04,0x00,0x14,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":330,"y":480,"wires":[["df74654652cc11c7"]]},{"id":"596e101ad42c9f18","type":"inject","z":"96ba48de328c0ff7","name":"","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payloadType":"date","x":140,"y":480,"wires":[["9dd99832eab3b3ea"]]},{"id":"fedcac4b0a748c4c","type":"function","z":"96ba48de328c0ff7","name":"4번 off","func":"//Relay on: FF 0F 00 00 00 08 01 FF 30 1D\nvar buf = Buffer.alloc(8);\nbuf=[0xff,0x05,0x00,0x03,0x00,0x00,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":790,"y":540,"wires":[[]]},{"id":"67b0aabe889606e7","type":"inject","z":"96ba48de328c0ff7","name":"","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payloadType":"date","x":640,"y":540,"wires":[["fedcac4b0a748c4c"]]},{"id":"df3538bf3e305f3e","type":"function","z":"96ba48de328c0ff7","name":"3번 on","func":"//Relay on: FF 0F 00 00 00 08 01 FF 30 1D\nvar buf = Buffer.alloc(8);\nbuf=[0xff,0x05,0x00,0x02,0xff,0x00,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":790,"y":420,"wires":[[]]},{"id":"49bc2c92672fe691","type":"inject","z":"96ba48de328c0ff7","name":"","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payloadType":"date","x":640,"y":420,"wires":[["df3538bf3e305f3e"]]},{"id":"a0af05aeade3c00d","type":"function","z":"96ba48de328c0ff7","name":"3번 off","func":"//Relay on: FF 0F 00 00 00 08 01 FF 30 1D\nvar buf = Buffer.alloc(8);\nbuf=[0xff,0x05,0x00,0x02,0x00,0x00,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":790,"y":460,"wires":[[]]},{"id":"2442807223e2c1c4","type":"inject","z":"96ba48de328c0ff7","name":"","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payloadType":"date","x":640,"y":460,"wires":[["a0af05aeade3c00d"]]},{"id":"38f22e51a86b006d","type":"function","z":"96ba48de328c0ff7","name":"2번 on","func":"//Relay on: FF 0F 00 00 00 08 01 FF 30 1D\nvar buf = Buffer.alloc(8);\nbuf=[0xff,0x05,0x00,0x01,0xff,0x00,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":790,"y":340,"wires":[[]]},{"id":"f4d88235f39dfacd","type":"inject","z":"96ba48de328c0ff7","name":"","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payloadType":"date","x":640,"y":340,"wires":[["38f22e51a86b006d"]]},{"id":"e42476c1601ca8b3","type":"function","z":"96ba48de328c0ff7","name":"2번 off","func":"//Relay on: FF 0F 00 00 00 08 01 FF 30 1D\nvar buf = Buffer.alloc(8);\nbuf=[0xff,0x05,0x00,0x01,0x00,0x00,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":790,"y":380,"wires":[[]]},{"id":"872ff8a911c23193","type":"inject","z":"96ba48de328c0ff7","name":"","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payloadType":"date","x":640,"y":380,"wires":[["e42476c1601ca8b3"]]},{"id":"ebc141ec681db063","type":"function","z":"96ba48de328c0ff7","name":"1 1번 릴레이 on","func":"//Relay on: FF 0F 00 00 00 08 01 FF 30 1D\nvar buf = Buffer.alloc(8);\nbuf=[0xff,0x05,0x00,0x00,0xff,0x00,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":320,"y":140,"wires":[["df74654652cc11c7"]]},{"id":"ab6e3ea22c0f777d","type":"inject","z":"96ba48de328c0ff7","name":"","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payloadType":"date","x":140,"y":140,"wires":[["ebc141ec681db063"]]},{"id":"09952d3d11d7a98c","type":"function","z":"96ba48de328c0ff7","name":"2 1번 릴레이 off","func":"//Relay on: FF 0F 00 00 00 08 01 FF 30 1D\nvar buf = Buffer.alloc(8);\nbuf=[0xff,0x05,0x00,0x00,0x00,0x00,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":320,"y":180,"wires":[["df74654652cc11c7"]]},{"id":"6e779777afe3aa4f","type":"inject","z":"96ba48de328c0ff7","name":"","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payloadType":"date","x":140,"y":180,"wires":[["09952d3d11d7a98c"]]},{"id":"ebf165f01e168673","type":"function","z":"96ba48de328c0ff7","name":"8 릴레이 상태 읽기","func":"//FF 01 00 00 00 08 28 12\nvar buf = Buffer.alloc(8);\nbuf=[0xff,0x01,0x00,0x00,0x00,0x08,0x00,0x00];\nbuf[4]=msg.payload;\n\nmsg.payload=buf;\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":310,"y":420,"wires":[["df74654652cc11c7"]]},{"id":"af25cf2ca6d3d934","type":"inject","z":"96ba48de328c0ff7","name":"","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payloadType":"date","x":140,"y":420,"wires":[["ebf165f01e168673"]]},{"id":"1b6c4a4ebc70377a","type":"comment","z":"96ba48de328c0ff7","name":"2,3,4번 on off","info":"buf[3] : 릴레이 번지수\nbuf[4] : 릴레이 상태 0xff(on), 0x00(off)","x":630,"y":300,"wires":[]},{"id":"ed6bd19c7aa6b192","type":"comment","z":"96ba48de328c0ff7","name":"프로토콜 참조 설명","info":"https://ko.aliexpress.com/item/1005002356037000.html?spm=a2g0s.9042311.0.0.27424c4dc8WPuJ\n\n","x":150,"y":100,"wires":[]},{"id":"f8889f3617c1c2f7","type":"comment","z":"96ba48de328c0ff7","name":"5 address(국번) 01로 설정","info":"보내기 : 00 10 00 00 00 01 02 00 _01_ 6A 00\n반환 그대로 : 00 10 00 00 00 01 02 00 _01_ 6A 00\n\n9번째가 주소 정보 : 01\n\n01로 수정하게 될 경우 기존 릴레이 제어 프로토콜에서\nFF를 01로 수정\n예시) 1번릴레이 on\nbuf=[0xff,0x05,0x00,0x00,0xff,0x00,0x00,0x00];\n>> 어드레스 01로 변경\nbuf=[0x01,0x05,0x00,0x00,0xff,0x00,0x00,0x00];","x":170,"y":300,"wires":[]},{"id":"1b714e20de7bb6b6","type":"comment","z":"96ba48de328c0ff7","name":"6 address(국번) 255로 설정","info":"보내기 : 00 10 00 00 00 01 02 00 _FF_ EB 80\n반환 그대로: 00 10 00 00 00 01 02 00 _FF_ EB 80\n\n9번째가 주소 정보 : FF","x":180,"y":340,"wires":[]},{"id":"216c265948ed1ce0","type":"function","z":"96ba48de328c0ff7","name":"15 일정시간 off 후에 on","func":"//15, No. 1 릴레이 해제 (플래시 모드 3 초)\n//Relay1 on: FF 10 00 03 00 02 04 00 02 00 1E A5 99\nvar buf = Buffer.alloc(13);\nbuf=[0xff,0x10,0x00,0x03,0x00,0x02,0x04,0x00,0x02,0x00,0x1E,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":330,"y":520,"wires":[["df74654652cc11c7"]]},{"id":"aced97620bee068c","type":"inject","z":"96ba48de328c0ff7","name":"","props":[{"p":"payload"},{"p":"topic","vt":"str"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payload":"","payloadType":"date","x":140,"y":520,"wires":[["216c265948ed1ce0"]]},{"id":"63957752.49a888","type":"serial-port","serialport":"COM8","serialbaud":"9600","databits":"8","parity":"none","stopbits":"1","waitfor":"","dtr":"none","rts":"none","cts":"none","dsr":"none","newline":"100","bin":"bin","out":"time","addchar":"","responsetimeout":"10000"}]
+[
+    {
+        "id": "437d4cb4ae8cb695",
+        "type": "function",
+        "z": "d13ebbb690b59258",
+        "name": "7 주소읽기",
+        "func": "var buf = Buffer.alloc(8);\n//장치 주소를 읽기: 00 03 00 00 00 01 85 DB \nbuf[0]=0x00;\nbuf[1]=0x03;\nbuf[2]=0x00;\nbuf[3]=0x00;\nbuf[4]=0x00;\nbuf[5]=0x01;\n//buf[6]=0x85;\n//buf[7]=0xdb;\n\nmsg.payload=buf;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 290,
+        "y": 443,
+        "wires": [
+            [
+                "2d08ab72562d5b26"
+            ]
+        ]
+    },
+    {
+        "id": "b2a303f2d14bb0a8",
+        "type": "serial out",
+        "z": "d13ebbb690b59258",
+        "name": "COM8",
+        "serial": "63957752.49a888",
+        "x": 655,
+        "y": 140,
+        "wires": [],
+        "l": false
+    },
+    {
+        "id": "db7d2da467161f0e",
+        "type": "inject",
+        "z": "d13ebbb690b59258",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 443,
+        "wires": [
+            [
+                "437d4cb4ae8cb695"
+            ]
+        ]
+    },
+    {
+        "id": "3d3d5a21a3f56beb",
+        "type": "serial in",
+        "z": "d13ebbb690b59258",
+        "name": "",
+        "serial": "63957752.49a888",
+        "x": 550,
+        "y": 220,
+        "wires": [
+            [
+                "2c4f68c6d7360b43"
+            ]
+        ]
+    },
+    {
+        "id": "2c4f68c6d7360b43",
+        "type": "debug",
+        "z": "d13ebbb690b59258",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 710,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "2d08ab72562d5b26",
+        "type": "function",
+        "z": "d13ebbb690b59258",
+        "name": "modbus cal",
+        "func": "var auchCRCHi = [\n        0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0,\n        0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41,\n        0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0,\n        0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40,\n        0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1,\n        0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41,\n        0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1,\n        0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41,\n        0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0,\n        0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40,\n        0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1,\n        0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40,\n        0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0,\n        0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40,\n        0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0,\n        0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40,\n        0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0,\n        0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41,\n        0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0,\n        0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41,\n        0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0,\n        0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40,\n        0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1,\n        0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41,\n        0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0,\n        0x80, 0x41, 0x00, 0xC1, 0x81, 0x40\n      ];\n\n      /* Table of CRC values for low-order byte */\n    var auchCRCLo = [\n        0x00, 0xC0, 0xC1, 0x01, 0xC3, 0x03, 0x02, 0xC2, 0xC6, 0x06,\n        0x07, 0xC7, 0x05, 0xC5, 0xC4, 0x04, 0xCC, 0x0C, 0x0D, 0xCD,\n        0x0F, 0xCF, 0xCE, 0x0E, 0x0A, 0xCA, 0xCB, 0x0B, 0xC9, 0x09,\n        0x08, 0xC8, 0xD8, 0x18, 0x19, 0xD9, 0x1B, 0xDB, 0xDA, 0x1A,\n        0x1E, 0xDE, 0xDF, 0x1F, 0xDD, 0x1D, 0x1C, 0xDC, 0x14, 0xD4,\n        0xD5, 0x15, 0xD7, 0x17, 0x16, 0xD6, 0xD2, 0x12, 0x13, 0xD3,\n        0x11, 0xD1, 0xD0, 0x10, 0xF0, 0x30, 0x31, 0xF1, 0x33, 0xF3,\n        0xF2, 0x32, 0x36, 0xF6, 0xF7, 0x37, 0xF5, 0x35, 0x34, 0xF4,\n        0x3C, 0xFC, 0xFD, 0x3D, 0xFF, 0x3F, 0x3E, 0xFE, 0xFA, 0x3A,\n        0x3B, 0xFB, 0x39, 0xF9, 0xF8, 0x38, 0x28, 0xE8, 0xE9, 0x29,\n        0xEB, 0x2B, 0x2A, 0xEA, 0xEE, 0x2E, 0x2F, 0xEF, 0x2D, 0xED,\n        0xEC, 0x2C, 0xE4, 0x24, 0x25, 0xE5, 0x27, 0xE7, 0xE6, 0x26,\n        0x22, 0xE2, 0xE3, 0x23, 0xE1, 0x21, 0x20, 0xE0, 0xA0, 0x60,\n        0x61, 0xA1, 0x63, 0xA3, 0xA2, 0x62, 0x66, 0xA6, 0xA7, 0x67,\n        0xA5, 0x65, 0x64, 0xA4, 0x6C, 0xAC, 0xAD, 0x6D, 0xAF, 0x6F,\n        0x6E, 0xAE, 0xAA, 0x6A, 0x6B, 0xAB, 0x69, 0xA9, 0xA8, 0x68,\n        0x78, 0xB8, 0xB9, 0x79, 0xBB, 0x7B, 0x7A, 0xBA, 0xBE, 0x7E,\n        0x7F, 0xBF, 0x7D, 0xBD, 0xBC, 0x7C, 0xB4, 0x74, 0x75, 0xB5,\n        0x77, 0xB7, 0xB6, 0x76, 0x72, 0xB2, 0xB3, 0x73, 0xB1, 0x71,\n        0x70, 0xB0, 0x50, 0x90, 0x91, 0x51, 0x93, 0x53, 0x52, 0x92,\n        0x96, 0x56, 0x57, 0x97, 0x55, 0x95, 0x94, 0x54, 0x9C, 0x5C,\n        0x5D, 0x9D, 0x5F, 0x9F, 0x9E, 0x5E, 0x5A, 0x9A, 0x9B, 0x5B,\n        0x99, 0x59, 0x58, 0x98, 0x88, 0x48, 0x49, 0x89, 0x4B, 0x8B,\n        0x8A, 0x4A, 0x4E, 0x8E, 0x8F, 0x4F, 0x8D, 0x4D, 0x4C, 0x8C,\n        0x44, 0x84, 0x85, 0x45, 0x87, 0x47, 0x46, 0x86, 0x82, 0x42,\n        0x43, 0x83, 0x41, 0x81, 0x80, 0x40\n      ];\n\n//var data=Buffer.from([1,15,0,0,0,10,2,255,0,0,0]);\nvar data=Buffer.from(msg.payload);\nvar nTemp;\nvar wCRCWord = 0xFFFF;\n//data=msg.payload;\nvar len=data.length-2;\nvar crc = [0xFF, 0xFF];\n    var nextByte = 0;\n    var uIndex; /* will index into CRC lookup*/ /* table */\n    /* pass through message buffer */\n    for (var i = 0; i < len && i < data.length; i++) {\n      nextByte = 0xFF & (data[i]);\n      uIndex = crc[0] ^ nextByte; //*puchMsg++; /* calculate the CRC */\n      crc[0] = crc[1] ^ auchCRCHi[uIndex];\n      crc[1] = auchCRCLo[uIndex];\n    }\n\ndata[len]=crc[0];\ndata[len+1]=crc[1];\nmsg.payload= data;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 550,
+        "y": 140,
+        "wires": [
+            [
+                "b2a303f2d14bb0a8"
+            ]
+        ]
+    },
+    {
+        "id": "45b8424324f9309b",
+        "type": "function",
+        "z": "d13ebbb690b59258",
+        "name": "3 모든 릴레이 on",
+        "func": "//Relay on: FF 0F 00 00 00 08 01 FF 30 1D\nvar buf = Buffer.alloc(10);\nbuf=[0xff,0x0f,0x00,0x00,0x00,0x08,0x00,0xff,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 220,
+        "wires": [
+            [
+                "2d08ab72562d5b26"
+            ]
+        ]
+    },
+    {
+        "id": "6f9ba6a83c6cbfe9",
+        "type": "inject",
+        "z": "d13ebbb690b59258",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 220,
+        "wires": [
+            [
+                "45b8424324f9309b"
+            ]
+        ]
+    },
+    {
+        "id": "f3488d0dfe8ef2ed",
+        "type": "function",
+        "z": "d13ebbb690b59258",
+        "name": "4 모든 릴레이 off",
+        "func": "//Relay on: FF 0F 00 00 00 08 01 FF 30 1D\nvar buf = Buffer.alloc(10);\nbuf=[0xff,0x0f,0x00,0x00,0x00,0x08,0x01,0x00,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 260,
+        "wires": [
+            [
+                "2d08ab72562d5b26"
+            ]
+        ]
+    },
+    {
+        "id": "148c9d9880ad94b8",
+        "type": "inject",
+        "z": "d13ebbb690b59258",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 260,
+        "wires": [
+            [
+                "f3488d0dfe8ef2ed"
+            ]
+        ]
+    },
+    {
+        "id": "7c90d6f3ab039b80",
+        "type": "function",
+        "z": "d13ebbb690b59258",
+        "name": "4번 on",
+        "func": "//Relay on: FF 0F 00 00 00 08 01 FF 30 1D\nvar buf = Buffer.alloc(8);\nbuf=[0xff,0x05,0x00,0x03,0xff,0x00,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0a2df5f108293996",
+        "type": "inject",
+        "z": "d13ebbb690b59258",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 640,
+        "y": 540,
+        "wires": [
+            [
+                "7c90d6f3ab039b80"
+            ]
+        ]
+    },
+    {
+        "id": "8e9068ed01757b2c",
+        "type": "function",
+        "z": "d13ebbb690b59258",
+        "name": "14 일정시간 on 후에 off",
+        "func": "//14. 1 릴레이를 켜십시오 (플래시 닫기 모드 2 초)\n//Relay1 on: FF 10 00 03 00 02 04 00 04 00 14 C5 9F\nvar buf = Buffer.alloc(13);\nbuf=[0xff,0x10,0x00,0x03,0x00,0x02,0x04,0x00,0x04,0x00,0x14,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 543,
+        "wires": [
+            [
+                "2d08ab72562d5b26"
+            ]
+        ]
+    },
+    {
+        "id": "2b1e2907dadb4e60",
+        "type": "inject",
+        "z": "d13ebbb690b59258",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 543,
+        "wires": [
+            [
+                "8e9068ed01757b2c"
+            ]
+        ]
+    },
+    {
+        "id": "5ec9310e4e986150",
+        "type": "function",
+        "z": "d13ebbb690b59258",
+        "name": "4번 off",
+        "func": "//Relay on: FF 0F 00 00 00 08 01 FF 30 1D\nvar buf = Buffer.alloc(8);\nbuf=[0xff,0x05,0x00,0x03,0x00,0x00,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 580,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2fdd66409c6b97d6",
+        "type": "inject",
+        "z": "d13ebbb690b59258",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 640,
+        "y": 580,
+        "wires": [
+            [
+                "5ec9310e4e986150"
+            ]
+        ]
+    },
+    {
+        "id": "e1e9b7e9c27bac05",
+        "type": "function",
+        "z": "d13ebbb690b59258",
+        "name": "3번 on",
+        "func": "//Relay on: FF 0F 00 00 00 08 01 FF 30 1D\nvar buf = Buffer.alloc(8);\nbuf=[0xff,0x05,0x00,0x02,0xff,0x00,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e3b2dc21a4a7f196",
+        "type": "inject",
+        "z": "d13ebbb690b59258",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 640,
+        "y": 460,
+        "wires": [
+            [
+                "e1e9b7e9c27bac05"
+            ]
+        ]
+    },
+    {
+        "id": "84d9d02ae256262b",
+        "type": "function",
+        "z": "d13ebbb690b59258",
+        "name": "3번 off",
+        "func": "//Relay on: FF 0F 00 00 00 08 01 FF 30 1D\nvar buf = Buffer.alloc(8);\nbuf=[0xff,0x05,0x00,0x02,0x00,0x00,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0e655adffb12a048",
+        "type": "inject",
+        "z": "d13ebbb690b59258",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 640,
+        "y": 500,
+        "wires": [
+            [
+                "84d9d02ae256262b"
+            ]
+        ]
+    },
+    {
+        "id": "5425cb131685afdd",
+        "type": "function",
+        "z": "d13ebbb690b59258",
+        "name": "2번 on",
+        "func": "//Relay on: FF 0F 00 00 00 08 01 FF 30 1D\nvar buf = Buffer.alloc(8);\nbuf=[0xff,0x05,0x00,0x01,0xff,0x00,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d6f921e711ea70b8",
+        "type": "inject",
+        "z": "d13ebbb690b59258",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 640,
+        "y": 380,
+        "wires": [
+            [
+                "5425cb131685afdd"
+            ]
+        ]
+    },
+    {
+        "id": "b819adbd173bdbf8",
+        "type": "function",
+        "z": "d13ebbb690b59258",
+        "name": "2번 off",
+        "func": "//Relay on: FF 0F 00 00 00 08 01 FF 30 1D\nvar buf = Buffer.alloc(8);\nbuf=[0xff,0x05,0x00,0x01,0x00,0x00,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c81c039a129a79bb",
+        "type": "inject",
+        "z": "d13ebbb690b59258",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 640,
+        "y": 420,
+        "wires": [
+            [
+                "b819adbd173bdbf8"
+            ]
+        ]
+    },
+    {
+        "id": "6e73f6b92e4ba0e1",
+        "type": "function",
+        "z": "d13ebbb690b59258",
+        "name": "1 1번 릴레이 on",
+        "func": "//Relay on: FF 0F 00 00 00 08 01 FF 30 1D\nvar buf = Buffer.alloc(8);\nbuf=[0xff,0x05,0x00,0x00,0xff,0x00,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 140,
+        "wires": [
+            [
+                "2d08ab72562d5b26"
+            ]
+        ]
+    },
+    {
+        "id": "4a9e673fc65c2a78",
+        "type": "inject",
+        "z": "d13ebbb690b59258",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 140,
+        "wires": [
+            [
+                "6e73f6b92e4ba0e1"
+            ]
+        ]
+    },
+    {
+        "id": "aa436a487cc139c2",
+        "type": "function",
+        "z": "d13ebbb690b59258",
+        "name": "2 1번 릴레이 off",
+        "func": "//Relay on: FF 0F 00 00 00 08 01 FF 30 1D\nvar buf = Buffer.alloc(8);\nbuf=[0xff,0x05,0x00,0x00,0x00,0x00,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 180,
+        "wires": [
+            [
+                "2d08ab72562d5b26"
+            ]
+        ]
+    },
+    {
+        "id": "3b5818068388bc43",
+        "type": "inject",
+        "z": "d13ebbb690b59258",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 180,
+        "wires": [
+            [
+                "aa436a487cc139c2"
+            ]
+        ]
+    },
+    {
+        "id": "6ca9ea89c52fb0e7",
+        "type": "function",
+        "z": "d13ebbb690b59258",
+        "name": "8 릴레이 상태 읽기",
+        "func": "//FF 01 00 00 00 08 28 12\nvar buf = Buffer.alloc(8);\nbuf=[0xff,0x01,0x00,0x00,0x00,0x08,0x00,0x00];\nbuf[4]=msg.payload;\n\nmsg.payload=buf;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 483,
+        "wires": [
+            [
+                "2d08ab72562d5b26"
+            ]
+        ]
+    },
+    {
+        "id": "9db2abaaef54d592",
+        "type": "inject",
+        "z": "d13ebbb690b59258",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 483,
+        "wires": [
+            [
+                "6ca9ea89c52fb0e7"
+            ]
+        ]
+    },
+    {
+        "id": "bc018c9e4b803132",
+        "type": "comment",
+        "z": "d13ebbb690b59258",
+        "name": "2,3,4번 on off",
+        "info": "buf[3] : 릴레이 번지수\nbuf[4] : 릴레이 상태 0xff(on), 0x00(off)",
+        "x": 630,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "d8ce3e69072d0d27",
+        "type": "comment",
+        "z": "d13ebbb690b59258",
+        "name": "프로토콜 참조 설명",
+        "info": "https://ko.aliexpress.com/item/1005002356037000.html?spm=a2g0s.9042311.0.0.27424c4dc8WPuJ\n\n",
+        "x": 150,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "6f9780b11d352d3b",
+        "type": "comment",
+        "z": "d13ebbb690b59258",
+        "name": "5 address(국번) 01로 설정",
+        "info": "보내기 : 00 10 00 00 00 01 02 00 _01_ 6A 00\n반환 그대로 : 00 10 00 00 00 01 02 00 _01_ 6A 00\n\n9번째가 주소 정보 : 01\n\n01로 수정하게 될 경우 기존 릴레이 제어 프로토콜에서\nFF를 01로 수정\n예시) 1번릴레이 on\nbuf=[0xff,0x05,0x00,0x00,0xff,0x00,0x00,0x00];\n>> 어드레스 01로 변경\nbuf=[0x01,0x05,0x00,0x00,0xff,0x00,0x00,0x00];",
+        "x": 170,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "3022c2ca1b87f543",
+        "type": "comment",
+        "z": "d13ebbb690b59258",
+        "name": "6 address(국번) 255로 설정",
+        "info": "보내기 : 00 10 00 00 00 01 02 00 _FF_ EB 80\n반환 그대로: 00 10 00 00 00 01 02 00 _FF_ EB 80\n\n9번째가 주소 정보 : FF",
+        "x": 180,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "85081ddefb5c487b",
+        "type": "function",
+        "z": "d13ebbb690b59258",
+        "name": "15 일정시간 off 후에 on",
+        "func": "//15, No. 1 릴레이 해제 (플래시 모드 3 초)\n//Relay1 on: FF 10 00 03 00 02 04 00 02 00 1E A5 99\nvar buf = Buffer.alloc(13);\nbuf=[0xff,0x10,0x00,0x03,0x00,0x02,0x04,0x00,0x02,0x00,0x1E,0x00,0x00];\n\nmsg.payload=buf;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 583,
+        "wires": [
+            [
+                "2d08ab72562d5b26"
+            ]
+        ]
+    },
+    {
+        "id": "77ac0271cba3cc55",
+        "type": "inject",
+        "z": "d13ebbb690b59258",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 583,
+        "wires": [
+            [
+                "85081ddefb5c487b"
+            ]
+        ]
+    },
+    {
+        "id": "a0e3d4b18f24c6b1",
+        "type": "function",
+        "z": "d13ebbb690b59258",
+        "name": "6 주소 0xff로 설정",
+        "func": "var buf = Buffer.alloc(11);\n// 주소를 255로 설정: 00 10 00 00 00 01 02 00 FF EB 80\n// 통신속도 9600 \n// 첫번째 문자 00 기기번호 상관 없이 00으로 한다.\nbuf[0]=0x00;\nbuf[1]=0x10;\nbuf[2]=0x00;\nbuf[3]=0x00;\nbuf[4]=0x00;\nbuf[5]=0x01;\nbuf[6]=0x02;\nbuf[7]=0x00;\nbuf[8]=0xff;\n\nmsg.payload=buf;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 380,
+        "wires": [
+            [
+                "2d08ab72562d5b26"
+            ]
+        ]
+    },
+    {
+        "id": "5f47c772469812f8",
+        "type": "inject",
+        "z": "d13ebbb690b59258",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 380,
+        "wires": [
+            [
+                "a0e3d4b18f24c6b1"
+            ]
+        ]
+    },
+    {
+        "id": "63957752.49a888",
+        "type": "serial-port",
+        "serialport": "COM10",
+        "serialbaud": "9600",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "0",
+        "bin": "bin",
+        "out": "time",
+        "addchar": "",
+        "responsetimeout": "10000"
+    }
+]
 ```
 
 *  flow 사진
