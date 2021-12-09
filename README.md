@@ -45,7 +45,7 @@
 |8|RY-WS301|<img src = "https://user-images.githubusercontent.com/37902752/129312381-0a46e6b7-17c5-4e57-bcbe-e59221eb55bd.jpg" width="100" height="100">|down-local-08<br> down-aws-08|습도, 온도|[RY-WS301](https://github.com/kdi6033/IoT/blob/main/0%20manual/RY-WS301.pdf)|효림솔루션<br>[Handan Yunnong](https://en.nong-iot.com/)
 |9|MP-508E|<img src = "https://user-images.githubusercontent.com/37902752/129312385-053a8389-4ecc-497d-864c-6427dfcfae8e.png" width="100" height="100">|down-local-09<br> down-aws-09|토양의 온도, 습도, 염도|[MP-508E](https://github.com/kdi6033/IoT/blob/main/0%20manual/MP-508El.pdf)|효림솔루션<br>[Handan Yunnong](https://en.nong-iot.com/)
 |10|sound|<img src = "https://user-images.githubusercontent.com/37902752/133548055-3d3c8029-809a-4185-ae31-194b7422e0dc.png" width="100" height="50">|down-local-10<br> down-aws-10|소음,소리크기|-|-
-|11|진동|<img src = "https://user-images.githubusercontent.com/37902752/145346513-43006c07-8ecb-42e2-a3f4-14ee53bafe0d.png" width="100" height="80">|down-local-11<br> down-aws-11|진동|-|-
+|11|진동|<img src = "https://user-images.githubusercontent.com/37902752/145346513-43006c07-8ecb-42e2-a3f4-14ee53bafe0d.png" width="100" height="100">|down-local-11<br> down-aws-11|진동|-|-
 |12|PLC-RS485|<img src = "" width="100" height="50">|down-local-12<br> down-aws-12|PLC 무선제어|[메뉴얼](https://github.com/kdi6033/IoT/tree/main/12%20PLC-RS485)|- 
 |13|curtain motor|<img src = "" width="100" height="50">|down-local-13<br> down-aws-13|모터 무선제어|-|- 
 |14|MASTER-K120s|<img src = "" width="100" height="50">|down-local-14<br> down-aws-14|PLC입출력|-|[LS산전](https://www.ls-electric.com/ko/product/category/CCC001)
