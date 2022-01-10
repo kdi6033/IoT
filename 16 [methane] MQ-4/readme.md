@@ -1,7 +1,7 @@
-#MQ-4
+# MQ-4
 ![001](https://user-images.githubusercontent.com/37902752/148510311-5ff0dc58-c70c-4272-9d31-58a4d291d834.png)
 
-##Methane 농도 측정 센서
+## Methane 농도 측정 센서
 ---
 
 
@@ -14,10 +14,10 @@
 
 ![002](https://user-images.githubusercontent.com/37902752/148708481-6b9d8d7f-a04d-47a4-ba35-d73a7490d833.png)
 
-###아두이노 Serial Monitor 확인하기
+### 아두이노 Serial Monitor 확인하기
 ![003](https://user-images.githubusercontent.com/37902752/148708581-8d487769-c249-46f6-b001-99a5f62748a2.png)
 
-###순서
+### 순서
 1. 센서 회로 구성 및 연결
 2. 아두이노에 github 아두이노txt 가져오기
 3. Serial Monitor에 업로드
