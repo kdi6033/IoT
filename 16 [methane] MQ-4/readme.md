@@ -19,7 +19,7 @@
 
 ### 순서
 1. 센서 회로 구성 및 연결
-2. 아두이노에 github 아두이노txt 가져오기
+2. 아두이노에 github 아두이노16-1 local 파일 가져오기
 3. Serial Monitor에 업로드
 4. D1mini의 네트워크 i2rOOOOO형식으로 되어있는 WIFI접속
 5. D1mini IP번호 192.168.4.1 접속해서 환경설정->WIFI(기존)설정
