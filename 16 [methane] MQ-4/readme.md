@@ -1,6 +1,7 @@
 # MQ-4
-![001](https://user-images.githubusercontent.com/37902752/148510311-5ff0dc58-c70c-4272-9d31-58a4d291d834.png)
-<img src="/path/to/img.jpg" width="40%" height="30%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img>
+![001](https://user-images.githubusercontent.com/37902752/148510311-5ff0dc58-c70c-4272-9d31-58a4d291d834.png" width="400" height="200")
+
+
 ## Methane 농도 측정 센서
 ---
 
