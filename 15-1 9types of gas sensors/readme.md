@@ -1,9 +1,6 @@
 # MQ시리즈 센서
 ![센서 종류 캡쳐](https://user-images.githubusercontent.com/37902752/151283861-640550da-43df-40f9-aba7-f65b86db9ff4.JPG)
 
-## 센서 회로도
-![002](https://user-images.githubusercontent.com/37902752/148708481-6b9d8d7f-a04d-47a4-ba35-d73a7490d833.png)
-
 ## 9가지 가스 센서
 1. MQ-2 Smoke-Gas 연기 가스 센서
 2. MQ-3 Alcohol 알코올 센서
@@ -15,6 +12,9 @@
 8. MQ-9 Combustible Gas 가스 센서
 9. MQ-135 Air Quality 공기 품질 센서
 
+## 센서 회로도
+![002](https://user-images.githubusercontent.com/37902752/148708481-6b9d8d7f-a04d-47a4-ba35-d73a7490d833.png)
+
 ### 가스 센서 모듈 테스트 결과
 참조 홈페이지
  https://remnant24c.tistory.com/168
@@ -23,4 +23,5 @@
 링크를 걸어둘테니 참조하시길 바랍니다.
 
 MQ-2 : https://github.com/kdi6033/IoT/blob/main/15%20%5Bsmoke%5D%20MQ-2/readme.md
+
 MQ-4 : https://github.com/kdi6033/IoT/tree/main/16%20%5Bmethane%5D%20MQ-4
