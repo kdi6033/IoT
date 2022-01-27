@@ -1,4 +1,4 @@
-# MQ-4
+# MQ-2
 ![mq-2 썸네일](https://user-images.githubusercontent.com/37902752/149853531-7dd7f462-5eb8-44af-a20e-53e413cf243a.jpg)
 
 ## Smoke 측정 센서
