@@ -280,7 +280,6 @@ illuminance sensor ry-g/w 구매링크 : https://m.ko.aliexpress.com/item/100500
 
 --------
 
-## 배선도
 ### 준비물
 |이름|사진|
 |----|---------------:|
