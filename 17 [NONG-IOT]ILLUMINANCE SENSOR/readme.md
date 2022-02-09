@@ -279,7 +279,7 @@ illuminance sensor ry-g/w 구매링크 : https://m.ko.aliexpress.com/item/100500
 ```
 
 ### 조도 계산하기
-  Examl]ple   
+*  Example
 |응답 예시|프로토콜|
 |----|---------------:|
 |Example respond|ff 03 02 05 DC 93 59|
