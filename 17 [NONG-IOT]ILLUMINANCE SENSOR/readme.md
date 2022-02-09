@@ -284,7 +284,7 @@ illuminance sensor ry-g/w 메뉴얼 : https://en.nong-iot.com/assets/uploads/RY-
 
 4번째 바이트: 05    
 5번째 바이트: DC   
-illuminance = 5*256 + D*16 + C = 5*256 + 13*16 +12 = 1500    
+illuminance = 5X256 + DX16 + C = 5X256 + 13X16 +12 = 1500    
 실제 조도 = 1500/100 = 15 
 
 *  flow 사진
