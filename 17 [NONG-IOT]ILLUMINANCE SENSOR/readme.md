@@ -297,7 +297,7 @@ illuminance sensor ry-g/w 구매링크 : https://m.ko.aliexpress.com/item/100500
 
 ## 조도 센서와 RS485 컨버터 배선도
 
-![최종회로도](https://user-images.githubusercontent.com/37902752/152974310-9346fd3b-b66e-41c2-a823-63f167d888fa.png)
+![최종회로도](https://user-images.githubusercontent.com/37902752/153110389-cde24be7-7630-4bbb-a5d9-f4546a865f31.png)
 
 ### 485 통신
 현장에서 가장많이쓰는 통신으로
