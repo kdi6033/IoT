@@ -271,7 +271,8 @@ illuminance = 5X256 + DX16 + C = 5X256 + 13X16 +12 = 1500
 
 *  flow 사진
   
- ![flow](https://user-images.githubusercontent.com/37902752/152970129-0242b15a-0902-43a4-aa25-8e10f1e3f5f8.PNG)
+ ![sdafffas](https://user-images.githubusercontent.com/37902752/153140846-6c2a73f0-dd02-4d05-b485-7d4ca38eae53.PNG)
+
 
 
 --------
