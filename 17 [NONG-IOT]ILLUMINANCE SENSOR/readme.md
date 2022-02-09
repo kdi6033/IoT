@@ -279,7 +279,7 @@ illuminance sensor ry-g/w 구매링크 : https://m.ko.aliexpress.com/item/100500
 
 |----|--------------|
 
-|Example respond|ff 03 02 05 DC 93 59|
+|Example respond|ff 03 02 05 DC 93 59||
 
 4번째 바이트: 05
 5번째 바이트: DC
