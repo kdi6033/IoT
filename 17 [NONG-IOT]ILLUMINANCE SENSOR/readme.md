@@ -16,7 +16,7 @@
 illuminance sensor ry-g/w 구매링크 : https://m.ko.aliexpress.com/item/1005001493379185.html
 
 * NODE-RED FLOW  
-```   
+```
 [
     {
         "id": "adbabb78a8862e0a",
@@ -276,8 +276,7 @@ illuminance sensor ry-g/w 구매링크 : https://m.ko.aliexpress.com/item/100500
         "responsetimeout": "10000"
     }
 ]
-```   
-
+```
 *  flow 사진
   
  ![flow](https://user-images.githubusercontent.com/37902752/152970129-0242b15a-0902-43a4-aa25-8e10f1e3f5f8.PNG)
