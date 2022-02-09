@@ -291,8 +291,8 @@ illuminance sensor ry-g/w 구매링크 : https://m.ko.aliexpress.com/item/100500
 |----|---------------:|
 |조도 센서|![조도센서](https://user-images.githubusercontent.com/37902752/152932141-639255ee-0ade-4063-a2d1-061c64c24b4b.PNG)|
 |USB to 485/422 컨버터|![컨버터](https://user-images.githubusercontent.com/37902752/153107986-602bb32d-a548-49d9-8148-5d2869dd16a7.PNG)|
-|oled||![oleedd](https://user-images.githubusercontent.com/37902752/153108887-811b53a0-c031-45b5-80a3-ad52e701ac24.png)|
-|esp8266||![d1mini](https://user-images.githubusercontent.com/37902752/153109025-ad4dac08-9ec5-4c15-bdcb-ab4719f70bfe.jpg)|
+|oled||![oleedd](https://user-images.githubusercontent.com/37902752/153109410-9fcd61cf-1d48-4c61-b522-47e8b4800f96.png)|
+|esp8266||![d1mini](https://user-images.githubusercontent.com/37902752/153109452-c0dcc2dc-3b6f-4531-a61d-6d2f96c0ddd5.jpg)|
 |RS485보드|![rs485](https://user-images.githubusercontent.com/37902752/153108945-980479ec-6918-4a02-9207-25e142f01b34.png)|
 
 ## 조도 센서와 RS485 컨버터 배선도
