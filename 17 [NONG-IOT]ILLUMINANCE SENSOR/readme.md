@@ -286,8 +286,8 @@ illuminance sensor ry-g/w 구매링크 : https://m.ko.aliexpress.com/item/100500
 |Example respond|ff 03 02 05 DC 93 59|
 
 4번째 바이트: 05    
-5번째 바이트: DC
-illuminance = 5*256 + D*16 + C = 5*256 + 13*16 +12 = 1500
+5번째 바이트: DC   
+illuminance = 5*256 + D*16 + C = 5*256 + 13*16 +12 = 1500    
 실제 조도 = 1500/100 = 15 
 
 *  flow 사진
