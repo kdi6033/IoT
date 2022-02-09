@@ -4,7 +4,7 @@
 
 |기능|보냄|응답|보냄 설명|응답 설명|
 |----|----|-------|-------|-------|
-|스테이션 번호 쓰기|00 10 00 01 00 01 02 00XX CRCloCRChi (XX=0X01~0XFF)|00 10 00 01 00 01 CRCloCRChi|Device address/ Funtion code/ Start register address/ No. of register/ Data length/ Data/ CRC chdeck ||
+|스테이션 번호 쓰기|00 10 00 01 00 01 02 00XX CRCloCRChi (XX=0X01~0XFF)|00 10 00 01 00 01 CRCloCRChi|Device address/ Funtion code/ Start register address/ No. of register/ Data length/ Data/ CRC chdeck |Device address/ Funtion code/ Start register address/ No. of register/ CRC check|
 |스테이션 번호 읽기 명령|00 03 00 01 00 01 CRCloCRChi|00 03 02 00XX CRCloCRChi (XX=01-FF)|||
 |데이터 읽기 (0-2K or 0-20K)|XX 03 00 00 00 01 CRCloCRChi|XX 03 02 00yy CRCloCRChi|||
 
