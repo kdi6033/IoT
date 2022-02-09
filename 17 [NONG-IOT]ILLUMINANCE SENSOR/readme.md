@@ -1,12 +1,17 @@
 ## ILLUMINANCE SENSOR
 ### 1. 프로토콜 확인 
 
+기기와 통신하기 위해서는 다음 두가지믈 먼저한다.    
+- 통신속도를 9600으로 하고 기기 번호를 읽어온다. 에러가 나면 통신속도를 변화 시키며 이를 찿아낸다.
+- 원하는 기기번호로 세팅한다.
+- 두가지를 설정한 후 제어 프로그램을 하면 된다.
 
+처음에는 기기번호=0xff, 통신속도=9600
 |기능|보냄|응답|설명|
 |----|----|-------|-------|
-|스테이션 번호 쓰기|00 10 00 01 00 01 02 00XX CRCloCRChi (XX=0X01-0XFF)|00 10 00 01 00 01 CRCloCRChi||
+|스테이션 번호 쓰기|00 10 00 01 00 01 02 00XX CRCloCRChi (XX=0X01~0XFF)|00 10 00 01 00 01 CRCloCRChi||
 |스테이션 번호 읽기 명령|00 03 00 01 00 01 CRCloCRChi|00 03 02 00XX CRCloCRChi (XX=01-FF)||
-|데이터 읽기 (0-2K or 0-20K)|XX 03 00 00 00 01 CRCloCRChi|XX 03 02 00yy CRCloCRChi||
+|데이터 읽기 (0~2K or 0~20K)|XX 03 00 00 00 01 CRCloCRChi|XX 03 02 00yy CRCloCRChi||
 
 illuminance sensor ry-g/w 구매링크 : https://m.ko.aliexpress.com/item/1005001493379185.html
 
@@ -274,25 +279,25 @@ illuminance sensor ry-g/w 구매링크 : https://m.ko.aliexpress.com/item/100500
 ```
 
 *  flow 사진
-  
+*  
  ![flow](https://user-images.githubusercontent.com/37902752/152970129-0242b15a-0902-43a4-aa25-8e10f1e3f5f8.PNG)
 
 
 --------
 
+## 배선도
 ### 준비물
 |이름|사진|
-
 |----|---------------:|
 |조도 센서|![조도센서](https://user-images.githubusercontent.com/37902752/152932141-639255ee-0ade-4063-a2d1-061c64c24b4b.PNG)|
-|USB to 485/422 컨버터|![컨버터](https://user-images.githubusercontent.com/37902752/153107986-602bb32d-a548-49d9-8148-5d2869dd16a7.PNG)|
-|oled|![oleedd](https://user-images.githubusercontent.com/37902752/153109410-9fcd61cf-1d48-4c61-b522-47e8b4800f96.png)|
-|esp8266|![d1mmini](https://user-images.githubusercontent.com/37902752/153109687-60ad8544-ee6d-4dce-8b7b-325e7c9a3d57.png)|
-|RS485보드|![rs485](https://user-images.githubusercontent.com/37902752/153108945-980479ec-6918-4a02-9207-25e142f01b34.png)|
+|USB to 485/422 컨버터|![컨버터](https://user-images.githubusercontent.com/37902752/152932385-79832fab-994c-4459-b379-a3a812752c3f.PNG)|
+|d1mini|![d1mini-removebg-preview](https://user-images.githubusercontent.com/37902752/152934797-c80cbbf0-6da7-464c-9674-ee83cb50a2d5.png)|
+|esp8266|![esp8266](https://user-images.githubusercontent.com/37902752/152934887-15c1322b-70d5-479e-83d3-8dc9c3e61345.png)|
+|RS485보드|![RS485보드](https://user-images.githubusercontent.com/37902752/152934969-0a347e54-8931-48a6-a347-13ed0d52eae4.png)|
 
 ## 조도 센서와 RS485 컨버터 배선도
 
-![최종회로도](https://user-images.githubusercontent.com/37902752/153110389-cde24be7-7630-4bbb-a5d9-f4546a865f31.png)
+![최종회로도](https://user-images.githubusercontent.com/37902752/152974310-9346fd3b-b66e-41c2-a823-63f167d888fa.png)
 
 ### 485 통신
 현장에서 가장많이쓰는 통신으로
