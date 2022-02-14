@@ -288,7 +288,13 @@ illuminance = 5X256 + DX16 + C = 5X256 + 13X16 +12 = 1500
 
 ## 조도 센서와 RS485 컨버터 배선도
 
-![최종회로도](https://user-images.githubusercontent.com/37902752/152974310-9346fd3b-b66e-41c2-a823-63f167d888fa.png)
+![최종회로도](https://user-images.githubusercontent.com/37902752/152974310-9346fd3b-b66e-41c2-a823-63f167d888fa.png)   
+
+
+## 조도 센서와 esp8266및 rs485보드, oled 배선도
+![KakaoTalk_20220213_231028148](https://user-images.githubusercontent.com/37902752/153803283-cf453d24-c2b0-4dad-8eb0-3a2ec30c827d.jpg)
+
+
 
 ### 485 통신
 현장에서 가장많이쓰는 통신으로
