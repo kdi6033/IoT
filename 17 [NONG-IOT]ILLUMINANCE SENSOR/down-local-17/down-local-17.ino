@@ -151,7 +151,7 @@ void displayOled(int no) {
   if(no==1) {
     oled.setTextXY(2,6);              
     oled.putString(" Set WiFi");
-    oled.setTextXY(4,6);             
+    oled.setTextXY(6,6);             
     oled.putString(" 192.168.4.1");
   }
   else if(no==2) {
