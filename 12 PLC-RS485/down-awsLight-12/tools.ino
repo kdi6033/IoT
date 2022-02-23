@@ -12,20 +12,10 @@ void readConfig() {
   s.toCharArray(password,s.length());
   password[s.length()]=0;
 
-  s=f.readStringUntil('\n');
-  s.toCharArray(ipMqtt,s.length());
-  ipMqtt[s.length()]=0;
-
-  s=f.readStringUntil('\n');
-  s.toCharArray(email,s.length());
-  email[s.length()]=0;
-  
   f.close();
   SPIFFS.end();
   Serial.println("ssid: "+String(ssid));
   Serial.println("pw: "+String(password));
-  Serial.println("ipMqtt: "+String(ipMqtt));
-  Serial.println("email: "+String(email));
 }
 
 void saveConfig() {
@@ -41,12 +31,8 @@ void saveConfig() {
   }
   f.println(ssid);
   f.println(password);
-  f.println(ipMqtt);
-  f.println(email);
   f.close();
   SPIFFS.end();
-  delay(2000);
-  ESP.reset();
   delay(2000);
 }
 

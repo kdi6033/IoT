@@ -2,31 +2,26 @@
 // 웹소켙 https://youtu.be/77qg_aaFGoI   https://youtu.be/TUU0CSBfgos
 // SPIFFS https://youtu.be/5wgZIapHPxs  https://youtu.be/FRIgp7JI7IY
 // ota 참조유튜브 https://www.youtube.com/watch?v=UiAc3yYBsNU
-#include "FS.h"
+#include <ACROBOTIC_SSD1306.h>
+#include <ArduinoJson.h>
 #include "CRC.h"
-#include <ESP8266WiFi.h>
+#include "credentials.h"
 #include <ESP8266HTTPClient.h>
 #include <ESP8266httpUpdate.h>
-#include <WiFiClient.h>
 #include <ESP8266WebServer.h>
-#include <WebSocketsServer.h>
-#include <Ticker.h>
-#include <Wire.h>
-#include <ACROBOTIC_SSD1306.h>
+#include <ESP8266WiFi.h>
+#include "FS.h"
 #include <PubSubClient.h>
-#include <ArduinoJson.h>
 #include <SoftwareSerial.h>
-#include <WiFiUdp.h>
-
+#include <Ticker.h>
+#include <WebSocketsServer.h>
+#include <WiFiClient.h>
+#include <Wire.h>
 SoftwareSerial mySerial(D7, D4); // RX, 
 #define TRIGGER_PIN 0 // trigger pin 0(D3)
 HTTPClient http;
 ESP8266WebServer server(80);
 WebSocketsServer webSocket = WebSocketsServer(81);
-WiFiUDP Udp;
-
-unsigned int localUdpPort = 4210; // local port to listen on
-char incomingPacket[255]; // buffer for incoming packets
 
 int type=12; // 기기 인식번호 -> display에 사용 6= LS PLC XEC-DR14E
 #define URL_fw_Bin "http://i2r.link/download/"
@@ -36,16 +31,16 @@ char password[50] = "";
 IPAddress apIP(192, 168, 4, 1);
 IPAddress netMsk(255, 255, 255, 0);
 
-
-char email[50] = "";
-char ipMqtt[40]="";
 unsigned int countTick=0;
 unsigned int countMqtt=0;
 unsigned int countMeasure=0;
 
-const char* outTopic = "/i2r/outTopic"; // 이름이 중복되지 않게 설정 기록
-const char* inTopic = "/i2r/inTopic"; // 이름이 중복되지 않게 설정 기록
-const char* clientName = "";  // setup 함수에서 자동생성
+const char *clientName = "";          // 사물 이름 (thing ID) 자동생성
+//드라이브텍
+const char *host = "***-ats.iot.us-west-2.amazonaws.com"; // AWS IoT Core 주소
+const char* outTopic = "/i2r/outTopic"; 
+const char* inTopic = "/i2r/inTopic"; 
+
 char msg[100];
 int mqttConnected=0; // 1=연결 0=끊김
 
@@ -54,8 +49,8 @@ char mac[20];  //mac address
 String sMac;
 int act=0,outPlc=0;
 int bootMode=0; //0:station  1:AP
-int counter=0;
-String inputString = "";    // 받은 문자열
+String inputString = "";         // 받은 문자열
+int timeMqtt=10;
 int Out[8]={0},In[10]={0};  // plc 입력과 출력 저장 
 String sIn="",sInPre="";  // 입력값이 달라질 때만 mqtt로 송신
 int noOut=0,valueOut=0; //mqtt로 수신된 plc출력 명령 noOut=출력핀번호 valueOut=출력값
@@ -68,29 +63,56 @@ StaticJsonDocument<200> doc;
 DeserializationError error;
 JsonObject root;
 
-WiFiClient espClient;
-PubSubClient client(espClient);
-
 void crd16Rtu();
 void displayOled(int no);
 void factoryDefault();
 void GoHome();
 void GoHomeWifi();
-void handleConfig();
 void handleDownload();
-void handleManual();
 void handleNotFound();
 void handleRoot();
+void handleOn();
 void handleScan();
 void handleWifi();
 void handleWifiSave();
 void readConfig();
+void reconnect();
 void saveConfig();
 void serialEvent();
+void setClock();
 void tick();
 void tickMeasure();
 void tickMqtt();
 void upWebSocket();
+void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length);
+
+// 통신에서 문자가 들어오면 이 함수의 payload 배열에 저장된다.
+void callback(char* topic, byte* payload, unsigned int length) {
+  Serial.print("Message arrived [");
+  Serial.print(topic);
+  Serial.print("] ");
+  for (int i = 0; i < length; i++) {
+    Serial.print((char)payload[i]);
+  }
+  Serial.println();
+
+  String s;
+  deserializeJson(doc,payload);
+  root = doc.as<JsonObject>();
+  const char* macIn = root["mac"];
+  if( sMac.equals(String(macIn))) {
+    noOut = root["outNo"];
+    int value = root["value"];
+    outPlc=1;
+    Out[noOut]=value;
+  }
+}
+
+X509List ca(ca_str);
+X509List cert(cert_str);
+PrivateKey key(key_str);
+WiFiClientSecure wifiClient;
+PubSubClient client(host, 8883, callback, wifiClient); //set  MQTT port number to 8883 as per //standard
 
 void tick()
 {
@@ -106,7 +128,7 @@ void tick()
 
 void tickMeasure()
 {
-  Serial.println ( WiFi.localIP() );
+  //Serial.println ( WiFi.localIP() );
   crd16Rtu();
 }
 
@@ -116,17 +138,11 @@ void upWebSocket() {
   json += ",\"in1\":"; json += In[1];
   json += ",\"in2\":"; json += In[2];
   json += ",\"in3\":"; json += In[3];
-  json += ",\"in4\":"; json += In[4];
-  json += ",\"in5\":"; json += In[5];
-  json += ",\"in6\":"; json += In[6];
-  json += ",\"in7\":"; json += In[7];
 
   json += ",\"out0\":"; json += Out[0];
   json += ",\"out1\":"; json += Out[1];
   json += ",\"out2\":"; json += Out[2];
   json += ",\"out3\":"; json += Out[3];
-  json += ",\"out4\":"; json += Out[4];
-  json += ",\"out5\":"; json += Out[5];
   json += "}";
   webSocket.broadcastTXT(json.c_str(), json.length());
   //Serial.println(json);  
@@ -163,6 +179,14 @@ void displayOled(int no) {
   else if(no==2) {
     oled.setTextXY(2,6);
     oled.putString(WiFi.localIP().toString());    
+    if(mqttConnected==1) {
+      oled.setTextXY(6,7);             
+      oled.putString("AWS ON");
+    }
+    else {
+      oled.setTextXY(6,7);             
+      oled.putString("AWS OFF");
+    }
   }
   else if(no==3) {
     oled.setTextXY(2,6);             
@@ -194,7 +218,7 @@ void setup() {
   sprintf(mac,"%02x%02x%02x%02x%02x%02x%c",macH[5], macH[4], macH[3], macH[2], macH[1], macH[0],0);
   sMac=mac;
   clientName=mac;
-  Serial.println(mac);
+  Serial.println(clientName);
   
   readConfig();
   if(ssid[0]==0)
@@ -208,8 +232,6 @@ void setup() {
   server.on("/download", handleDownload);
   server.on("/wifi", handleWifi);
   server.on("/wifisave", handleWifiSave);
-  server.on("/config", handleConfig);
-  server.on("/manual", handleManual);
   server.on("/scan", handleScan);
   server.onNotFound(handleNotFound);
 
@@ -218,15 +240,19 @@ void setup() {
   webSocket.onEvent(webSocketEvent);
   Serial.println("HTTP server started");
 
-  //ticker.attach(1, tick);  //0.1 초도 가능
   if(bootMode !=1) {
     // mqtt 설정
-    client.setServer(ipMqtt, 1883);
+    wifiClient.setTrustAnchors(&ca);
+    wifiClient.setClientRSACert(&cert, &key);
+    Serial.println("Certifications and key are set");
+  
+    setClock();
+    //client.setServer(host, 8883);
     client.setCallback(callback);
+    delay(3000);
+    reconnect();
   }
-  Udp.begin(localUdpPort);
 }
-
 void bootWifiAp() {
   bootMode=1; //0:station  1:AP
   /* Soft AP network parameters */
@@ -326,36 +352,48 @@ void download_program(String fileName) {
   }
 }
 
-// 통신에서 문자가 들어오면 이 함수의 payload 배열에 저장된다.
-void callback(char* topic, byte* payload, unsigned int length) {
-  Serial.print("Message arrived [");
-  Serial.print(topic);
-  Serial.print("] ");
-  for (int i = 0; i < length; i++) {
-    Serial.print((char)payload[i]);
-  }
-  Serial.println();
+/*
+// act=1 basic firmware를 내려받는다.
+// act=2 내려받을 파일이름을 전역변수 nameDownloadFile 에 저장
+// act=3 nameDownloadFile 파일을 서버에서 내려 받음
+void onAct(uint8_t * payload, size_t length) {
+  String s;
   deserializeJson(doc,payload);
   root = doc.as<JsonObject>();
-  String macIn = root["mac"];
-  if(macIn==sMac){
-    noOut = root["outNo"];
-    int value = root["value"];
-    outPlc=1;
-    Out[noOut]=value;
+  int act = root["act"];
+  Serial.println(act);
+  if(act==1) {
+    displayOled(3);
+    //GoHome();
+    Serial.println("=======================================");
+    download_program("down-permwareBasic.bin");
   }
 }
 
+
+void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length){
+  if(type == WStype_TEXT){
+    if(payload[0] == '#'){
+      for(int i = 0; i < length; i++)
+        payload[i]=payload[i+1];
+      payload[length]=0;
+      for(int i = 0; i < length; i++)
+        Serial.print((char) payload[i]);
+      onAct(payload,length);
+    }
+    else {
+      for(int i = 0; i < length; i++)
+        Serial.print((char) payload[i]);
+      Serial.println();
+    }
+  }
+}
+*/
+
 // mqtt 통신에 지속적으로 접속한다.
 void reconnect() {
-  if(ipMqtt[0]==0)
+  if(WiFi.status() != WL_CONNECTED)
     return;
-  Serial.println("reconnect");
-  Serial.println(ipMqtt);
-  //if(WiFi.status() == WL_DISCONNECTED)
-  //  return;
-  Serial.println("====================================");
-  Serial.println(countMqtt);
   // Loop until we're reconnected
   //while (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
@@ -370,18 +408,34 @@ void reconnect() {
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
-      Serial.println(" try again in 180 seconds");
+      Serial.println(" try again in 5 seconds");
       mqttConnected=0;
       // Wait 5 seconds before retrying
-      //delay(5000);
+      delay(5000);
     }
+    displayOled(2);
   //}
 }
 
-void loop() {
-  if (!client.connected()) {
-    reconnect();
+// Set time via NTP, as required for x.509 validation
+void setClock() {
+  configTime(3 * 3600, 0, "pool.ntp.org", "time.nist.gov");
+
+  Serial.print("Waiting for NTP time sync: ");
+  time_t now = time(nullptr);
+  while (now < 8 * 3600 * 2) {
+    delay(500);
+    Serial.print(".");
+    now = time(nullptr);
   }
+  Serial.println("");
+  struct tm timeinfo;
+  gmtime_r(&now, &timeinfo);
+  Serial.print("Current time: ");
+  Serial.print(asctime(&timeinfo));
+}
+
+void loop() {
   webSocket.loop();
   server.handleClient();
   doTick();
@@ -392,11 +446,9 @@ void loop() {
 
   if(bootMode !=1) {
     serialEvent();
-    udpEvent();
     if(mqttConnected==1)
       client.loop();
   }
-
 }
 
 //1초 마다 실행되는 시간함수
@@ -406,25 +458,6 @@ void doTick() {
     // save the last time you blinked the LED
     previousMillis = currentMillis;
     tick();
-  }  
-}
-
-void udpEvent() {
-  int packetSize = Udp.parsePacket();
-  if(packetSize) {
-    // receive incoming UDP packets
-    Serial.printf("Received %d bytes from %s, port %d\n", packetSize, Udp.remoteIP().toString().c_str(), Udp.remotePort());
-    int len = Udp.read(incomingPacket, 255);
-    if(len > 0) {
-      incomingPacket[len] = 0;
-    }
-    Serial.printf("UDP packet contents: %s\n", incomingPacket);
-    deserializeJson(doc,incomingPacket);
-    root = doc.as<JsonObject>();
-    String mqttIp = root["mqttIp"];
-    mqttIp.toCharArray(ipMqtt, mqttIp.length()+1);
-    Serial.println(ipMqtt);
-    saveConfig();
   }  
 }
 
