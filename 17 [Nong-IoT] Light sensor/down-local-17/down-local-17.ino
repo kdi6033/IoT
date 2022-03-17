@@ -459,7 +459,7 @@ void serialEvent() {
     inputString += inChar;
   }
   //Serial.println("");
-  if(inputString.length() >= 11) {
+  if(inputString.length() >= 7) {
     String ss="";
     ss=((float)inputString.charAt(3)*255+(float)inputString.charAt(4));
     lux=ss.toFloat();
