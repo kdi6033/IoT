@@ -56,7 +56,7 @@
         ]
     },
     {
-        "id": "dddd400a39042bac",
+        "id": "c502e59ee812b36f",
         "type": "tab",
         "label": "Node-red Local Server",
         "disabled": false,
@@ -64,9 +64,9 @@
         "env": []
     },
     {
-        "id": "44b40aeedc788b89",
+        "id": "46a83b6701314291",
         "type": "mqtt in",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "topic": "/i2r/outTopic",
         "qos": "0",
@@ -80,30 +80,30 @@
         "y": 660,
         "wires": [
             [
-                "40aa3cd09f40bb51"
+                "36f0ad153a5431f6"
             ]
         ]
     },
     {
-        "id": "399430187641cc21",
+        "id": "3caadfcb085db440",
         "type": "subflow:10a86fdc.efc16",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "Iterate",
         "env": [],
         "x": 770,
         "y": 540,
         "wires": [
             [
-                "42a010443c910eda",
-                "c8b6d0770228b299"
+                "453dc665e5dcc6f2",
+                "6494c482072ecb67"
             ],
             []
         ]
     },
     {
-        "id": "c8b6d0770228b299",
+        "id": "6494c482072ecb67",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "func": "\nreturn msg;",
         "outputs": 1,
@@ -115,14 +115,14 @@
         "y": 480,
         "wires": [
             [
-                "399430187641cc21"
+                "3caadfcb085db440"
             ]
         ]
     },
     {
-        "id": "2087d20926dda5a1",
+        "id": "09e19c1d07806893",
         "type": "udp out",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "addr": "",
         "iface": "",
@@ -136,9 +136,9 @@
         "wires": []
     },
     {
-        "id": "42a010443c910eda",
+        "id": "453dc665e5dcc6f2",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "func": "var server=msg.server;\nvar newMsg={};\nnewMsg.payload=\"{\\\"mqttIp\\\":\\\"\"+server+\"\\\"}\";\nnewMsg.ip=msg.payload;\nnewMsg.port=4210;\nreturn newMsg;",
         "outputs": 1,
@@ -150,14 +150,14 @@
         "y": 538,
         "wires": [
             [
-                "3fc9019d5182162a"
+                "7734297b41eddc84"
             ]
         ]
     },
     {
-        "id": "3fc9019d5182162a",
+        "id": "7734297b41eddc84",
         "type": "change",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "rules": [
             {
@@ -177,14 +177,14 @@
         "y": 537,
         "wires": [
             [
-                "2087d20926dda5a1"
+                "09e19c1d07806893"
             ]
         ]
     },
     {
-        "id": "e9f97588f5a885c0",
+        "id": "a8620a0de01aa970",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "func": "var ipList=[];\nvar server=global.get(\"serverIp\");\nvar a=server.split('.');\nvar ip=a[0]+'.'+a[1]+'.'+a[2]+'.';\n\nmsg.server=server;\nfor(var i=2;i<255;i++)\n    ipList.push(ip+i);\nmsg.payload=ipList;\nreturn msg;\n",
         "outputs": 1,
@@ -196,14 +196,14 @@
         "y": 540,
         "wires": [
             [
-                "399430187641cc21"
+                "3caadfcb085db440"
             ]
         ]
     },
     {
-        "id": "9fe86a5d9efc3a28",
+        "id": "bd93281c128c1dc6",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "findOne",
         "func": "global.set(\"msg_in\",msg);\nvar newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOne';\nnewMsg.payload    = { 'mac' : msg.payload.mac, 'type':msg.payload.type};\nnewMsg.projection = { 'mac' : 1 , '_id' : 0 };\nreturn newMsg;",
         "outputs": 1,
@@ -215,14 +215,14 @@
         "y": 660,
         "wires": [
             [
-                "52839baa1376b741"
+                "1e83538159743ef7"
             ]
         ]
     },
     {
-        "id": "52839baa1376b741",
+        "id": "1e83538159743ef7",
         "type": "mongodb2 in",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "service": "_ext_",
         "configNode": "ff55d734.a9cd28",
         "name": "기기 검색",
@@ -232,14 +232,14 @@
         "y": 660,
         "wires": [
             [
-                "2427760a273abe1d"
+                "4f9704c5b7d6e371"
             ]
         ]
     },
     {
-        "id": "2427760a273abe1d",
+        "id": "4f9704c5b7d6e371",
         "type": "switch",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "property": "payload",
         "propertyType": "msg",
@@ -258,17 +258,17 @@
         "y": 660,
         "wires": [
             [
-                "b53cd42e3597b887"
+                "68bdc39b6e93fd76"
             ],
             [
-                "d2602887d889b1c0"
+                "39705d20efaa772c"
             ]
         ]
     },
     {
-        "id": "1540be8787d6e844",
+        "id": "d42c880c1d3f2269",
         "type": "mongodb2 in",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "service": "_ext_",
         "configNode": "ff55d734.a9cd28",
         "name": "등록",
@@ -278,14 +278,14 @@
         "y": 720,
         "wires": [
             [
-                "cf95aeb3f03af37d"
+                "6e66c9f74d8b47d9"
             ]
         ]
     },
     {
-        "id": "40aa3cd09f40bb51",
+        "id": "36f0ad153a5431f6",
         "type": "json",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "property": "payload",
         "action": "",
@@ -294,14 +294,14 @@
         "y": 660,
         "wires": [
             [
-                "9fe86a5d9efc3a28"
+                "bd93281c128c1dc6"
             ]
         ]
     },
     {
-        "id": "a0530bd04b322f50",
+        "id": "fd1935059a2b10a1",
         "type": "http in",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "url": "/login",
         "method": "get",
@@ -311,14 +311,14 @@
         "y": 170,
         "wires": [
             [
-                "18b0277a8abdd462"
+                "d2b2aab2109aac4e"
             ]
         ]
     },
     {
-        "id": "88cc1f1c5971fcf2",
+        "id": "854f508828e3627c",
         "type": "template",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "style",
         "field": "payload.style",
         "fieldType": "msg",
@@ -329,14 +329,14 @@
         "y": 170,
         "wires": [
             [
-                "0eed33a7fb3e0a99"
+                "9ed503a15f05b9c5"
             ]
         ]
     },
     {
-        "id": "e6c1bd31c8fb9237",
+        "id": "92f180594e7a971b",
         "type": "template",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "script",
         "field": "payload.script",
         "fieldType": "msg",
@@ -348,14 +348,14 @@
         "y": 180,
         "wires": [
             [
-                "88cc1f1c5971fcf2"
+                "854f508828e3627c"
             ]
         ]
     },
     {
-        "id": "4de464ed9c555c04",
+        "id": "4b612bea079ed693",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "global style",
         "func": "global.set(\"style\",msg.payload.style);\nglobal.set(\"script\",msg.payload.script);\nglobal.set(\"menu\",msg.payload.menu);\nglobal.set(\"msg_main\",msg);\n/*\nmsg.collection = 'localRecord';\nmsg.operation  = 'find.toArray';\nmsg.payload    = {  };\nmsg.projection = { 'name' : 1 , '_id' : 0 };\n*/\nreturn msg;",
         "outputs": 1,
@@ -367,14 +367,14 @@
         "y": 170,
         "wires": [
             [
-                "7fc3a18923c36a3d"
+                "df0a74dd8f9202f3"
             ]
         ]
     },
     {
-        "id": "0eed33a7fb3e0a99",
+        "id": "9ed503a15f05b9c5",
         "type": "template",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "menu",
         "field": "payload.menu",
         "fieldType": "msg",
@@ -385,14 +385,14 @@
         "y": 170,
         "wires": [
             [
-                "4de464ed9c555c04"
+                "4b612bea079ed693"
             ]
         ]
     },
     {
-        "id": "959c3eb40c060ad2",
+        "id": "a82169238add676e",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "find.toArray",
         "func": "global.set(\"msg_main\",msg);\nmsg.collection = 'localRecord';\nmsg.operation  =  'find.toArray';\nmsg.payload    = { };\nmsg.projection = { 'name' : 1 , '_id' : 0 };\nreturn msg;",
         "outputs": 1,
@@ -404,14 +404,14 @@
         "y": 320,
         "wires": [
             [
-                "d7b2c6dd93758bc1"
+                "771e407bcc5365c7"
             ]
         ]
     },
     {
-        "id": "d7b2c6dd93758bc1",
+        "id": "771e407bcc5365c7",
         "type": "mongodb2 in",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "service": "_ext_",
         "configNode": "8364b0aa.ebd7e",
         "name": "local",
@@ -421,25 +421,25 @@
         "y": 320,
         "wires": [
             [
-                "ed5d7d7b3a16def5"
+                "297971d1cfddca65"
             ]
         ]
     },
     {
-        "id": "b63780a25df68590",
+        "id": "d4363f5fa1d53002",
         "type": "http response",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 1870,
+        "x": 1850,
         "y": 320,
         "wires": []
     },
     {
-        "id": "ed5d7d7b3a16def5",
+        "id": "297971d1cfddca65",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "msg 받음",
         "func": "var msg1=msg.payload;\nvar msg=global.get(\"msg_main\")||\"\";\nmsg.payload=msg1;\nreturn msg;",
         "outputs": 1,
@@ -451,14 +451,14 @@
         "y": 320,
         "wires": [
             [
-                "69d26746a34d1718"
+                "de33a9f4ca0969f5"
             ]
         ]
     },
     {
-        "id": "b9c86024fba9bea1",
+        "id": "1d03ecd7074424b3",
         "type": "http in",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "url": "/display",
         "method": "get",
@@ -468,14 +468,14 @@
         "y": 250,
         "wires": [
             [
-                "c953386ae0e15c78"
+                "a70a894b285e858f"
             ]
         ]
     },
     {
-        "id": "a9d8f34e212ed94d",
+        "id": "95736f5788cabda7",
         "type": "comment",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "Display",
         "info": "1: 선택한 기기 config\n2: 메뉴의 환경설정\n3: main  기기 리스트 모니터링\n4: 메뉴얼",
         "x": 134,
@@ -483,9 +483,9 @@
         "wires": []
     },
     {
-        "id": "b832e8425214715b",
+        "id": "7b06b8dd1cb2794e",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "get global",
         "func": "msg.payload.style=global.get(\"style\");\nmsg.payload.script=global.get(\"script\");\nmsg.payload.menu=global.get(\"menu\");\nmsg.payload.act=global.get(\"act\");\nreturn msg;",
         "outputs": 1,
@@ -497,14 +497,14 @@
         "y": 230,
         "wires": [
             [
-                "b56e879d8a2431be"
+                "16f7b80f62e498ce"
             ]
         ]
     },
     {
-        "id": "b56e879d8a2431be",
+        "id": "16f7b80f62e498ce",
         "type": "template",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "html 기기 name",
         "field": "payload",
         "fieldType": "msg",
@@ -516,14 +516,14 @@
         "y": 230,
         "wires": [
             [
-                "3e1092c2d20ffc4a"
+                "b1018cd2cf4e3dc3"
             ]
         ]
     },
     {
-        "id": "66478630c4bd1dac",
+        "id": "157f3fa18bffa525",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "findOne",
         "func": "global.set(\"msg_in\",msg);\nvar newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOne';\nnewMsg.payload    = { 'mac' : msg.payload.mac};\nnewMsg.projection = { 'mac' : 1 , '_id' : 0 };\nreturn newMsg;",
         "outputs": 1,
@@ -535,14 +535,14 @@
         "y": 230,
         "wires": [
             [
-                "e445d024daaec466"
+                "1c7456774d342cb3"
             ]
         ]
     },
     {
-        "id": "e445d024daaec466",
+        "id": "1c7456774d342cb3",
         "type": "mongodb2 in",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "service": "_ext_",
         "configNode": "8364b0aa.ebd7e",
         "name": "기기 검색",
@@ -552,14 +552,14 @@
         "y": 230,
         "wires": [
             [
-                "58e208d2bd855b9c"
+                "e7a9681671b47439"
             ]
         ]
     },
     {
-        "id": "3e1092c2d20ffc4a",
+        "id": "b1018cd2cf4e3dc3",
         "type": "http response",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "statusCode": "",
         "headers": {},
@@ -568,9 +568,9 @@
         "wires": []
     },
     {
-        "id": "c953386ae0e15c78",
+        "id": "a70a894b285e858f",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "func": "global.set(\"msg_display\",msg);\nglobal.set(\"act\",msg.payload.act);\nreturn msg;",
         "outputs": 1,
@@ -582,14 +582,14 @@
         "y": 250,
         "wires": [
             [
-                "2b88e3f101dc6faa"
+                "999ae1252ac5a496"
             ]
         ]
     },
     {
-        "id": "58e208d2bd855b9c",
+        "id": "e7a9681671b47439",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "msg 받음",
         "func": "var msg1=msg.payload;\nvar msg=global.get(\"msg_display\")||\"\";\nmsg.payload=msg1;\nreturn msg;",
         "outputs": 1,
@@ -601,14 +601,14 @@
         "y": 230,
         "wires": [
             [
-                "b832e8425214715b"
+                "7b06b8dd1cb2794e"
             ]
         ]
     },
     {
-        "id": "2b88e3f101dc6faa",
+        "id": "999ae1252ac5a496",
         "type": "switch",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "property": "payload.act",
         "propertyType": "msg",
@@ -641,23 +641,23 @@
         "y": 250,
         "wires": [
             [
-                "66478630c4bd1dac"
+                "157f3fa18bffa525"
             ],
             [
-                "12ac9e67959e3881"
+                "90fcb0836808d905"
             ],
             [
-                "959c3eb40c060ad2"
+                "a82169238add676e"
             ],
             [
-                "56237b90d862f47a"
+                "6ea31a4e906689c7"
             ]
         ]
     },
     {
-        "id": "b7df2de8215b6d93",
+        "id": "7745ead1fcadd095",
         "type": "http in",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "url": "/save",
         "method": "post",
@@ -667,14 +667,14 @@
         "y": 420,
         "wires": [
             [
-                "bb70f1088f0b5161"
+                "a633d06292deb538"
             ]
         ]
     },
     {
-        "id": "449a9f7a18a79f14",
+        "id": "f7e3d25ab6267c9b",
         "type": "comment",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "Save",
         "info": "1: name 저장\n",
         "x": 134,
@@ -682,9 +682,9 @@
         "wires": []
     },
     {
-        "id": "e801ae533f20c778",
+        "id": "5398c88f923e9745",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "findOneUpdate",
         "func": "global.set(\"msg_in\",msg);\nvar newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOneAndUpdate';\nnewMsg.payload    = [{ 'mac' : msg.payload.mac}, {$set:{ 'name':msg.payload.name}} ];\nnewMsg.projection = { 'mac' : 1 , '_id' : 0 };\nreturn newMsg;",
         "outputs": 1,
@@ -696,14 +696,14 @@
         "y": 420,
         "wires": [
             [
-                "d61e44400c9d358a"
+                "cf6689decba25c81"
             ]
         ]
     },
     {
-        "id": "d61e44400c9d358a",
+        "id": "cf6689decba25c81",
         "type": "mongodb2 in",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "service": "_ext_",
         "configNode": "8364b0aa.ebd7e",
         "name": "등록 name",
@@ -713,17 +713,17 @@
         "y": 420,
         "wires": [
             [
-                "0a80ca2d66e0f41c"
+                "e98c66c3a5ef0673"
             ]
         ]
     },
     {
-        "id": "652af12f3ac9e933",
+        "id": "9e33bcb3d21b2119",
         "type": "link out",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "links": [
-            "aa2d3aab9dfd1da8",
+            "308edcc245ec69a7",
             "2044220.61e99de"
         ],
         "x": 1035,
@@ -731,9 +731,9 @@
         "wires": []
     },
     {
-        "id": "0a80ca2d66e0f41c",
+        "id": "e98c66c3a5ef0673",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "msg 받음",
         "func": "var msg=global.get(\"msg_in\")||\"\";\nreturn msg;",
         "outputs": 1,
@@ -745,14 +745,14 @@
         "y": 420,
         "wires": [
             [
-                "652af12f3ac9e933"
+                "9e33bcb3d21b2119"
             ]
         ]
     },
     {
-        "id": "bb70f1088f0b5161",
+        "id": "a633d06292deb538",
         "type": "switch",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "property": "payload.act",
         "propertyType": "msg",
@@ -780,16 +780,16 @@
         "y": 420,
         "wires": [
             [
-                "e801ae533f20c778"
+                "5398c88f923e9745"
             ],
             [],
             []
         ]
     },
     {
-        "id": "2f6c7fe90a916756",
+        "id": "5ac53d708d015403",
         "type": "template",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "html",
         "field": "payload",
         "fieldType": "msg",
@@ -801,14 +801,14 @@
         "y": 170,
         "wires": [
             [
-                "7b95817825266bf3"
+                "fb04b63faa4aa9fb"
             ]
         ]
     },
     {
-        "id": "7b95817825266bf3",
+        "id": "fb04b63faa4aa9fb",
         "type": "http response",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "Go Main Page",
         "statusCode": "",
         "headers": {},
@@ -817,9 +817,9 @@
         "wires": []
     },
     {
-        "id": "aa2d3aab9dfd1da8",
+        "id": "308edcc245ec69a7",
         "type": "link in",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "Main",
         "links": [
             "6457ed09.277674",
@@ -829,33 +829,33 @@
             "d1b3b938.5fd1b8",
             "425e599b.c1d808",
             "174175dc.9ef7ea",
-            "7fc3a18923c36a3d",
-            "652af12f3ac9e933"
+            "df0a74dd8f9202f3",
+            "9e33bcb3d21b2119"
         ],
         "x": 1279,
         "y": 170,
         "wires": [
             [
-                "d7a9b3feddb6497d"
+                "8c78319d22d0575f"
             ]
         ]
     },
     {
-        "id": "7fc3a18923c36a3d",
+        "id": "df0a74dd8f9202f3",
         "type": "link out",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "links": [
-            "aa2d3aab9dfd1da8"
+            "308edcc245ec69a7"
         ],
         "x": 1095,
         "y": 170,
         "wires": []
     },
     {
-        "id": "be69fe0e4da47007",
+        "id": "74087fc26b498ca3",
         "type": "template",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "html 환경설정",
         "field": "payload",
         "fieldType": "msg",
@@ -867,14 +867,14 @@
         "y": 276,
         "wires": [
             [
-                "4dc77f17afac3013"
+                "8ac0ab2d9b5a9dde"
             ]
         ]
     },
     {
-        "id": "12ac9e67959e3881",
+        "id": "90fcb0836808d905",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "Config",
         "func": "msg.payload.style=global.get(\"style\");\nmsg.payload.script=global.get(\"script\");\nmsg.payload.menu=global.get(\"menu\");\nreturn msg;",
         "outputs": 1,
@@ -886,14 +886,14 @@
         "y": 276,
         "wires": [
             [
-                "be69fe0e4da47007"
+                "74087fc26b498ca3"
             ]
         ]
     },
     {
-        "id": "4dc77f17afac3013",
+        "id": "8ac0ab2d9b5a9dde",
         "type": "http response",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "statusCode": "",
         "headers": {},
@@ -902,9 +902,9 @@
         "wires": []
     },
     {
-        "id": "bf2e2c7f424e3750",
+        "id": "db80652955175b19",
         "type": "template",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "html 메뉴얼",
         "field": "payload",
         "fieldType": "msg",
@@ -916,14 +916,14 @@
         "y": 366,
         "wires": [
             [
-                "5b50d3998f70f787"
+                "a61a349f5cfa3031"
             ]
         ]
     },
     {
-        "id": "56237b90d862f47a",
+        "id": "6ea31a4e906689c7",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "Config",
         "func": "msg.payload.style=global.get(\"style\");\nmsg.payload.script=global.get(\"script\");\nmsg.payload.menu=global.get(\"menu\");\nreturn msg;",
         "outputs": 1,
@@ -935,14 +935,14 @@
         "y": 366,
         "wires": [
             [
-                "bf2e2c7f424e3750"
+                "db80652955175b19"
             ]
         ]
     },
     {
-        "id": "5b50d3998f70f787",
+        "id": "a61a349f5cfa3031",
         "type": "http response",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "statusCode": "",
         "headers": {},
@@ -951,9 +951,9 @@
         "wires": []
     },
     {
-        "id": "ab07d113fcc78a86",
+        "id": "80cb15debdf2e9b0",
         "type": "comment",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "Act",
         "info": "1: \n",
         "x": 130,
@@ -961,9 +961,9 @@
         "wires": []
     },
     {
-        "id": "a0b34583c03d7aaf",
+        "id": "563865464ed6506d",
         "type": "http in",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "url": "/act",
         "method": "post",
@@ -973,14 +973,14 @@
         "y": 540,
         "wires": [
             [
-                "2be8e404eb80adba"
+                "3794ca8e51d2ed11"
             ]
         ]
     },
     {
-        "id": "2be8e404eb80adba",
+        "id": "3794ca8e51d2ed11",
         "type": "switch",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "property": "payload.act",
         "propertyType": "msg",
@@ -1008,16 +1008,16 @@
         "y": 540,
         "wires": [
             [
-                "e9f97588f5a885c0"
+                "a8620a0de01aa970"
             ],
             [],
             []
         ]
     },
     {
-        "id": "8989bb11c44bd270",
+        "id": "79fc8c061884f420",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "func": "var server=msg.payload[1].address;\nglobal.set(\"serverIp\",server);\nmsg.server=server;\nreturn msg;",
         "outputs": 1,
@@ -1029,14 +1029,14 @@
         "y": 170,
         "wires": [
             [
-                "e6c1bd31c8fb9237"
+                "92f180594e7a971b"
             ]
         ]
     },
     {
-        "id": "d7a9b3feddb6497d",
+        "id": "8c78319d22d0575f",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "func": "var serverIp=global.get(\"serverIp\");\nmsg.payload.internalIPv4=serverIp;\nreturn msg;",
         "outputs": 1,
@@ -1048,14 +1048,14 @@
         "y": 170,
         "wires": [
             [
-                "2f6c7fe90a916756"
+                "5ac53d708d015403"
             ]
         ]
     },
     {
-        "id": "3ce44560913ecbed",
+        "id": "df881b0ab2718654",
         "type": "websocket out",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "server": "bf4882ef33e69fa3",
         "client": "",
@@ -1064,9 +1064,9 @@
         "wires": []
     },
     {
-        "id": "0edc35317964b54f",
+        "id": "2e5ad5c9f31fca91",
         "type": "websocket in",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "server": "bf4882ef33e69fa3",
         "client": "",
@@ -1074,14 +1074,14 @@
         "y": 760,
         "wires": [
             [
-                "37d5533ced638510"
+                "cbc9056cbe861bc7"
             ]
         ]
     },
     {
-        "id": "82b50e5ffe528a42",
+        "id": "fd48168dd7fb4cc4",
         "type": "comment",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "출력버튼 웹소켙",
         "info": "",
         "x": 320,
@@ -1089,9 +1089,9 @@
         "wires": []
     },
     {
-        "id": "de505b99e38b6a7d",
+        "id": "d69897e78d0c3804",
         "type": "template",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "Main html",
         "field": "payload",
         "fieldType": "msg",
@@ -1102,14 +1102,14 @@
         "y": 320,
         "wires": [
             [
-                "b63780a25df68590"
+                "d4363f5fa1d53002"
             ]
         ]
     },
     {
-        "id": "37d5533ced638510",
+        "id": "cbc9056cbe861bc7",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "func": "var msg = {payload:msg.payload.replace(/['^']/g, \"\\\"\")};\nreturn msg;",
         "outputs": 1,
@@ -1121,15 +1121,15 @@
         "y": 760,
         "wires": [
             [
-                "4a1f1a18e1aacc19",
-                "df3d973ff8b23969"
+                "7447158a4507553b",
+                "8f1ddc232dd1a511"
             ]
         ]
     },
     {
-        "id": "4a1f1a18e1aacc19",
+        "id": "7447158a4507553b",
         "type": "json",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "property": "payload",
         "action": "",
@@ -1138,14 +1138,14 @@
         "y": 760,
         "wires": [
             [
-                "82ac9c81a8243b07"
+                "30c5f7f3a9414a68"
             ]
         ]
     },
     {
-        "id": "c988e69910717b5e",
+        "id": "e3dd5fdaabc2c39c",
         "type": "comment",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "http://localhost:1880/login",
         "info": "",
         "x": 350,
@@ -1153,9 +1153,9 @@
         "wires": []
     },
     {
-        "id": "68d2c2e3b71d30ec",
+        "id": "c5cea6e33ac6c86a",
         "type": "comment",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "입력버튼 웹소켙",
         "info": "",
         "x": 320,
@@ -1163,9 +1163,9 @@
         "wires": []
     },
     {
-        "id": "df3d973ff8b23969",
+        "id": "8f1ddc232dd1a511",
         "type": "mqtt out",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "topic": "/i2r/inTopic",
         "qos": "0",
@@ -1181,63 +1181,63 @@
         "wires": []
     },
     {
-        "id": "702676b6b02d2a58",
+        "id": "711a1f4750689c62",
         "type": "link out",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "links": [
-            "140c9cc9588d359e"
+            "cdc2649e32507240"
         ],
         "x": 1155,
         "y": 647,
         "wires": []
     },
     {
-        "id": "d9dc102cdf0d4b26",
+        "id": "ab1011694355fc83",
         "type": "link out",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "links": [
-            "140c9cc9588d359e"
+            "cdc2649e32507240"
         ],
         "x": 1175,
         "y": 700,
         "wires": []
     },
     {
-        "id": "24d150d99c461566",
+        "id": "1779d86c9e6ea8a6",
         "type": "link out",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "links": [
-            "140c9cc9588d359e"
+            "cdc2649e32507240"
         ],
         "x": 1055,
         "y": 760,
         "wires": []
     },
     {
-        "id": "140c9cc9588d359e",
+        "id": "cdc2649e32507240",
         "type": "link in",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "links": [
-            "702676b6b02d2a58",
-            "24d150d99c461566",
-            "d9dc102cdf0d4b26"
+            "711a1f4750689c62",
+            "1779d86c9e6ea8a6",
+            "ab1011694355fc83"
         ],
         "x": 1275,
         "y": 720,
         "wires": [
             [
-                "1540be8787d6e844"
+                "d42c880c1d3f2269"
             ]
         ]
     },
     {
-        "id": "cf95aeb3f03af37d",
+        "id": "6e66c9f74d8b47d9",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "findOne",
         "func": "var msg=global.get(\"msg_in\")||\"\";\nvar newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOne';\nnewMsg.payload    = { 'mac' : msg.payload.mac};\nnewMsg.projection = { 'mac' : 1 , '_id' : 0 };\nreturn newMsg;",
         "outputs": 1,
@@ -1249,14 +1249,14 @@
         "y": 720,
         "wires": [
             [
-                "7a428bb8cfef69b9"
+                "eb32da904f481633"
             ]
         ]
     },
     {
-        "id": "7a428bb8cfef69b9",
+        "id": "eb32da904f481633",
         "type": "mongodb2 in",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "service": "_ext_",
         "configNode": "8364b0aa.ebd7e",
         "name": "기기 검색",
@@ -1266,30 +1266,30 @@
         "y": 720,
         "wires": [
             [
-                "3ce44560913ecbed"
+                "df881b0ab2718654"
             ]
         ]
     },
     {
-        "id": "6d7704de17a526c4",
+        "id": "eb22485ff1e3f364",
         "type": "subflow:10a86fdc.efc16",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "Iterate",
         "env": [],
         "x": 1610,
         "y": 580,
         "wires": [
             [
-                "f1dc2daca077f4a4",
-                "cb41af572ee5a487"
+                "bec939a8de9746b9",
+                "68a4c356f2dd6a01"
             ],
             []
         ]
     },
     {
-        "id": "cb41af572ee5a487",
+        "id": "68a4c356f2dd6a01",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "func": "\nreturn msg;",
         "outputs": 1,
@@ -1301,14 +1301,14 @@
         "y": 520,
         "wires": [
             [
-                "6d7704de17a526c4"
+                "eb22485ff1e3f364"
             ]
         ]
     },
     {
-        "id": "f1dc2daca077f4a4",
+        "id": "bec939a8de9746b9",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "findOne",
         "func": "var newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOne';\nnewMsg.payload    = { 'mac' : msg.payload.mac};\nnewMsg.projection = { 'mac' : 1 , '_id' : 0 };\nreturn newMsg;",
         "outputs": 1,
@@ -1320,14 +1320,14 @@
         "y": 580,
         "wires": [
             [
-                "7a428bb8cfef69b9"
+                "eb32da904f481633"
             ]
         ]
     },
     {
-        "id": "79add75eab388285",
+        "id": "2d9e67ebbecd136f",
         "type": "delay",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "",
         "pauseType": "delay",
         "timeout": "1",
@@ -1345,14 +1345,14 @@
         "y": 580,
         "wires": [
             [
-                "6d7704de17a526c4"
+                "eb22485ff1e3f364"
             ]
         ]
     },
     {
-        "id": "3f959660177b1384",
+        "id": "d15c312ca1b91d38",
         "type": "comment",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "웹페이지 초기화",
         "info": "",
         "x": 1420,
@@ -1360,22 +1360,22 @@
         "wires": []
     },
     {
-        "id": "18b0277a8abdd462",
+        "id": "d2b2aab2109aac4e",
         "type": "hostip",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "Host IP",
         "x": 300,
         "y": 171,
         "wires": [
             [
-                "8989bb11c44bd270"
+                "79fc8c061884f420"
             ]
         ]
     },
     {
-        "id": "69d26746a34d1718",
+        "id": "de33a9f4ca0969f5",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "0,1,2,3 List (수정)",
         "func": "msg.payload.style=global.get(\"style\");\nmsg.payload.script=global.get(\"script\");\nmsg.payload.menu=global.get(\"menu\");\nvar i,j;\nvar s;\nvar r;\nsOut=\"<table>\"\nsOut+=\"<tr>   <th>모델</th>  <th>모니터링</th> <th>이름</th> <th>IP</th> </tr>\"\nfor(i=0;i<msg.payload.length;i++) {\n    //r=\"<input type='hidden' name='chip' value='\"+msg.payload[i].chip+\"'>\";\n    s=\"\";\n    s+=\"<tr><th>\";\n    s+=\"<form action='/display'>\";\n        s+=\"<input type='hidden' name='mac' value='\"+msg.payload[i].mac+\"'>\";\n        s+=\"<input type='hidden' name='act' value='1'>\";\n        s+=\"<button type='submit' name='value' value='0' class='button buttonM'>\"+msg.payload[i].model+\"</button></a>\";\n    s+=\"</form>\";\n    s+=\"</th>\";\n    if(msg.payload[i].type==2) {\n        //s+=\"<td>ec:\"+msg.payload[i].ec+\"  ph:\"+msg.payload[i].ph+\"  온도:\"+msg.payload[i].temp+\"</td> \"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==3) {\n        //s+=\"<th>습도:\"+msg.payload[i].humi+\"  온도:\"+msg.payload[i].temp+\"  CO2:\"+msg.payload[i].co2+\"</th> \"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<th>\"+msg.payload[i].name+\"</th>\"\n    }\n    else if(msg.payload[i].type==4) {\n        //s+=\"<th>습도:\"+msg.payload[i].mo+\"  온도:\"+msg.payload[i].tem+\"  EC:\"+msg.payload[i].ec+\"</th> \"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<th>\"+msg.payload[i].name+\"</th>\"\n    }\n    else if(msg.payload[i].type==5) {\n        //s+=\"<th>습도:\"+msg.payload[i].humi+\"  온도:\"+msg.payload[i].temp+\"</th> \"\n        s+=\"<td>\";\n        for(j=0;j<2;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<th>\"+msg.payload[i].name+\"</th>\"\n    } \n    else if(msg.payload[i].type==6) {\n        s+=\"<td>\"\n            s+=\"<table>\";\n            s+=\"<tr>\";\n            s+=\"<td></td>\";\n            for(j=0;j<8;j++)\n                s+=\"<td>\"+String(j)+\"</td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>입력</td>\";\n            for(j=0;j<8;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>출력</td>\";\n            for(j=0;j<6;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-out\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"</table>\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==7) {\n        s+=\"<td>\";\n        for(j=0;j<2;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==8) {\n        //s+=\"<td>습도:\"+msg.payload[i].humi+\"%  온도:\"+msg.payload[i].temp+\"도  대기압:\"+msg.payload[i].pres+\"</td> \"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==9) {\n        //s+=\"<td>함수율:\"+msg.payload[i].humi+\"%  온도:\"+msg.payload[i].temp+\"도  EC:\"+msg.payload[i].ec+\"</td> \"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==10) {\n        //s+=\"<td>사운드:\"+msg.payload[i].sound+\" \"+msg.payload[i].time+\"</td> \";\n        s+=\"<td><span id='\"+msg.payload[i].mac+\"-in0'></span>&emsp;\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==11) {\n        //s+=\"<td>충격발생:\"+msg.payload[i].time+\"</td> \"\n        s+=\"<td><span id='\"+msg.payload[i].mac+\"-in0'></span>&emsp;\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==12) {\n        s+=\"<td>\"\n            s+=\"<table>\";\n            s+=\"<tr>\";\n            s+=\"<td></td>\";\n            for(j=0;j<4;j++)\n                s+=\"<td>\"+String(j)+\"</td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>입력</td>\";\n            for(j=0;j<4;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>출력</td>\";\n            for(j=0;j<4;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-out\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"</table>\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==13) {\n        s+=\"<td>\"\n            s+=\"<table align='center' style='margin: 0px auto;'>\";\n            s+=\"<tr>\";\n            s+=\"<td>정지</td>\";\n            s+=\"<td>올림</td>\";\n            s+=\"<td>내림</td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            for(j=0;j<4;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-out\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"</tr>\";\n            s+=\"</table>\";\n\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==14) {\n        s+=\"<td>\"\n            s+=\"<table>\";\n            s+=\"<tr>\";\n            s+=\"<td></td>\";\n            for(j=0;j<6;j++)\n                s+=\"<td>\"+String(j)+\"</td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>입력</td>\";\n            for(j=0;j<6;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>출력</td>\";\n            for(j=0;j<4;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-out\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"</table>\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==15) {\n        s+=\"<td>\";\n        s+=\"<span id='\"+msg.payload[i].mac+\"-in0'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==16) {\n        s+=\"<td>\";\n        s+=\"<span id='\"+msg.payload[i].mac+\"-in0'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==17) {\n        //s+=\"<td>lux:\"+msg.payload[i].lux+\"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n        s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==18) {\n        s+=\"<td>\"\n            s+=\"<table>\";\n            s+=\"<tr>\";\n            s+=\"<td></td>\";\n            for(j=0;j<8;j++)\n                s+=\"<td>\"+String(j)+\"</td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>입력</td>\";\n            for(j=0;j<8;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>출력</td>\";\n            for(j=0;j<8;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-out\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"</table>\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==20) {\n        //s+=\"<td>hum:\"+msg.payload[i].hum+\"   온도:\"+msg.payload[i].temp+\"</td> \"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==21) {\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    \n    s+=\"<td><a href='http://\"+msg.payload[i].ip+\"' target='_blank'>\"+msg.payload[i].ip+\"</a></td>\";\n    s+=\"</tr>\"\n    \n    sOut=sOut+s+\"<br>\";\n} \n\nmsg.payload.list=sOut;\nreturn msg;",
         "outputs": 1,
@@ -1387,15 +1387,15 @@
         "y": 320,
         "wires": [
             [
-                "3c1babc4a729dfac",
-                "79add75eab388285"
+                "ae9a3e92c985da74",
+                "2d9e67ebbecd136f"
             ]
         ]
     },
     {
-        "id": "3c1babc4a729dfac",
+        "id": "ae9a3e92c985da74",
         "type": "template",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "Web Socket scriptSocket (수정)",
         "field": "payload.scriptSocket",
         "fieldType": "msg",
@@ -1406,14 +1406,14 @@
         "y": 320,
         "wires": [
             [
-                "de505b99e38b6a7d"
+                "d69897e78d0c3804"
             ]
         ]
     },
     {
-        "id": "b53cd42e3597b887",
+        "id": "68bdc39b6e93fd76",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "insert one (수정)",
         "func": "var msg=global.get(\"msg_in\")||\"\";\nvar model=[];\nmodel[2]='PE-300';\nmodel[3]='키우미';\nmodel[4]='KSM-8900';\nmodel[5]='simpleTH';\nmodel[6]='XEX-DR14E';\nmodel[7]='DHT11';\nmodel[8]='RY-WS301';\nmodel[9]='MP-508E';\nmodel[10]='사운드';\nmodel[11]='충격센서';\nmodel[12]='PLC-RS485';\nmodel[13]='차양모터';\nmodel[14]='MASTER-K120s';\nmodel[15]='smoke';\nmodel[16]='methane';\nmodel[17]='ILLUMINACE SENSOR';\nmodel[18]='PLC-RS485-8ch';\nmodel[20]='Leaf Humidity';\nmodel[21]='RK520-01';\n\nvar newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'insert';\nif(msg.payload.type==6)\n    newMsg.payload = {'type':msg.payload.type,'mac':msg.payload.mac,'model':model[msg.payload.type],'ip':msg.payload.ip, 'name':'', 'out':[0,0,0,0,0,0] };\nelse if(msg.payload.type==12 || msg.payload.type==14)\n    newMsg.payload = {'type':msg.payload.type,'mac':msg.payload.mac,'model':model[msg.payload.type],'ip':msg.payload.ip, 'name':'', 'out':[0,0,0,0] };\nelse if(msg.payload.type==18)\n    newMsg.payload = {'type':msg.payload.type,'mac':msg.payload.mac,'model':model[msg.payload.type],'ip':msg.payload.ip, 'name':'', 'out':[0,0,0,0,0,0,0,0] };\nelse\n    newMsg.payload = {'type':msg.payload.type,'mac':msg.payload.mac,'model':model[msg.payload.type],'ip':msg.payload.ip, 'name':''};\nnewMsg.payload.mac = msg.payload.mac;\nnewMsg.projection = { 'email' : 1 , '_id' : 0 };\nreturn newMsg;",
         "outputs": 1,
@@ -1425,14 +1425,14 @@
         "y": 646,
         "wires": [
             [
-                "702676b6b02d2a58"
+                "711a1f4750689c62"
             ]
         ]
     },
     {
-        "id": "d2602887d889b1c0",
+        "id": "39705d20efaa772c",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "findOneUpdate (수정)",
         "func": "var time = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });\nvar msg=global.get(\"msg_in\")||\"\";\nvar newMsg = {};\n\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOneAndUpdate';\nif(msg.payload.type==2)\n    newMsg.payload = [{ 'mac' : msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip, 'ec':msg.payload.ec, 'ph':msg.payload.ph, 'temp':msg.payload.temp, 'time':time}} ];\nelse if(msg.payload.type==3)\n    newMsg.payload    = [{ 'mac' : msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip, 'humi':msg.payload.humi, 'temp':msg.payload.temp, 'co2':msg.payload.co2, 'time':time}} ];\nelse if(msg.payload.type==4)\n    newMsg.payload    = [{ 'mac' : msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip, 'mo':msg.payload.mo, 'tem':msg.payload.tem, 'ec':msg.payload.ec, 'time':time}} ];\nelse if(msg.payload.type==5)\n    newMsg.payload    = [{ 'mac' : msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip, 'humi':msg.payload.humi, 'temp':msg.payload.temp, 'time':time}} ];\nelse if(msg.payload.type==6)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'in.0':msg.payload.in.charAt(0), 'in.1':msg.payload.in.charAt(1)\n    , 'in.2':msg.payload.in.charAt(2), 'in.3':msg.payload.in.charAt(3), 'in.4':msg.payload.in.charAt(4), 'in.5':msg.payload.in.charAt(5)\n    , 'in.6':msg.payload.in.charAt(6), 'in.7':msg.payload.in.charAt(7), 'time':time\n     }} ];\nelse if(msg.payload.type==7)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip,'humi':msg.payload.humi\n    , 'temp':msg.payload.temp, 'time':time }} ];\nelse if(msg.payload.type==8)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip,'humi':msg.payload.humi\n    , 'temp':msg.payload.temp, 'pres':msg.payload.pres, 'time':time }} ];\nelse if(msg.payload.type==9)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip,'humi':msg.payload.humi\n    , 'temp':msg.payload.temp, 'ec':msg.payload.ec, 'time':time }} ];\nelse if(msg.payload.type==10)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip,'sound':msg.payload.sound\n    , 'time':time }} ];\nelse if(msg.payload.type==11)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip,'knock':msg.payload.knock\n    , 'time':time }} ];\nelse if(msg.payload.type==12)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'in.0':msg.payload.in.charAt(0), 'in.1':msg.payload.in.charAt(1)\n    , 'in.2':msg.payload.in.charAt(2), 'in.3':msg.payload.in.charAt(3), 'in.4':msg.payload.in.charAt(4), 'in.5':msg.payload.in.charAt(5)\n    , 'in.6':msg.payload.in.charAt(6), 'in.7':msg.payload.in.charAt(7), 'time':time\n     }} ];\nelse if(msg.payload.type==13)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'state':msg.payload.state, 'time':time\n     }} ];\nelse if(msg.payload.type==14)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{'ip':msg.payload.ip, 'in.0':msg.payload.in.charAt(0), 'in.1':msg.payload.in.charAt(1)\n    , 'in.2':msg.payload.in.charAt(2), 'in.3':msg.payload.in.charAt(3), 'in.4':msg.payload.in.charAt(4), 'in.5':msg.payload.in.charAt(5), 'time':time }} ];\nelse if(msg.payload.type==15)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip,'gas':msg.payload.gas\n    , 'time':time }} ];\nelse if(msg.payload.type==16)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip,'gas':msg.payload.gas\n    , 'time':time }} ];\nelse if(msg.payload.type==17)\n    newMsg.payload = [{ 'mac' : msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip, 'lux':msg.payload.lux,'time':time}} ];\nelse if(msg.payload.type==18)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'in.0':msg.payload.in.charAt(0), 'in.1':msg.payload.in.charAt(1)\n    , 'in.2':msg.payload.in.charAt(2), 'in.3':msg.payload.in.charAt(3), 'in.4':msg.payload.in.charAt(4), 'in.5':msg.payload.in.charAt(5)\n    , 'in.6':msg.payload.in.charAt(6), 'in.7':msg.payload.in.charAt(7), \n    'out.0':msg.payload.out.charAt(0), 'out.1':msg.payload.out.charAt(1),'out.2':msg.payload.out.charAt(2), 'out.3':msg.payload.out.charAt(3),\n    'out.4':msg.payload.out.charAt(4), 'out.5':msg.payload.out.charAt(5),'out.6':msg.payload.out.charAt(6), 'out.7':msg.payload.out.charAt(7),\n    'time':time\n     }} ];\n    else if(msg.payload.type==20)\n    newMsg.payload = [{ 'mac' : msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip, 'hum':msg.payload.hum, 'temp':msg.payload.temp, 'time':time}} ];\n    else if(msg.payload.type==21)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip,'humi':msg.payload.humi\n    , 'temp':msg.payload.temp, 'time':time }} ];\nnewMsg.projection = { 'mac' : 1 , '_id' : 0 };\nreturn newMsg;",
         "outputs": 1,
@@ -1444,16 +1444,16 @@
         "y": 700,
         "wires": [
             [
-                "d9dc102cdf0d4b26"
+                "ab1011694355fc83"
             ]
         ]
     },
     {
-        "id": "82ac9c81a8243b07",
+        "id": "30c5f7f3a9414a68",
         "type": "function",
-        "z": "dddd400a39042bac",
+        "z": "c502e59ee812b36f",
         "name": "findOneUpdate (출력있는 경우만 수정)",
-        "func": "global.set(\"msg_in\",msg);\nvar time = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });\nvar newMsg = {};\n\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOneAndUpdate';\n\nif(msg.payload.type==6 ||msg.payload.type==12 || msg.payload.type==14 || msg.payload.type==18) {\n    if(msg.payload.outNo == 0)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.0':msg.payload.value, 'time':time }} ];\n    else if(msg.payload.outNo == 1)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.1':msg.payload.value, 'time':time }} ];\n    else if(msg.payload.outNo == 2)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.2':msg.payload.value, 'time':time }} ];\n    else if(msg.payload.outNo == 3)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.3':msg.payload.value, 'time':time }} ];\n    else if(msg.payload.outNo == 4)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.4':msg.payload.value, 'time':time }} ];\n    else if(msg.payload.outNo == 5)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.5':msg.payload.value, 'time':time }} ];\n     else if(msg.payload.outNo == 17)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.17':msg.payload.value, 'time':time }} ];\n\n    \n}\nelse if(msg.payload.type==13) \n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'state':msg.payload.state, 'time':time }} ];\nnewMsg.projection = { 'mac' : 1 , '_id' : 0 };\nreturn newMsg;",
+        "func": "global.set(\"msg_in\",msg);\nvar time = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });\nvar newMsg = {};\n\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOneAndUpdate';\n\nif(msg.payload.type==6 ||msg.payload.type==12 || msg.payload.type==14 || msg.payload.type==18) {\n    if(msg.payload.outNo == 0)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.0':msg.payload.value, 'time':time }} ];\n    else if(msg.payload.outNo == 1)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.1':msg.payload.value, 'time':time }} ];\n    else if(msg.payload.outNo == 2)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.2':msg.payload.value, 'time':time }} ];\n    else if(msg.payload.outNo == 3)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.3':msg.payload.value, 'time':time }} ];\n    else if(msg.payload.outNo == 4)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.4':msg.payload.value, 'time':time }} ];\n    else if(msg.payload.outNo == 5)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.5':msg.payload.value, 'time':time }} ];\n     else if(msg.payload.outNo == 17)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.17':msg.payload.value, 'time':time }} ];\nelse if(msg.payload.outNo == 17)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.20':msg.payload.value, 'time':time }} ];\n    \n}\nelse if(msg.payload.type==13) \n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'state':msg.payload.state, 'time':time }} ];\nnewMsg.projection = { 'mac' : 1 , '_id' : 0 };\nreturn newMsg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1463,7 +1463,7 @@
         "y": 760,
         "wires": [
             [
-                "24d150d99c461566"
+                "1779d86c9e6ea8a6"
             ]
         ]
     },
