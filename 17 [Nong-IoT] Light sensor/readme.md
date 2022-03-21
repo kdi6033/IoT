@@ -1,4 +1,4 @@
-## ILLUMINANCE SENSOR
+## Light sensor
 ### 1. 프로토콜 확인 
   
 
