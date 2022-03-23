@@ -329,12 +329,12 @@ Leaf temperature = 0E BA = 3770/100-20 = 17.7 ℃
 ### 준비물
 |이름|사진|
 |----|-----|
-|Leaf humidity sensor|![센서](https://user-images.githubusercontent.com/37902752/159212196-517717ae-2d4d-45c8-9e7a-45f562abb70c.PNG)|
+|Leaf humidity sensor|![센서 readme](https://user-images.githubusercontent.com/37902752/159655457-a0bd3b22-c079-4839-919e-4a962a22f039.png)|
 |USB to 485/422 컨버터|![컨버터](https://user-images.githubusercontent.com/37902752/153120409-b8993064-b20b-4171-bdbd-e1003226707b.PNG)|
 |Oled|![oleedd](https://user-images.githubusercontent.com/37902752/153120187-e9dfc7bd-49fb-484d-994d-68bb78064cb1.png)|
 |esp8266|![d1mmini](https://user-images.githubusercontent.com/37902752/153120047-a398f2d9-739f-4dbd-a7e8-49a560cae8d0.png)|
 |RS485보드|![rs485](https://user-images.githubusercontent.com/37902752/153120286-4402da02-ea72-4781-afa7-445473d1f783.png)|
-|터미널|![터미널](https://user-images.githubusercontent.com/37902752/159212587-639e0999-978c-4683-9760-a814d1e64594.PNG)|
+|터미널|![터미널 readme](https://user-images.githubusercontent.com/37902752/159655549-d79ccf25-7bf4-4bab-9bd3-904fb3d2f4a8.png)|
 
 
 ## 온습도 센서와 RS485 컨버터 배선도 (온습도 센서 동작확인)
