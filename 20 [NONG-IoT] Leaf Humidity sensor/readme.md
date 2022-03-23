@@ -20,7 +20,7 @@ Leaf Humidity sensor ry-g/w 메뉴얼 : https://en.nong-iot.com/assets/uploads/R
     {
         "id": "2444ab4bb113d3cc",
         "type": "tab",
-        "label": "플로우 1",
+        "label": "Leaf humidity sensor 동작확인",
         "disabled": false,
         "info": "",
         "env": []
