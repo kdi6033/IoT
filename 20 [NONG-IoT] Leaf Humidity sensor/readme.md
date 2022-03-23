@@ -9,7 +9,8 @@
 |데이터 읽기(single leaf humidity type) |XX 03 00 00 00 01 CRCloCRChi|XX 03 02 00yy CRCloCRChi|Device address/ Funtion code/ Start register address/ No. of registers/ CRC check |Device address/ Funtion code/ Data length/ Data/ CRC check |
 |데이터 읽기(Leaf temperature and humidity type) |XX 03 00 00 00 02 CRCloCRChi|XX 03 04 00yy CRCloCRChi|Device address/ Funtion code/ Start register address/ No. of register/ CRC check |Device address/ Funtion code/ Data length/ Data/ CRC check |
 
-Leaf Humidity sensor ry-g/w 구매링크 : https://en.nong-iot.com/product/35.html 
+Leaf Humidity sensor ry-g/w 구매링크 : https://en.nong-iot.com/product/35.html
+
 Leaf Humidity sensor ry-g/w 메뉴얼 : https://en.nong-iot.com/assets/uploads/RY-CYM1.pdf
 
       
