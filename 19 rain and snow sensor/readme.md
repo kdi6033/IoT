@@ -12,7 +12,7 @@
 ![비눈센서node](https://user-images.githubusercontent.com/37902752/160559014-de956344-ba5b-4bed-9958-9451a9ed1715.JPG)
 *  나타나는 ui작동
 |비/눈 온다|비/눈 안온다|
-|----|----------|
+|-----|-----|
 |![node ui 비o](https://user-images.githubusercontent.com/37902752/160568951-3ecd196c-1810-4de1-91ec-ed1afd3b0f48.jpg)|![node ui 비x](https://user-images.githubusercontent.com/37902752/160569227-30bf6684-e621-4c69-9807-7a4614837004.jpg)|
 
 ### 준비물
