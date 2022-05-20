@@ -3,8 +3,7 @@
 ![풍속센서 깃허브](https://user-images.githubusercontent.com/37902752/169436943-8d8c742e-8c38-429e-baf2-d17d848285b6.png)
 ### 1.  센서 회로도
 
-![풍속센서 회로도](https://user-images.githubusercontent.com/37902752/169437004-76487d95-5520-43e1-8a36-4bfd47526b87.png)
-
+![풍속센서 회로도](https://user-images.githubusercontent.com/37902752/169460887-ffbd55eb-ecf9-4daf-8e61-96bd863c0616.png)
  
 풍속 센서 SWWS-7320 구매링크 : https://farmscube.com/product/%ED%92%8D%EC%86%8D-%EC%84%BC%EC%84%9C-swws-7320/20/category/42/display/1/  
 
