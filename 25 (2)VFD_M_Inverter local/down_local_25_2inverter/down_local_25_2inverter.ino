@@ -62,7 +62,7 @@ String sIn="",sInPre="";  // 입력값이 달라질 때만 mqtt로 송신
 int noOut=0,valueOut=0; //mqtt로 수신된 plc출력 명령 noOut=출력핀번호 valueOut=출력값
 
 char str[24];
-int si,sj,len=6,dir,vel,predir,prevel,dir2,vel2,predir2,prevel2;
+int si,sj,len=6,dir=0,vel=0,predir,prevel;
 
 unsigned long previousMillis = 0;     
 const long interval = 1000;  
@@ -97,8 +97,6 @@ void tickMqtt();
 void upWebSocket();
 void velocity(int vel);
 void Direction(int dir);
-void velocity2(int vel2);
-void Direction2(int dir2);
 
 void tick()
 { 
@@ -121,8 +119,6 @@ void upWebSocket() {
   //HTML로 보냄
   String json = "{\"dir\":"; json += dir;
          json += ",\"vel\":"; json += vel;
-         json += ",\"dir2\":"; json += dir2;
-         json += ",\"vel2\":"; json += vel2;
          json += "}";
          webSocket.broadcastTXT(json.c_str(), json.length());
 }
@@ -139,8 +135,6 @@ void tickMqtt()
   json += ",\"type\":"; json += type;
   json += ",\"dir\":"; json += dir;
   json += ",\"vel\":"; json += vel;
-  json += ",\"dir2\":"; json += dir2;
-  json += ",\"vel2\":"; json += vel2;
   json += "}";
   json.toCharArray(msg, json.length()+1);
   Serial.println(msg);
@@ -337,10 +331,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   deserializeJson(doc,payload);
   root = doc.as<JsonObject>();
   String macIn = root["mac"];
-  String nameIn  = root["name"];
   while(macIn==sMac){
-  
-    if(nameIn=="inverter"){
       if(!root["dir"]){         //vel만 들어왔을 때
         dir = predir;
         Direction(dir);         //모터방향 함수
@@ -370,39 +361,6 @@ void callback(char* topic, byte* payload, unsigned int length) {
         break;
       }
     }
-//================================================================    
-    else if(nameIn=="inverter2"){
-      if(!root["dir2"]){         //vel만 들어왔을 때
-        dir2 = predir2;
-        Direction2(dir2);         //모터방향 함수
-        delay(100);
-        vel2 = root["vel2"];
-        velocity2(vel2);          //주파수 함수
-        prevel2=vel2;             //들어온 vel값을 prevel에 저장
-        break;
-      }
-      else if(!root["vel2"]){    //dir만 들어왔을 때
-        dir2 = root["dir2"];
-        Direction2(dir2);
-        predir2=dir2;             //들어온 dir값을 predir에 저장
-        delay(100);
-        vel2 = prevel2;
-        velocity2(vel2);
-        break;
-      }
-      else{                     //vel,dir둘 다 들어왔을 때 ( node-red에서 타임스탬프로 신호줄 때 )
-        dir2 = root["dir2"];
-        Direction2(dir2);
-        predir2=dir2;
-        delay(100);
-        vel2 = root["vel2"];
-        velocity2(vel2);
-        prevel2=vel2;
-        break;
-      }
-    }
-    
-  }
 }
 
 // mqtt 통신에 지속적으로 접속한다.
@@ -546,9 +504,12 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
   }*/
 }
 
+
 void Direction(int dir) {
-  str[0]=0x01; str[1]=0x06; str[2]=0x20; str[3]=0x00; str[4]=0x00; str[5]=0x12;
-  //str[6]=0x02;str[7]=0x07;
+  /*str[0]=0x01; str[1]=0x06; str[2]=0x20; str[3]=0x00; str[4]=0x00; str[5]=0x12;
+  str[6]=0x02;str[7]=0x07;*/
+  str[0]=0x02; str[1]=0x06; str[2]=0x20; str[3]=0x00; str[4]=0x00; str[5]=0x12;
+    str[6]=0x02;str[7]=0x34;
   if(dir==0)     //정지
     str[5]=0x01;
   else if(dir==1)//정회전
@@ -559,33 +520,13 @@ void Direction(int dir) {
 }
 
 void velocity(int vel) {
-  str[0]=0x01; str[1]=0x06; str[2]=0x20; str[3]=0x01; str[4]=0x17; str[5]=0x00;
-  //str[6]=0xDC; str[7]=0x3A;
+  /*str[0]=0x01; str[1]=0x06; str[2]=0x20; str[3]=0x01; str[4]=0x17; str[5]=0x00;
+  str[6]=0xDC; str[7]=0x3A;*/
+  str[0]=0x02; str[1]=0x06; str[2]=0x20; str[3]=0x01; str[4]=0x17; str[5]=0x00;
+  //str[6]=0xDC; str[7]=0x09;
     uint8_t * data = (uint8_t *) &str[0];
   str[5]=vel&0xff;
   int sj=vel>>8;
-  str[4]=sj&0xff;
-  crd16Rtu();
-}
-
-void Direction2(int dir2) {
-  str[0]=0x02; str[1]=0x06; str[2]=0x20; str[3]=0x00; str[4]=0x00; str[5]=0x12;
-  //str[6]=0x02;str[7]=0x34;
-  if(dir2==0)     //정지
-    str[5]=0x01; 
-  else if(dir2==1)//정회전
-    str[5]=0x12;
-  else if(dir2==2)//역회전
-    str[5]=0x22;
-  crd16Rtu();
-}
-
-void velocity2(int vel2) {
-  str[0]=0x02; str[1]=0x06; str[2]=0x20; str[3]=0x01; str[4]=0x17; str[5]=0x00;
-  //str[6]=0xDC; str[7]=0x09;
-  uint8_t * data = (uint8_t *) &str[0];
-  str[5]=vel2&0xff;
-  int sj=vel2>>8;
   str[4]=sj&0xff;
   crd16Rtu();
 }
