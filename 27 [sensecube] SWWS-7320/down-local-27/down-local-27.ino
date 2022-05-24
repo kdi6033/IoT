@@ -25,7 +25,7 @@ WiFiUDP Udp;
 unsigned int localUdpPort = 4210; // local port to listen on
 char incomingPacket[255]; // buffer for incoming packets
 
-int type=26; // 기기 인식번호 -> display에 사용
+int type=27; // 기기 인식번호 -> display에 사용
 String nameDownloadFile="";
 #define URL_fw_Bin "http://i2r.link/download/"
 
