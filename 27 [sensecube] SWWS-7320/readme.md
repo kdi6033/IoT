@@ -1,7 +1,7 @@
 ## 풍속 센서
 
 ![풍속센서 깃허브](https://user-images.githubusercontent.com/37902752/169436943-8d8c742e-8c38-429e-baf2-d17d848285b6.png)
-### 1.  센서 회로도
+### 1.  센서 배선도
 
 ![풍속센서 배선도](https://user-images.githubusercontent.com/37902752/169462391-8acecac6-e817-4387-b518-03dc182fc493.png)
 
