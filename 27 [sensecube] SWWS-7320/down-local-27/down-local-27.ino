@@ -95,7 +95,7 @@ void tick()
   //if((countTick%3)==0)
     anemometer();
     tickMeasure();
-  if((countTick%5)==0) {
+  if((countTick%2)==0) {
     countMqtt++;
     tickMqtt();
   }
