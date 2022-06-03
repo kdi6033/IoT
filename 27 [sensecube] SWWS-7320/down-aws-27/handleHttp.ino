@@ -133,7 +133,7 @@ char ScriptHead[] PROGMEM = R"=====(
 )=====";
 
 char Body[] PROGMEM = R"=====(
-  <br><br>다운로드 파일명 down-local-monit-17.bin
+  <br><br>
   <br><br>
   <table>
     <tr>
