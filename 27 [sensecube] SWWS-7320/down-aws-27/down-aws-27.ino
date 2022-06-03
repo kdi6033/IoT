@@ -123,7 +123,7 @@ void tickMeasure() {
 
   //OLED로 표시
   String s;
-  s="Wind  "+(String)wind;
+   s="Wind  "+(String)wind+"  ";
   oled.setTextXY(4,7);              // Set cursor position, start of line 0
   oled.putString(s);
 }
