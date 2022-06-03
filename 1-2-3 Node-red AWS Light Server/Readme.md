@@ -60,7 +60,7 @@ mongoDB 설치
     {
         "id": "2d78b605eab10aca",
         "type": "tab",
-        "label": "Light Server(2) (앞에꺼보고 수정)",
+        "label": "Light Server",
         "disabled": false,
         "info": "",
         "env": []
