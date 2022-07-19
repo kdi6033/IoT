@@ -5,6 +5,14 @@ mongoDB 설치
 ```
 [
     {
+        "id": "2ed982cb0832d143",
+        "type": "tab",
+        "label": "Light Server",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "10a86fdc.efc16",
         "type": "subflow",
         "name": "Iterate",
@@ -43,6 +51,70 @@ mongoDB 설치
         ]
     },
     {
+        "id": "f15d66b3.c7edf8",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "a3qioni8jvag7f-ats.iot.us-west-1.amazonaws.com",
+        "port": "8883",
+        "tls": "509a45a9.089bbc",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": true,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "bf4882ef33e69fa3",
+        "type": "websocket-listener",
+        "path": "/ws/simple",
+        "wholemsg": "false"
+    },
+    {
+        "id": "ff55d734.a9cd28",
+        "type": "mongodb2",
+        "uri": "mongodb://localhost:27000/local",
+        "name": "local",
+        "options": "",
+        "parallelism": "-1"
+    },
+    {
+        "id": "8364b0aa.ebd7e",
+        "type": "mongodb2",
+        "uri": "mongodb://localhost:27000/local",
+        "name": "local",
+        "options": "",
+        "parallelism": "-1"
+    },
+    {
+        "id": "509a45a9.089bbc",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "07862fb9d3e2a276b0594b0029f0aaeebc3a5dd57cf086ae82ea185f784ce204-certificate.pem.crt",
+        "keyname": "07862fb9d3e2a276b0594b0029f0aaeebc3a5dd57cf086ae82ea185f784ce204-private.pem.key",
+        "caname": "AmazonRootCA1.pem",
+        "servername": "",
+        "verifyservercert": true,
+        "alpnprotocol": ""
+    },
+    {
         "id": "8709b651.7ce108",
         "type": "function",
         "z": "10a86fdc.efc16",
@@ -58,17 +130,9 @@ mongoDB 설치
         ]
     },
     {
-        "id": "9757b8dc3c2b3a88",
-        "type": "tab",
-        "label": "Light Server",
-        "disabled": false,
-        "info": "",
-        "env": []
-    },
-    {
-        "id": "19d4f21fade6f61d",
+        "id": "c01cd0c3c65ba0c6",
         "type": "mqtt in",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "topic": "/i2r/outTopic",
         "qos": "0",
@@ -82,15 +146,15 @@ mongoDB 설치
         "y": 500,
         "wires": [
             [
-                "c170da42a580fc40",
-                "492f47ecb63afd37"
+                "b8caa91a1150acb6",
+                "cdb10edec635e114"
             ]
         ]
     },
     {
-        "id": "38277d81f361d543",
+        "id": "f2bcd84de13744b2",
         "type": "function",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "findOne",
         "func": "global.set(\"msg_in\",msg);\nvar newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOne';\nnewMsg.payload    = { 'mac' : msg.payload.mac, 'type':msg.payload.type};\nnewMsg.projection = { 'mac' : 1 , '_id' : 0 };\nreturn newMsg;",
         "outputs": 1,
@@ -102,14 +166,14 @@ mongoDB 설치
         "y": 500,
         "wires": [
             [
-                "3cfe72de7946480a"
+                "7748f3178f259ac6"
             ]
         ]
     },
     {
-        "id": "64c48be5a243a3d9",
+        "id": "4ab940eb46b5ddfd",
         "type": "switch",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "property": "payload",
         "propertyType": "msg",
@@ -128,17 +192,17 @@ mongoDB 설치
         "y": 500,
         "wires": [
             [
-                "4c4170346cfebcf0"
+                "d795dfc4cc1c5d5a"
             ],
             [
-                "a66517728f320c00"
+                "b366c8f997875e28"
             ]
         ]
     },
     {
-        "id": "4c4170346cfebcf0",
+        "id": "d795dfc4cc1c5d5a",
         "type": "function",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "insert one (수정)",
         "func": "var msg=global.get(\"msg_in\")||\"\";\nvar model=[];\nmodel[2]='PE-300';\nmodel[3]='키우미';\nmodel[4]='KSM-8900';\nmodel[5]='simpleTH';\nmodel[6]='XEX-DR14E';\nmodel[7]='DHT11';\nmodel[8]='RY-WS301';\nmodel[9]='MP-508E';\nmodel[10]='사운드';\nmodel[11]='충격센서';\nmodel[12]='PLC-RS485';\nmodel[13]='차양모터';\nmodel[14]='MASTER-K120s';\nmodel[15]='smoke';\nmodel[16]='methane';\nmodel[17]='Light sensor';\nmodel[18]='PLC-RS485-8ch';\nmodel[20]='Leaf Humidity';\nmodel[21]='RK520-01';\nmodel[27]='SWWS-7320';\nmodel[28]='SWWS-7300';\nmodel[29]='valve';\n\nvar newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'insert';\nif(msg.payload.type==6)\n    newMsg.payload = {'type':msg.payload.type,'mac':msg.payload.mac,'model':model[msg.payload.type],'ip':msg.payload.ip, 'name':'', 'out':[0,0,0,0,0,0] };\nelse if(msg.payload.type==12 || msg.payload.type==14)\n    newMsg.payload = {'type':msg.payload.type,'mac':msg.payload.mac,'model':model[msg.payload.type],'ip':msg.payload.ip, 'name':'', 'out':[0,0,0,0] };\nelse if(msg.payload.type==29)\n    newMsg.payload = {'type':msg.payload.type,'mac':msg.payload.mac,'model':model[msg.payload.type],'ip':msg.payload.ip, 'name':'', 'out':[0,0] };\nelse if(msg.payload.type==18)\n    newMsg.payload = {'type':msg.payload.type,'mac':msg.payload.mac,'model':model[msg.payload.type],'ip':msg.payload.ip, 'name':'', 'out':[0,0,0,0,0,0,0,0] };\nelse\n    newMsg.payload = {'type':msg.payload.type,'mac':msg.payload.mac,'model':model[msg.payload.type],'ip':msg.payload.ip, 'name':''};\nnewMsg.payload.mac = msg.payload.mac;\nnewMsg.projection = { 'email' : 1 , '_id' : 0 };\nreturn newMsg;",
         "outputs": 1,
@@ -150,14 +214,14 @@ mongoDB 설치
         "y": 480,
         "wires": [
             [
-                "6d8316de568f9016"
+                "9e654e947d8e2dca"
             ]
         ]
     },
     {
-        "id": "a66517728f320c00",
+        "id": "b366c8f997875e28",
         "type": "function",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "findOneUpdate (수정)",
         "func": "var time = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });\nvar msg=global.get(\"msg_in\")||\"\";\nvar newMsg = {};\n\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOneAndUpdate';\nif(msg.payload.type==2)\n    newMsg.payload = [{ 'mac' : msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip, 'ec':msg.payload.ec, 'ph':msg.payload.ph, 'temp':msg.payload.temp, 'time':time}} ];\nelse if(msg.payload.type==3)\n    newMsg.payload    = [{ 'mac' : msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip, 'humi':msg.payload.humi, 'temp':msg.payload.temp, 'co2':msg.payload.co2, 'time':time}} ];\nelse if(msg.payload.type==4)\n    newMsg.payload    = [{ 'mac' : msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip, 'mo':msg.payload.mo, 'tem':msg.payload.tem, 'ec':msg.payload.ec, 'time':time}} ];\nelse if(msg.payload.type==5)\n    newMsg.payload    = [{ 'mac' : msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip, 'humi':msg.payload.humi, 'temp':msg.payload.temp, 'time':time}} ];\nelse if(msg.payload.type==6)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'in.0':msg.payload.in.charAt(0), 'in.1':msg.payload.in.charAt(1)\n    , 'in.2':msg.payload.in.charAt(2), 'in.3':msg.payload.in.charAt(3), 'in.4':msg.payload.in.charAt(4), 'in.5':msg.payload.in.charAt(5)\n    , 'in.6':msg.payload.in.charAt(6), 'in.7':msg.payload.in.charAt(7), 'time':time\n     }} ];\nelse if(msg.payload.type==7)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip,'humi':msg.payload.humi\n    , 'temp':msg.payload.temp, 'time':time }} ];\nelse if(msg.payload.type==8)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip,'humi':msg.payload.humi\n    , 'temp':msg.payload.temp, 'pres':msg.payload.pres, 'time':time }} ];\nelse if(msg.payload.type==9)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip,'humi':msg.payload.humi\n    , 'temp':msg.payload.temp, 'ec':msg.payload.ec, 'time':time }} ];\nelse if(msg.payload.type==10)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip,'sound':msg.payload.sound\n    , 'time':time }} ];\nelse if(msg.payload.type==11)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip,'knock':msg.payload.knock\n    , 'time':time }} ];\nelse if(msg.payload.type==12)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'in.0':msg.payload.in.charAt(0), 'in.1':msg.payload.in.charAt(1)\n    , 'in.2':msg.payload.in.charAt(2), 'in.3':msg.payload.in.charAt(3), 'in.4':msg.payload.in.charAt(4), 'in.5':msg.payload.in.charAt(5)\n    , 'in.6':msg.payload.in.charAt(6), 'in.7':msg.payload.in.charAt(7), 'time':time\n     }} ];\nelse if(msg.payload.type==13)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'state':msg.payload.state, 'time':time\n     }} ];\nelse if(msg.payload.type==14)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{'ip':msg.payload.ip, 'in.0':msg.payload.in.charAt(0), 'in.1':msg.payload.in.charAt(1)\n    , 'in.2':msg.payload.in.charAt(2), 'in.3':msg.payload.in.charAt(3), 'in.4':msg.payload.in.charAt(4), 'in.5':msg.payload.in.charAt(5), 'time':time }} ];\nelse if(msg.payload.type==15)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip,'gas':msg.payload.gas\n    , 'time':time }} ];\nelse if(msg.payload.type==16)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip,'gas':msg.payload.gas\n    , 'time':time }} ];\n    else if(msg.payload.type==17)\n    newMsg.payload = [{ 'mac' : msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip, 'lux':msg.payload.lux, 'time':time}} ];\nelse if(msg.payload.type==18)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'in.0':msg.payload.in.charAt(0), 'in.1':msg.payload.in.charAt(1)\n    , 'in.2':msg.payload.in.charAt(2), 'in.3':msg.payload.in.charAt(3), 'in.4':msg.payload.in.charAt(4), 'in.5':msg.payload.in.charAt(5)\n    , 'in.6':msg.payload.in.charAt(6), 'in.7':msg.payload.in.charAt(7), \n    'out.0':msg.payload.out.charAt(0), 'out.1':msg.payload.out.charAt(1),'out.2':msg.payload.out.charAt(2), 'out.3':msg.payload.out.charAt(3),\n    'out.4':msg.payload.out.charAt(4), 'out.5':msg.payload.out.charAt(5),'out.6':msg.payload.out.charAt(6), 'out.7':msg.payload.out.charAt(7),\n    'time':time\n     }} ];\n      else if(msg.payload.type==20)\n    newMsg.payload = [{ 'mac' : msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip, 'hum':msg.payload.hum, 'temp':msg.payload.temp, 'time':time}} ];\nelse if(msg.payload.type==21)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip,'humi':msg.payload.humi\n    , 'temp':msg.payload.temp, 'time':time }} ];\nelse if(msg.payload.type==27)\n    newMsg.payload = [{ 'mac' : msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip, 'windspeed':msg.payload.windspeed,'time':time}} ];\n    else if(msg.payload.type==28)\n    newMsg.payload = [{ 'mac' : msg.payload.mac,'type':msg.payload.type}, {$set:{ 'ip':msg.payload.ip, 'wind_direction':msg.payload.wind_direction,'time':time}} ];\n    else if(msg.payload.type==29)\n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'in.0':msg.payload.in.charAt(0), 'in.1':msg.payload.in.charAt(1), 'in.2':msg.payload.in.charAt(2), 'in.3':msg.payload.in.charAt(3), 'time':time}} ];\nnewMsg.projection = { 'mac' : 1 , '_id' : 0 };\nreturn newMsg;",
         "outputs": 1,
@@ -169,14 +233,14 @@ mongoDB 설치
         "y": 540,
         "wires": [
             [
-                "e7092c356edb8a9c"
+                "f2d963313083ec1e"
             ]
         ]
     },
     {
-        "id": "c170da42a580fc40",
+        "id": "b8caa91a1150acb6",
         "type": "json",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "property": "payload",
         "action": "",
@@ -185,14 +249,14 @@ mongoDB 설치
         "y": 500,
         "wires": [
             [
-                "38277d81f361d543"
+                "f2bcd84de13744b2"
             ]
         ]
     },
     {
-        "id": "2e4aed9ac7b6010f",
+        "id": "b1d51dd48c80bbb5",
         "type": "http in",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "url": "/login",
         "method": "get",
@@ -202,14 +266,14 @@ mongoDB 설치
         "y": 129,
         "wires": [
             [
-                "ab5a8d04b6bd8bf7"
+                "ca52a071d32b7258"
             ]
         ]
     },
     {
-        "id": "60b9b21473d742a5",
+        "id": "9919ce97a63a28f5",
         "type": "template",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "style",
         "field": "payload.style",
         "fieldType": "msg",
@@ -220,14 +284,14 @@ mongoDB 설치
         "y": 130,
         "wires": [
             [
-                "8b4a8b1e2f15d3c9"
+                "19ecb5dae919733c"
             ]
         ]
     },
     {
-        "id": "f29994adf164f443",
+        "id": "23937cfee30ef4f8",
         "type": "template",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "script",
         "field": "payload.script",
         "fieldType": "msg",
@@ -239,14 +303,14 @@ mongoDB 설치
         "y": 130,
         "wires": [
             [
-                "60b9b21473d742a5"
+                "9919ce97a63a28f5"
             ]
         ]
     },
     {
-        "id": "ba2a39c6f37034ea",
+        "id": "64b26a353d453145",
         "type": "function",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "global style",
         "func": "global.set(\"style\",msg.payload.style);\nglobal.set(\"script\",msg.payload.script);\nglobal.set(\"menu\",msg.payload.menu);\nglobal.set(\"msg_main\",msg);\nreturn msg;",
         "outputs": 1,
@@ -258,14 +322,14 @@ mongoDB 설치
         "y": 130,
         "wires": [
             [
-                "278ec088b86f62c2"
+                "e1e49e5f42efd918"
             ]
         ]
     },
     {
-        "id": "8b4a8b1e2f15d3c9",
+        "id": "19ecb5dae919733c",
         "type": "template",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "menu",
         "field": "payload.menu",
         "fieldType": "msg",
@@ -276,14 +340,14 @@ mongoDB 설치
         "y": 130,
         "wires": [
             [
-                "ba2a39c6f37034ea"
+                "64b26a353d453145"
             ]
         ]
     },
     {
-        "id": "ad0290a5e3e84cb5",
+        "id": "4e69942fe94079bc",
         "type": "function",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "find.toArray",
         "func": "global.set(\"msg_main\",msg);\nmsg.collection = 'localRecord';\nmsg.operation  =  'find.toArray';\nmsg.payload    = { };\nmsg.projection = { 'name' : 1 , '_id' : 0 };\nreturn msg;",
         "outputs": 1,
@@ -295,14 +359,14 @@ mongoDB 설치
         "y": 240,
         "wires": [
             [
-                "b3f0c4ee1ed8b960"
+                "b8fe5a315dda521a"
             ]
         ]
     },
     {
-        "id": "7bdd3cdcc7ee7771",
+        "id": "1547e25d26c96f40",
         "type": "http response",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "statusCode": "",
         "headers": {},
@@ -311,29 +375,9 @@ mongoDB 설치
         "wires": []
     },
     {
-        "id": "47665cd092a54e9c",
+        "id": "c5bee32c8026c093",
         "type": "function",
-        "z": "9757b8dc3c2b3a88",
-        "name": "0,1,2,3 List (수정)",
-        "func": "msg.payload.style=global.get(\"style\");\nmsg.payload.script=global.get(\"script\");\nmsg.payload.menu=global.get(\"menu\");\nvar i,j;\nvar s;\nvar r;\nsOut=\"<table>\"\nsOut+=\"<tr>   <th>모델</th>  <th>모니터링</th> <th>이름</th> <th>IP</th> </tr>\"\nfor(i=0;i<msg.payload.length;i++) {\n    //r=\"<input type='hidden' name='chip' value='\"+msg.payload[i].chip+\"'>\";\n    s=\"\";\n    s+=\"<tr><th>\";\n    s+=\"<form action='/display'>\";\n        s+=\"<input type='hidden' name='mac' value='\"+msg.payload[i].mac+\"'>\";\n        s+=\"<input type='hidden' name='act' value='1'>\";\n        s+=\"<button type='submit' name='value' value='0' class='button buttonM'>\"+msg.payload[i].model+\"</button></a>\";\n    s+=\"</form>\";\n    s+=\"</th>\";\n    if(msg.payload[i].type==2) {\n        //s+=\"<td>ec:\"+msg.payload[i].ec+\"  ph:\"+msg.payload[i].ph+\"  온도:\"+msg.payload[i].temp+\"</td> \"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==3) {\n        //s+=\"<th>습도:\"+msg.payload[i].humi+\"  온도:\"+msg.payload[i].temp+\"  CO2:\"+msg.payload[i].co2+\"</th> \"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<th>\"+msg.payload[i].name+\"</th>\"\n    }\n    else if(msg.payload[i].type==4) {\n        //s+=\"<th>습도:\"+msg.payload[i].mo+\"  온도:\"+msg.payload[i].tem+\"  EC:\"+msg.payload[i].ec+\"</th> \"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<th>\"+msg.payload[i].name+\"</th>\"\n    }\n    else if(msg.payload[i].type==5) {\n        //s+=\"<th>습도:\"+msg.payload[i].humi+\"  온도:\"+msg.payload[i].temp+\"</th> \"\n        s+=\"<td>\";\n        for(j=0;j<2;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<th>\"+msg.payload[i].name+\"</th>\"\n    } \n    else if(msg.payload[i].type==6) {\n        s+=\"<td>\"\n            s+=\"<table>\";\n            s+=\"<tr>\";\n            s+=\"<td></td>\";\n            for(j=0;j<8;j++)\n                s+=\"<td>\"+String(j)+\"</td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>입력</td>\";\n            for(j=0;j<8;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>출력</td>\";\n            for(j=0;j<6;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-out\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"</table>\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==7) {\n        s+=\"<td>\";\n        for(j=0;j<2;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==8) {\n        //s+=\"<td>습도:\"+msg.payload[i].humi+\"%  온도:\"+msg.payload[i].temp+\"도  대기압:\"+msg.payload[i].pres+\"</td> \"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==9) {\n        //s+=\"<td>함수율:\"+msg.payload[i].humi+\"%  온도:\"+msg.payload[i].temp+\"도  EC:\"+msg.payload[i].ec+\"</td> \"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==10) {\n        //s+=\"<td>사운드:\"+msg.payload[i].sound+\" \"+msg.payload[i].time+\"</td> \";\n        s+=\"<td><span id='\"+msg.payload[i].mac+\"-in0'></span>&emsp;\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==11) {\n        //s+=\"<td>충격발생:\"+msg.payload[i].time+\"</td> \"\n        s+=\"<td><span id='\"+msg.payload[i].mac+\"-in0'></span>&emsp;\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==12) {\n        s+=\"<td>\"\n            s+=\"<table>\";\n            s+=\"<tr>\";\n            s+=\"<td></td>\";\n            for(j=0;j<4;j++)\n                s+=\"<td>\"+String(j)+\"</td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>입력</td>\";\n            for(j=0;j<4;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>출력</td>\";\n            for(j=0;j<4;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-out\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"</table>\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==13) {\n        s+=\"<td>\"\n            s+=\"<table align='center' style='margin: 0px auto;'>\";\n            s+=\"<tr>\";\n            s+=\"<td>정지</td>\";\n            s+=\"<td>올림</td>\";\n            s+=\"<td>내림</td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            for(j=0;j<4;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-out\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"</tr>\";\n            s+=\"</table>\";\n\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==14) {\n        s+=\"<td>\"\n            s+=\"<table>\";\n            s+=\"<tr>\";\n            s+=\"<td></td>\";\n            for(j=0;j<6;j++)\n                s+=\"<td>\"+String(j)+\"</td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>입력</td>\";\n            for(j=0;j<6;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>출력</td>\";\n            for(j=0;j<4;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-out\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"</table>\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==15) {\n        s+=\"<td>\";\n        s+=\"<span id='\"+msg.payload[i].mac+\"-in0'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==16) {\n        s+=\"<td>\";\n        s+=\"<span id='\"+msg.payload[i].mac+\"-in0'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n     else if(msg.payload[i].type==17) {\n        //s+=\"<td>lux:\"+msg.payload[i].lux+\" </td> \"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==18) {\n        s+=\"<td>\"\n            s+=\"<table>\";\n            s+=\"<tr>\";\n            s+=\"<td></td>\";\n            for(j=0;j<8;j++)\n                s+=\"<td>\"+String(j)+\"</td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>입력</td>\";\n            for(j=0;j<8;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>출력</td>\";\n            for(j=0;j<8;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-out\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"</table>\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==20) {\n        //s+=\"<td>hum:\"+msg.payload[i].hum+\"   온도:\"+msg.payload[i].temp+\"</td> \"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==21) {\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==27) {\n        //s+=\"<td>windspeed:\"+msg.payload[i].windspeed+\"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n        s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n     }\n     else if(msg.payload[i].type==28) {\n        //s+=\"<td>wind_direction:\"+msg.payload[i].wind_direction+\"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n        s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    \n    else if(msg.payload[i].type==29) {\n        s+=\"<td>\"\n            s+=\"<table>\";\n            s+=\"<tr>\";\n            s+=\"<td></td>\";\n            for(j=0;j<2;j++)\n                s+=\"<td>\"+String(j)+\"</td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>입력</td>\";\n            for(j=0;j<2;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>출력</td>\";\n            for(j=0;j<2;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-out\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"</table>\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    \n    s+=\"<td><a href='http://\"+msg.payload[i].ip+\"' target='_blank'>\"+msg.payload[i].ip+\"</a></td>\";\n    s+=\"</tr>\"\n    \n    sOut=sOut+s+\"<br>\";\n} \n\nmsg.payload.list=sOut;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1190,
-        "y": 240,
-        "wires": [
-            [
-                "cc0d225c0893349a",
-                "abff1e354e342564"
-            ]
-        ]
-    },
-    {
-        "id": "46d9f6325175bbba",
-        "type": "function",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "msg 받음",
         "func": "var msg1=msg.payload;\nvar msg=global.get(\"msg_main\")||\"\";\nmsg.payload=msg1;\nreturn msg;",
         "outputs": 1,
@@ -345,14 +389,14 @@ mongoDB 설치
         "y": 240,
         "wires": [
             [
-                "47665cd092a54e9c"
+                "bb3baae53db70429"
             ]
         ]
     },
     {
-        "id": "d3e8a1c89721958d",
+        "id": "1a7fc4eb66a9bafb",
         "type": "http in",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "url": "/display",
         "method": "get",
@@ -362,14 +406,14 @@ mongoDB 설치
         "y": 210,
         "wires": [
             [
-                "2cadbe07f1f9942c"
+                "8a99203731c2de08"
             ]
         ]
     },
     {
-        "id": "fea24a8071608dee",
+        "id": "d450bc71b5ff638e",
         "type": "comment",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "Display",
         "info": "1: 선택한 기기 config\n2: 메뉴의 환경설정\n3: main  기기 리스트 모니터링\n4: 메뉴얼",
         "x": 74,
@@ -377,9 +421,9 @@ mongoDB 설치
         "wires": []
     },
     {
-        "id": "da1271a0383fbf6a",
+        "id": "72ef95955f305bb9",
         "type": "function",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "get global",
         "func": "msg.payload.style=global.get(\"style\");\nmsg.payload.script=global.get(\"script\");\nmsg.payload.menu=global.get(\"menu\");\nmsg.payload.act=global.get(\"act\");\nreturn msg;",
         "outputs": 1,
@@ -391,14 +435,14 @@ mongoDB 설치
         "y": 190,
         "wires": [
             [
-                "c5f234ff3a6324b9"
+                "5983e71908e5c802"
             ]
         ]
     },
     {
-        "id": "c5f234ff3a6324b9",
+        "id": "5983e71908e5c802",
         "type": "template",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "html 기기 name",
         "field": "payload",
         "fieldType": "msg",
@@ -410,14 +454,14 @@ mongoDB 설치
         "y": 190,
         "wires": [
             [
-                "8b58a7afc79cb571"
+                "876fab0b3b5ca325"
             ]
         ]
     },
     {
-        "id": "87d8298549781b83",
+        "id": "44be8efed0d9f189",
         "type": "function",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "findOne",
         "func": "global.set(\"msg_in\",msg);\nvar newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOne';\nnewMsg.payload    = { 'mac' : msg.payload.mac};\nnewMsg.projection = { 'mac' : 1 , '_id' : 0 };\nreturn newMsg;",
         "outputs": 1,
@@ -429,14 +473,14 @@ mongoDB 설치
         "y": 190,
         "wires": [
             [
-                "ae9b413b30fdfa62"
+                "2af2685c2034f14a"
             ]
         ]
     },
     {
-        "id": "8b58a7afc79cb571",
+        "id": "876fab0b3b5ca325",
         "type": "http response",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "statusCode": "",
         "headers": {},
@@ -445,9 +489,9 @@ mongoDB 설치
         "wires": []
     },
     {
-        "id": "2cadbe07f1f9942c",
+        "id": "8a99203731c2de08",
         "type": "function",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "func": "global.set(\"msg_display\",msg);\nglobal.set(\"act\",msg.payload.act);\nreturn msg;",
         "outputs": 1,
@@ -459,14 +503,14 @@ mongoDB 설치
         "y": 210,
         "wires": [
             [
-                "c513f5864bc72c31"
+                "03bb3829ce86fab5"
             ]
         ]
     },
     {
-        "id": "74ebb603bd70968d",
+        "id": "115b454b4847c9a4",
         "type": "function",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "msg 받음",
         "func": "var msg1=msg.payload;\nvar msg=global.get(\"msg_display\")||\"\";\nmsg.payload=msg1;\nreturn msg;",
         "outputs": 1,
@@ -478,14 +522,14 @@ mongoDB 설치
         "y": 190,
         "wires": [
             [
-                "da1271a0383fbf6a"
+                "72ef95955f305bb9"
             ]
         ]
     },
     {
-        "id": "c513f5864bc72c31",
+        "id": "03bb3829ce86fab5",
         "type": "switch",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "property": "payload.act",
         "propertyType": "msg",
@@ -518,19 +562,19 @@ mongoDB 설치
         "y": 210,
         "wires": [
             [
-                "87d8298549781b83"
+                "44be8efed0d9f189"
             ],
             [],
             [
-                "ad0290a5e3e84cb5"
+                "4e69942fe94079bc"
             ],
             []
         ]
     },
     {
-        "id": "2291bb73f17bf538",
+        "id": "59cec8a2c1ae51be",
         "type": "http in",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "url": "/save",
         "method": "post",
@@ -540,14 +584,14 @@ mongoDB 설치
         "y": 320,
         "wires": [
             [
-                "b2836ae2e0996dd1"
+                "feafe882826e14c4"
             ]
         ]
     },
     {
-        "id": "c6d574fa5e5a70ed",
+        "id": "78233f1bd5a2519e",
         "type": "comment",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "Save",
         "info": "1: name 저장\n",
         "x": 74,
@@ -555,9 +599,9 @@ mongoDB 설치
         "wires": []
     },
     {
-        "id": "7e50b57391c8315e",
+        "id": "0914bfb7f8cf5c17",
         "type": "function",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "findOneUpdate",
         "func": "global.set(\"msg_in\",msg);\nvar newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOneAndUpdate';\nnewMsg.payload    = [{ 'mac' : msg.payload.mac}, {$set:{ 'name':msg.payload.name}} ];\nnewMsg.projection = { 'mac' : 1 , '_id' : 0 };\nreturn newMsg;",
         "outputs": 1,
@@ -569,17 +613,17 @@ mongoDB 설치
         "y": 320,
         "wires": [
             [
-                "8fa3aedbcac6bce6"
+                "aa4b8b38ff714e83"
             ]
         ]
     },
     {
-        "id": "6f3e983bcfe2d777",
+        "id": "17d656761a019052",
         "type": "link out",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "links": [
-            "665044ca9ff52bad",
+            "be5be18a4571cfcb",
             "2044220.61e99de"
         ],
         "x": 975,
@@ -587,9 +631,9 @@ mongoDB 설치
         "wires": []
     },
     {
-        "id": "8751f0b39a3ff47b",
+        "id": "3cb0e566c8095c18",
         "type": "function",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "msg 받음",
         "func": "var msg=global.get(\"msg_in\")||\"\";\nreturn msg;",
         "outputs": 1,
@@ -601,14 +645,14 @@ mongoDB 설치
         "y": 320,
         "wires": [
             [
-                "6f3e983bcfe2d777"
+                "17d656761a019052"
             ]
         ]
     },
     {
-        "id": "b2836ae2e0996dd1",
+        "id": "feafe882826e14c4",
         "type": "switch",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "property": "payload.act",
         "propertyType": "msg",
@@ -636,16 +680,16 @@ mongoDB 설치
         "y": 320,
         "wires": [
             [
-                "7e50b57391c8315e"
+                "0914bfb7f8cf5c17"
             ],
             [],
             []
         ]
     },
     {
-        "id": "be11f49df5f5602b",
+        "id": "2c4dcc2fdebe8b03",
         "type": "template",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "html",
         "field": "payload",
         "fieldType": "msg",
@@ -657,14 +701,14 @@ mongoDB 설치
         "y": 120,
         "wires": [
             [
-                "249ea5f60bff9128"
+                "4d581ec754f11afa"
             ]
         ]
     },
     {
-        "id": "249ea5f60bff9128",
+        "id": "4d581ec754f11afa",
         "type": "http response",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "Go Main Page",
         "statusCode": "",
         "headers": {},
@@ -673,9 +717,9 @@ mongoDB 설치
         "wires": []
     },
     {
-        "id": "665044ca9ff52bad",
+        "id": "be5be18a4571cfcb",
         "type": "link in",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "Main",
         "links": [
             "6457ed09.277674",
@@ -685,33 +729,33 @@ mongoDB 설치
             "d1b3b938.5fd1b8",
             "425e599b.c1d808",
             "174175dc.9ef7ea",
-            "278ec088b86f62c2",
-            "6f3e983bcfe2d777"
+            "e1e49e5f42efd918",
+            "17d656761a019052"
         ],
         "x": 1175,
         "y": 120,
         "wires": [
             [
-                "75215eccc7146529"
+                "e956bd9ee5190708"
             ]
         ]
     },
     {
-        "id": "278ec088b86f62c2",
+        "id": "e1e49e5f42efd918",
         "type": "link out",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "links": [
-            "665044ca9ff52bad"
+            "be5be18a4571cfcb"
         ],
         "x": 1035,
         "y": 130,
         "wires": []
     },
     {
-        "id": "da8b47048747e8d4",
+        "id": "9be2b3ac7f8e08d1",
         "type": "comment",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "Act",
         "info": "1: \n",
         "x": 70,
@@ -719,9 +763,9 @@ mongoDB 설치
         "wires": []
     },
     {
-        "id": "4406c0aaa4aa5e9e",
+        "id": "71987c96bb391c3e",
         "type": "http in",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "url": "/act",
         "method": "post",
@@ -734,9 +778,9 @@ mongoDB 설치
         ]
     },
     {
-        "id": "ab5a8d04b6bd8bf7",
+        "id": "ca52a071d32b7258",
         "type": "function",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "func": "global.set(\"serverIP\",msg.payload.publicIPv4);\n//msg.payload=msg.payload.publicIPv4;\nreturn msg;",
         "outputs": 1,
@@ -748,14 +792,14 @@ mongoDB 설치
         "y": 130,
         "wires": [
             [
-                "f29994adf164f443"
+                "23937cfee30ef4f8"
             ]
         ]
     },
     {
-        "id": "4399616e24f616ed",
+        "id": "bb7ef6fe1889bd51",
         "type": "websocket out",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "server": "bf4882ef33e69fa3",
         "client": "",
@@ -764,9 +808,9 @@ mongoDB 설치
         "wires": []
     },
     {
-        "id": "1918c518f83bd64f",
+        "id": "9e3539e17a5feee4",
         "type": "websocket in",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "server": "bf4882ef33e69fa3",
         "client": "",
@@ -774,14 +818,14 @@ mongoDB 설치
         "y": 600,
         "wires": [
             [
-                "8a782fee872873cf"
+                "6ca579c301b7aa7a"
             ]
         ]
     },
     {
-        "id": "f3c0cfb76c563dc7",
+        "id": "b5771157abc91df1",
         "type": "comment",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "출력버튼 웹소켙",
         "info": "",
         "x": 200,
@@ -789,9 +833,9 @@ mongoDB 설치
         "wires": []
     },
     {
-        "id": "a80dc1742d064ab5",
+        "id": "c877cbf44db6e22c",
         "type": "template",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "Main html",
         "field": "payload",
         "fieldType": "msg",
@@ -802,14 +846,14 @@ mongoDB 설치
         "y": 240,
         "wires": [
             [
-                "7bdd3cdcc7ee7771"
+                "1547e25d26c96f40"
             ]
         ]
     },
     {
-        "id": "cc0d225c0893349a",
+        "id": "0fd66576b3bc344e",
         "type": "template",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "Web Socket scriptSocket (수정)",
         "field": "payload.scriptSocket",
         "fieldType": "msg",
@@ -820,14 +864,14 @@ mongoDB 설치
         "y": 240,
         "wires": [
             [
-                "a80dc1742d064ab5"
+                "c877cbf44db6e22c"
             ]
         ]
     },
     {
-        "id": "8a782fee872873cf",
+        "id": "6ca579c301b7aa7a",
         "type": "function",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "func": "var msg = {payload:msg.payload.replace(/['^']/g, \"\\\"\")};\nreturn msg;",
         "outputs": 1,
@@ -839,15 +883,15 @@ mongoDB 설치
         "y": 600,
         "wires": [
             [
-                "c85d4307036047ce",
-                "ea765c1453c7cd2a"
+                "e4e5ea60ebc611eb",
+                "0a3795449c14f780"
             ]
         ]
     },
     {
-        "id": "c85d4307036047ce",
+        "id": "e4e5ea60ebc611eb",
         "type": "json",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "property": "payload",
         "action": "",
@@ -856,14 +900,14 @@ mongoDB 설치
         "y": 600,
         "wires": [
             [
-                "a0bae6d82c562675"
+                "5084c5520af591b4"
             ]
         ]
     },
     {
-        "id": "a0bae6d82c562675",
+        "id": "5084c5520af591b4",
         "type": "function",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "findOneUpdate (출력있는 경우만 수정)",
         "func": "global.set(\"msg_in\",msg);\nvar time = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });\nvar newMsg = {};\n\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOneAndUpdate';\n\nif(msg.payload.type==6 ||msg.payload.type==12 || msg.payload.type==14 || msg.payload.type==18 || msg.payload.type==29) {\n    if(msg.payload.outNo == 0)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.0':msg.payload.value, 'time':time }} ];\n    else if(msg.payload.outNo == 1)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.1':msg.payload.value, 'time':time }} ];\n    else if(msg.payload.outNo == 2)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.2':msg.payload.value, 'time':time }} ];\n    else if(msg.payload.outNo == 3)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.3':msg.payload.value, 'time':time }} ];\n    else if(msg.payload.outNo == 4)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.4':msg.payload.value, 'time':time }} ];\n    else if(msg.payload.outNo == 5)\n        newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'out.5':msg.payload.value, 'time':time }} ];\n\n}\nelse if(msg.payload.type==13) \n    newMsg.payload = [{'mac': msg.payload.mac,'type':msg.payload.type}, {$set:{ 'state':msg.payload.state, 'time':time }} ];\nnewMsg.projection = { 'mac' : 1 , '_id' : 0 };\nreturn newMsg;",
         "outputs": 1,
@@ -875,14 +919,14 @@ mongoDB 설치
         "y": 600,
         "wires": [
             [
-                "1475a7d1559f593a"
+                "97d0183ad3a75416"
             ]
         ]
     },
     {
-        "id": "50868cc8e94d04cb",
+        "id": "df104d2556996f27",
         "type": "comment",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "입력버튼 웹소켙",
         "info": "",
         "x": 200,
@@ -890,9 +934,9 @@ mongoDB 설치
         "wires": []
     },
     {
-        "id": "ea765c1453c7cd2a",
+        "id": "0a3795449c14f780",
         "type": "mqtt out",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "topic": "/i2r/inTopic",
         "qos": "0",
@@ -908,63 +952,63 @@ mongoDB 설치
         "wires": []
     },
     {
-        "id": "6d8316de568f9016",
+        "id": "9e654e947d8e2dca",
         "type": "link out",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "links": [
-            "17ab3dd78359e972"
+            "cf3df3dfd065d152"
         ],
         "x": 1055,
         "y": 480,
         "wires": []
     },
     {
-        "id": "e7092c356edb8a9c",
+        "id": "f2d963313083ec1e",
         "type": "link out",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "links": [
-            "17ab3dd78359e972"
+            "cf3df3dfd065d152"
         ],
         "x": 1055,
         "y": 540,
         "wires": []
     },
     {
-        "id": "1475a7d1559f593a",
+        "id": "97d0183ad3a75416",
         "type": "link out",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "links": [
-            "17ab3dd78359e972"
+            "cf3df3dfd065d152"
         ],
         "x": 955,
         "y": 600,
         "wires": []
     },
     {
-        "id": "17ab3dd78359e972",
+        "id": "cf3df3dfd065d152",
         "type": "link in",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "links": [
-            "6d8316de568f9016",
-            "e7092c356edb8a9c",
-            "1475a7d1559f593a"
+            "9e654e947d8e2dca",
+            "f2d963313083ec1e",
+            "97d0183ad3a75416"
         ],
         "x": 1135,
         "y": 480,
         "wires": [
             [
-                "d2f8a856a7789a9c"
+                "b728543abf9473dd"
             ]
         ]
     },
     {
-        "id": "9269a4d09e5e7f25",
+        "id": "0cb632b0680464ef",
         "type": "function",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "findOne",
         "func": "var msg=global.get(\"msg_in\")||\"\";\nvar newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOne';\nnewMsg.payload    = { 'mac' : msg.payload.mac};\nnewMsg.projection = { 'mac' : 1 , '_id' : 0 };\nreturn newMsg;",
         "outputs": 1,
@@ -976,30 +1020,30 @@ mongoDB 설치
         "y": 480,
         "wires": [
             [
-                "15641e2c730ddca8"
+                "621822021bedc028"
             ]
         ]
     },
     {
-        "id": "070de9c31287413d",
+        "id": "7194f80ad7a2f1ff",
         "type": "subflow:10a86fdc.efc16",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "Iterate",
         "env": [],
         "x": 1510,
         "y": 380,
         "wires": [
             [
-                "098071620d297779",
-                "cdae5e4f4af6d9a8"
+                "78ba230d9dbc7299",
+                "51d5d5b3039265eb"
             ],
             []
         ]
     },
     {
-        "id": "cdae5e4f4af6d9a8",
+        "id": "51d5d5b3039265eb",
         "type": "function",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "func": "\nreturn msg;",
         "outputs": 1,
@@ -1011,14 +1055,14 @@ mongoDB 설치
         "y": 320,
         "wires": [
             [
-                "070de9c31287413d"
+                "7194f80ad7a2f1ff"
             ]
         ]
     },
     {
-        "id": "098071620d297779",
+        "id": "78ba230d9dbc7299",
         "type": "function",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "findOne",
         "func": "var newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOne';\nnewMsg.payload    = { 'mac' : msg.payload.mac};\nnewMsg.projection = { 'mac' : 1 , '_id' : 0 };\nreturn newMsg;",
         "outputs": 1,
@@ -1030,14 +1074,14 @@ mongoDB 설치
         "y": 380,
         "wires": [
             [
-                "15641e2c730ddca8"
+                "621822021bedc028"
             ]
         ]
     },
     {
-        "id": "abff1e354e342564",
+        "id": "87d10787c9e80183",
         "type": "delay",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "pauseType": "delay",
         "timeout": "1",
@@ -1055,14 +1099,14 @@ mongoDB 설치
         "y": 380,
         "wires": [
             [
-                "070de9c31287413d"
+                "7194f80ad7a2f1ff"
             ]
         ]
     },
     {
-        "id": "bf176d6671e3ed51",
+        "id": "25c54847db14bbfb",
         "type": "comment",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "웹페이지 초기화",
         "info": "",
         "x": 1320,
@@ -1070,9 +1114,9 @@ mongoDB 설치
         "wires": []
     },
     {
-        "id": "3cfe72de7946480a",
+        "id": "7748f3178f259ac6",
         "type": "mongodb2 in",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "service": "_ext_",
         "configNode": "ff55d734.a9cd28",
         "name": "기기 검색",
@@ -1082,14 +1126,14 @@ mongoDB 설치
         "y": 500,
         "wires": [
             [
-                "64c48be5a243a3d9"
+                "4ab940eb46b5ddfd"
             ]
         ]
     },
     {
-        "id": "d2f8a856a7789a9c",
+        "id": "b728543abf9473dd",
         "type": "mongodb2 in",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "service": "_ext_",
         "configNode": "ff55d734.a9cd28",
         "name": "등록",
@@ -1099,14 +1143,14 @@ mongoDB 설치
         "y": 480,
         "wires": [
             [
-                "9269a4d09e5e7f25"
+                "0cb632b0680464ef"
             ]
         ]
     },
     {
-        "id": "b3f0c4ee1ed8b960",
+        "id": "b8fe5a315dda521a",
         "type": "mongodb2 in",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "service": "_ext_",
         "configNode": "8364b0aa.ebd7e",
         "name": "local",
@@ -1116,14 +1160,14 @@ mongoDB 설치
         "y": 240,
         "wires": [
             [
-                "46d9f6325175bbba"
+                "c5bee32c8026c093"
             ]
         ]
     },
     {
-        "id": "ae9b413b30fdfa62",
+        "id": "2af2685c2034f14a",
         "type": "mongodb2 in",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "service": "_ext_",
         "configNode": "8364b0aa.ebd7e",
         "name": "기기 검색",
@@ -1133,14 +1177,14 @@ mongoDB 설치
         "y": 190,
         "wires": [
             [
-                "74ebb603bd70968d"
+                "115b454b4847c9a4"
             ]
         ]
     },
     {
-        "id": "8fa3aedbcac6bce6",
+        "id": "aa4b8b38ff714e83",
         "type": "mongodb2 in",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "service": "_ext_",
         "configNode": "8364b0aa.ebd7e",
         "name": "등록 name",
@@ -1150,14 +1194,14 @@ mongoDB 설치
         "y": 320,
         "wires": [
             [
-                "8751f0b39a3ff47b"
+                "3cb0e566c8095c18"
             ]
         ]
     },
     {
-        "id": "15641e2c730ddca8",
+        "id": "621822021bedc028",
         "type": "mongodb2 in",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "service": "_ext_",
         "configNode": "8364b0aa.ebd7e",
         "name": "기기 검색",
@@ -1167,14 +1211,14 @@ mongoDB 설치
         "y": 480,
         "wires": [
             [
-                "4399616e24f616ed"
+                "bb7ef6fe1889bd51"
             ]
         ]
     },
     {
-        "id": "75215eccc7146529",
+        "id": "e956bd9ee5190708",
         "type": "ip",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "node-red-contrib-ip",
         "https": false,
         "timeout": "5000",
@@ -1186,14 +1230,14 @@ mongoDB 설치
         "y": 120,
         "wires": [
             [
-                "be11f49df5f5602b"
+                "2c4dcc2fdebe8b03"
             ]
         ]
     },
     {
-        "id": "492f47ecb63afd37",
+        "id": "cdb10edec635e114",
         "type": "debug",
-        "z": "9757b8dc3c2b3a88",
+        "z": "2ed982cb0832d143",
         "name": "",
         "active": true,
         "tosidebar": true,
@@ -1207,68 +1251,26 @@ mongoDB 설치
         "wires": []
     },
     {
-        "id": "f15d66b3.c7edf8",
-        "type": "mqtt-broker",
-        "name": "",
-        "broker": "a35y3l4o97ieag-ats.iot.us-east-2.amazonaws.com",
-        "port": "8883",
-        "tls": "509a45a9.089bbc",
-        "clientid": "",
-        "autoConnect": true,
-        "usetls": true,
-        "protocolVersion": "4",
-        "keepalive": "60",
-        "cleansession": true,
-        "birthTopic": "",
-        "birthQos": "0",
-        "birthPayload": "",
-        "birthMsg": {},
-        "closeTopic": "",
-        "closeQos": "0",
-        "closePayload": "",
-        "closeMsg": {},
-        "willTopic": "",
-        "willQos": "0",
-        "willPayload": "",
-        "willMsg": {},
-        "sessionExpiry": ""
-    },
-    {
-        "id": "bf4882ef33e69fa3",
-        "type": "websocket-listener",
-        "path": "/ws/simple",
-        "wholemsg": "false"
-    },
-    {
-        "id": "ff55d734.a9cd28",
-        "type": "mongodb2",
-        "uri": "mongodb://localhost:27000/local",
-        "name": "local",
-        "options": "",
-        "parallelism": "-1"
-    },
-    {
-        "id": "8364b0aa.ebd7e",
-        "type": "mongodb2",
-        "uri": "mongodb://3.143.254.163:27000/local",
-        "name": "local",
-        "options": "",
-        "parallelism": "-1"
-    },
-    {
-        "id": "509a45a9.089bbc",
-        "type": "tls-config",
-        "name": "",
-        "cert": "",
-        "key": "",
-        "ca": "",
-        "certname": "feeadb9b6d971595086298d8f4e8b2fdb812b9eb1823734de5527829e5de0cc4-certificate.pem.crt",
-        "keyname": "feeadb9b6d971595086298d8f4e8b2fdb812b9eb1823734de5527829e5de0cc4-private.pem.key",
-        "caname": "AmazonRootCA1.pem",
-        "servername": "",
-        "verifyservercert": true,
-        "alpnprotocol": ""
+        "id": "bb3baae53db70429",
+        "type": "function",
+        "z": "2ed982cb0832d143",
+        "name": "0,1,2,3 List",
+        "func": "var i,j;\nvar s,sOut;\nvar r;\nsOut=\"<table>\"\nsOut+=\"<tr>   <th>모델</th>  <th>모니터링</th> <th>이름</th> </tr>\"\nfor(i=0;i<msg.payload.length;i++) {\n    //r=\"<input type='hidden' name='chip' value='\"+msg.payload[i].chip+\"'>\";\n    s=\"\";\n    s+=\"<tr><th>\";\n    s+=\"<form action='/display'>\";\n        s+=\"<input type='hidden' name='mac' value='\"+msg.payload[i].mac+\"'>\";\n        s+=\"<input type='hidden' name='act' value='1'>\";\n        s+=\"<button type='submit' name='value' value='0' class='button buttonM'>\"+msg.payload[i].model+\"</button></a>\";\n    s+=\"</form>\";\n    s+=\"</th>\";\n    if(msg.payload[i].type==2) {\n        //s+=\"<td>ec:\"+msg.payload[i].ec+\"  ph:\"+msg.payload[i].ph+\"  온도:\"+msg.payload[i].temp+\"</td> \"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==3) {\n        //s+=\"<th>습도:\"+msg.payload[i].humi+\"  온도:\"+msg.payload[i].temp+\"  CO2:\"+msg.payload[i].co2+\"</th> \"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<th>\"+msg.payload[i].name+\"</th>\"\n    }\n    else if(msg.payload[i].type==4) {\n        //s+=\"<th>습도:\"+msg.payload[i].mo+\"  온도:\"+msg.payload[i].tem+\"  EC:\"+msg.payload[i].ec+\"</th> \"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<th>\"+msg.payload[i].name+\"</th>\"\n    }\n    else if(msg.payload[i].type==5) {\n        //s+=\"<th>습도:\"+msg.payload[i].humi+\"  온도:\"+msg.payload[i].temp+\"</th> \"\n        s+=\"<td>\";\n        for(j=0;j<2;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<th>\"+msg.payload[i].name+\"</th>\"\n    } \n    else if(msg.payload[i].type==6) {\n        s+=\"<td>\"\n            s+=\"<table>\";\n            s+=\"<tr>\";\n            s+=\"<td></td>\";\n            for(j=0;j<8;j++)\n                s+=\"<td>\"+String(j)+\"</td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>입력</td>\";\n            for(j=0;j<8;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>출력</td>\";\n            for(j=0;j<6;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-out\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"</table>\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==7) {\n        s+=\"<td>\";\n        for(j=0;j<2;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==8) {\n        //s+=\"<td>습도:\"+msg.payload[i].humi+\"%  온도:\"+msg.payload[i].temp+\"도  대기압:\"+msg.payload[i].pres+\"</td> \"\n        s+=\"<td>\";\n        for(j=0;j<2;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==9) {\n        //s+=\"<td>함수율:\"+msg.payload[i].humi+\"%  온도:\"+msg.payload[i].temp+\"도  EC:\"+msg.payload[i].ec+\"</td> \"\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==10) {\n        //s+=\"<td>사운드:\"+msg.payload[i].sound+\" \"+msg.payload[i].time+\"</td> \";\n        s+=\"<td><span id='\"+msg.payload[i].mac+\"-in0'></span>&emsp;\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==11) {\n        //s+=\"<td>충격발생:\"+msg.payload[i].time+\"</td> \"\n        s+=\"<td><span id='\"+msg.payload[i].mac+\"-in0'></span>&emsp;\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==12) {\n        s+=\"<td>\"\n            s+=\"<table>\";\n            s+=\"<tr>\";\n            s+=\"<td></td>\";\n            for(j=0;j<4;j++)\n                s+=\"<td>\"+String(j)+\"</td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>입력</td>\";\n            for(j=0;j<4;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>출력</td>\";\n            for(j=0;j<4;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-out\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"</table>\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==13) {\n        s+=\"<td>\"\n            s+=\"<table align='center' style='margin: 0px auto;'>\";\n            s+=\"<tr>\";\n            s+=\"<td>정지</td>\";\n            s+=\"<td>올림</td>\";\n            s+=\"<td>내림</td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            for(j=0;j<4;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-out\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"</tr>\";\n            s+=\"</table>\";\n\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==14) {\n        s+=\"<td>\"\n            s+=\"<table>\";\n            s+=\"<tr>\";\n            s+=\"<td></td>\";\n            for(j=0;j<6;j++)\n                s+=\"<td>\"+String(j)+\"</td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>입력</td>\";\n            for(j=0;j<6;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"<tr>\";\n            s+=\"<td>출력</td>\";\n            for(j=0;j<4;j++)\n                s+=\"<td><span id='\"+msg.payload[i].mac+\"-out\"+String(j)+\"'></span></td>\";\n            s+=\"</tr>\";\n            s+=\"</table>\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==21) {\n        s+=\"<td>\";\n        for(j=0;j<3;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    }\n    else if(msg.payload[i].type==25) {\n        s+=\"<td>\";\n        for(j=0;j<1;j++)\n            s+=\"<span id='\"+msg.payload[i].mac+\"-in\"+String(j)+\"'></span>&emsp;\";\n        s+=\"</td>\";\n        s+=\"<td>\"+msg.payload[i].name+\"</td>\";\n    } \n    else if (msg.payload[i].type == 27) {\n        //s+=\"<td>windspeed:\"+msg.payload[i].windspeed+\"\n        s += \"<td>\";\n        for (j = 0; j < 3; j++)\n            s += \"<span id='\" + msg.payload[i].mac + \"-in\" + String(j) + \"'></span>&emsp;\";\n        s += \"</td>\";\n        s += \"<td>\" + msg.payload[i].name + \"</td>\";\n    }\n    else if (msg.payload[i].type == 28) {\n        //s+=\"<td>wind_direction:\"+msg.payload[i].wind_direction+\"\n        s += \"<td>\";\n        for (j = 0; j < 3; j++)\n            s += \"<span id='\" + msg.payload[i].mac + \"-in\" + String(j) + \"'></span>&emsp;\";\n        s += \"</td>\";\n        s += \"<td>\" + msg.payload[i].name + \"</td>\";\n    }\n    else if (msg.payload[i].type == 29) {\n        s += \"<td>\"\n        s += \"<table>\";\n        s += \"<tr>\";\n        s += \"<td></td>\";\n        for (j = 0; j < 2; j++)\n            s += \"<td>\" + String(j) + \"</td>\";\n        s += \"</tr>\";\n        s += \"<tr>\";\n        s += \"<td>입력</td>\";\n        for (j = 0; j < 2; j++)\n            s += \"<td><span id='\" + msg.payload[i].mac + \"-in\" + String(j) + \"'></span></td>\";\n        s += \"</tr>\";\n        s += \"<tr>\";\n        s += \"<td>출력</td>\";\n        for (j = 0; j < 2; j++)\n            s += \"<td><span id='\" + msg.payload[i].mac + \"-out\" + String(j) + \"'></span></td>\";\n        s += \"</tr>\";\n        s += \"</table>\";\n        s += \"</td>\";\n        s += \"<td>\" + msg.payload[i].name + \"</td>\";\n    }\n\n    s+=\"</tr>\"\n    \n    sOut=sOut+s+\"<br>\";\n} \n\nvar newMsg={};\nnewMsg.payload=msg.payload;\nmsg.payload={};\nmsg.payload.list=sOut;\nmsg.payload.style=global.get(\"style\");\nmsg.payload.script=global.get(\"script\");\nmsg.payload.menu=global.get(\"menu\");\nreturn [msg,newMsg];",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1170,
+        "y": 240,
+        "wires": [
+            [
+                "0fd66576b3bc344e"
+            ],
+            [
+                "87d10787c9e80183"
+            ]
+        ]
     }
 ]
-
 ```
