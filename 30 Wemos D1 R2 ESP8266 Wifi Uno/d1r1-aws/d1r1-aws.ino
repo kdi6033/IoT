@@ -31,13 +31,13 @@ WebSocketsServer webSocket = WebSocketsServer(81);
 
 int type=30; // 기기 인식번호 -> display에 사용
 
-char ssid[40] = "i2r";
-char password[50] = "00000000";
+char ssid[40] = "";
+char password[50] = "";
 IPAddress apIP(192, 168, 4, 1);
 IPAddress netMsk(255, 255, 255, 0);
 
 const char *clientName = "*******";
-const char *host = "***-ats.iot.us-west-2.amazonaws.com"; // AWS IoT Core 주소
+const char *host = "a8i4lgiqa43pw-ats.iot.us-west-2.amazonaws.com"; // AWS IoT Core 주소
 const char* outTopic = "/i2r/outTopic"; 
 const char* inTopic = "/i2r/inTopic"; 
 
@@ -51,7 +51,7 @@ int Out[8]={0},In[10]={0};  // plc 입력과 출력 저장
 float humidity=0,temperature=0;
 
 unsigned long previousMillis = 0;     
-const long interval = 1000;  
+const long interval = 5000;  
 
 //json을 위한 설정
 StaticJsonDocument<200> doc;
@@ -126,6 +126,7 @@ void tickMqtt()
   root["in1"] = In[1];
   root["h"] = String(humidity);
   root["t"] = String(temperature);
+  root["ip"] = WiFi.localIP().toString();
   serializeJson(root, msg);
   client.publish(outTopic, msg);
   Serial.println(msg);  
