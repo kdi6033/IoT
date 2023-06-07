@@ -36,8 +36,8 @@ char password[50] = "";
 IPAddress apIP(192, 168, 4, 1);
 IPAddress netMsk(255, 255, 255, 0);
 
-const char *clientName = "*******";
-const char *host = "a8i4lgiqa43pw-ats.iot.us-west-2.amazonaws.com"; // AWS IoT Core 주소
+const char *clientName = "";
+const char *host = "***.amazonaws.com"; // AWS IoT Core 주소
 const char* outTopic = "/i2r/outTopic"; 
 const char* inTopic = "/i2r/inTopic"; 
 
