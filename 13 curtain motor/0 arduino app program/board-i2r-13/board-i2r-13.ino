@@ -28,7 +28,7 @@ struct DataDevice {
   float temperature;
   String strIn = "0000", strInPre = "0000";  // In[] 을 string으로 저장
   String sendData = "";                      // 보드의 입력,출려,전압 데이터를 json 형태로 저장
-  int noSelect = -1;  // UI의 noSelect의 값에 따라 모터가 동자 0:올림 1:내림 기타:정지
+  int noSelect = 2;  // UI의 noSelect의 값에 따라 모터가 동자 0:올림 1:내림 기타:정지
 };
 
 struct DataBle {
@@ -41,6 +41,7 @@ struct DataWifiMqtt {
   bool selectMqtt = false;
   bool isConnected = false;
   bool isConnectedMqtt = false;
+  bool use = false;
   String ssid = "";
   String password = "";
   String email = "";
@@ -125,11 +126,18 @@ void setup() {
   // 이제 BLE MAC 주소를 읽어 봅니다.
   readBleMacAddress();
   Serial.println("BLE ready!");
-  // Wi-Fi 연결 설정
-  connectToWiFi();
-  // MQTT 설정
-  client.setServer(wifi.mqttBroker.c_str(), 1883);
-  client.setCallback(callback);
+  delay(500);
+  if (wifi.use) {
+    // Wi-Fi 연결 설정
+    connectToWiFi();
+    // wifi.selectMqtt = true;
+    // MQTT 설정
+    delay(1000);
+    client.setServer(wifi.mqttBroker.c_str(), 1883);
+    client.setCallback(callback);
+  } else {
+    Serial.println("Wi-Fi and MQTT setup skipped as wifi.use is false.");
+  }
 }
 
 /* 블루투스 함수 ===============================================*/
@@ -203,7 +211,7 @@ class MyCallbacks : public BLECharacteristicCallbacks {
 };
 
 void setupBLE() {
-  BLEDevice::init("i2r-03-IoT PLC");
+  BLEDevice::init("i2r-13-IoT PLC");
   BLEServer *pServer = BLEDevice::createServer();
 
   // Set server callbacks
@@ -226,17 +234,6 @@ void setupBLE() {
   Serial.println("BLE service started");
 }
 
-/*void readBleMacAddress() {
-  // BLE 디바이스에서 MAC 주소를 가져옵니다.
-  BLEAddress bleAddress = BLEDevice::getAddress();
-  // MAC 주소를 String 타입으로 변환합니다.
-  dev.mac = bleAddress.toString().c_str();
-  // MAC 주소를 모두 대문자로 변환합니다.
-  dev.mac.toUpperCase();
-  // 시리얼 모니터에 BLE MAC 주소를 출력합니다.
-  Serial.print("BLE MAC Address: ");
-  Serial.println(dev.mac);
-}*/
 void readBleMacAddress() {
   // BLE 디바이스에서 MAC 주소를 가져옵니다.
   BLEAddress bleAddress = BLEDevice::getAddress();
@@ -368,6 +365,7 @@ void parseJSONPayload(byte *payload, unsigned int length) {
     wifiSave.ssid = ssid;
     wifiSave.password = password;
     wifiSave.email = email;
+    wifiSave.use = 1;
     returnMsg = wifiSave.ssid + " 정보가 저장 되었습니다.";
     writeToBle(101);
 
@@ -410,8 +408,8 @@ void parseJSONPayload(byte *payload, unsigned int length) {
       returnMsg = "블루투스로 통신 합니다.";
   }
   else if (order == 4) {  // 커튼에서 knob의 상태를 읽어온다.
-    bool value = doc["value"] | false;
-    dev.noSelect = value;
+    int noSelect = doc["noSelect"] | 2;
+    dev.noSelect = noSelect;
     actMachine(dev.noSelect);
   }
   returnMessage();
@@ -440,8 +438,8 @@ void prepareDataForMqtt() {
       responseDoc["mac"] = dev.mac;
       responseDoc["in"] = strIn;
       responseDoc["out"] = strOut;
-      responseDoc["humidity"] = strHumidity;
-      responseDoc["temperature"] = strTemp;
+      responseDoc["humi"] = strHumidity;
+      responseDoc["temp"] = strTemp;
       responseDoc["noSelect"] = dev.noSelect;
       dev.sendData = "";
       serializeJson(responseDoc, dev.sendData);
@@ -449,7 +447,7 @@ void prepareDataForMqtt() {
       // 조건 1: BLE 연결되어 있고 wifi.selectMqtt가 false일 경우, BLE로 데이터 전송
       if (ble.isConnected && !wifi.selectMqtt && pCharacteristic) {
         writeToBle(2);
-        Serial.println("BLE O > MQTT O");
+        //Serial.println("BLE O > MQTT O");
       }
       
       // 조건 2: BLE 연결되어 있고 wifi.selectMqtt가 true일 경우, MQTT로 데이터 전송
@@ -459,7 +457,7 @@ void prepareDataForMqtt() {
         }
         if (client.connected()) {
           publishMqtt();
-          Serial.println("BLE O < MQTT O");
+          //Serial.println("BLE O < MQTT O");
         }
       } 
 
@@ -470,7 +468,7 @@ void prepareDataForMqtt() {
         }
         if (client.connected()) {
           publishMqtt();
-          Serial.println("BLE X < MQTT O + Tab2 MQTT");
+          //Serial.println("BLE X < MQTT O + Tab2 MQTT");
         }
       }
       // (임시: 어플에서 BLE연결안돼있음 무조건 wifi 설정이 돼있으면 해제)
@@ -481,7 +479,7 @@ void prepareDataForMqtt() {
         }
         if (client.connected()) {
           publishMqtt();
-          Serial.println("BLE X < MQTT O + Tab2 BLE");
+          //Serial.println("BLE X < MQTT O + Tab2 BLE");
         }
       }
       // 이전 bat와 adc 값을 업데이트
@@ -506,6 +504,7 @@ void returnMessage() {
 }
 
 void actMachine(int noSelect) {
+  //Serial.println("noSelect: "+String(noSelect));
   dev.noSelect = noSelect;
   if(noSelect==0) {
     digitalWrite(outputPins[0], LOW);
@@ -525,7 +524,7 @@ void actMachine(int noSelect) {
     digitalWrite(outputPins[1], LOW);
     Serial.println("Stop");
   }
-  publishMqtt();
+  prepareDataForMqtt();
 }
 
 //1초 마다 실행되는 시간함수
@@ -601,7 +600,7 @@ void loadConfigFromSPIFFS() {
   wifi.ssid = doc["ssid"] | "";
   wifi.password = doc["password"] | "";
   wifi.email = doc["email"] | "";
-
+  wifi.use = doc["use"] | false;
   Serial.print("wifi.ssid: "); Serial.println(wifi.ssid);
   Serial.print("wifi.password: "); Serial.println(wifi.password);
   Serial.print("wifi.email: "); Serial.println(wifi.email);
@@ -644,10 +643,12 @@ void saveConfigToSPIFFS() {
   doc["ssid"] = wifiSave.ssid;
   doc["password"] = wifiSave.password;
   doc["email"] = wifiSave.email;
+  doc["use"] = wifiSave.use;
 
   Serial.print("wifi.ssid: "); Serial.println(wifiSave.ssid);
   Serial.print("wifi.password: "); Serial.println(wifiSave.password);
   Serial.print("wifi.email: "); Serial.println(wifiSave.email);
+  Serial.print("wifi.use: "); Serial.println(wifiSave.use);
 
   if (serializeJson(doc, configFile) == 0) {
     Serial.println("Failed to write to file");
@@ -698,6 +699,8 @@ bool initializeSPIFFS() {
 
 void checkFactoryDefault() {
   if ( digitalRead(TRIGGER_PIN) == LOW ) {
+    wifiSave.use = 0;
+    wifi.use = 0;
     Serial.println("Please wait over 3 min");
     SPIFFS.format();
     delay(1000);
@@ -792,13 +795,14 @@ void loop() {
   }
 
   // Wi-Fi 및 MQTT 설정을 여기서 처리
-  if (wifi.isConnected) {
+  if (wifi.use) {
     if (!client.connected()) {
       reconnectMQTT();
     }
     client.loop();
   }
 
-  checkFactoryDefault();
-}
 
+  checkFactoryDefault();
+
+}
