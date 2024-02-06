@@ -133,22 +133,24 @@ li {
   border-radius: 3px;
 }
 
-.knob {
-  width: 120px; /* 크기를 두 배로 늘림 */
-  height: 120px; /* 크기를 두 배로 늘림 */
-  background-color: #4CAF50;
-  border-radius: 50%;
-  position: relative;
-  /* 기타 스타일링 */
+.radio-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 15vh; /* 뷰포트의 전체 높이 */
 }
 
-.knob-scale {
-  position: absolute;
-  top: 10px; /* 눈금의 위치 조정 */
-  left: 50%;
-  width: 5px; /* 눈금의 폭 */
-  height: 20px; /* 눈금의 높이 */
-  background-color: black;
-  transform: translateX(-50%);
-  /* 눈금 스타일링 */
+form {
+  text-align: center;
+}
+
+.text-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10vh; /* 뷰포트의 전체 높이 */
+}
+
+form {
+  text-align: center;
 }

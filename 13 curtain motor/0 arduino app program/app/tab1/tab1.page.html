@@ -36,8 +36,8 @@
 
                 <!-- 연결되었을 때만 블루투스 장치 정보를 보여줍니다 -->
                 <div *ngIf="globalService.ble.connectedDevice">
+                  <p>장치 MAC 주소: {{ globalService.dev.mac }}</p>
                   <p>장치 이름: {{ globalService.ble.connectedDevice.name }}</p>
-                  <!-- <p>장치 ID: {{ globalService.ble.connectedDevice.deviceId }}</p> -->
                 </div>
 
                   <ion-item>
@@ -84,10 +84,10 @@
 </div>
   <!-- <br><br> -->
   &nbsp;
-  <a href="https://smartstore.naver.com/i2r/products/8285011211">구매</a>
+  <a href="https://smartstore.naver.com/i2r">구매</a>
   &nbsp;
-  <a href="https://youtu.be/kLyZGZ_iQro?si=j1howcDip6n8Z9zi">유튜브설명</a>
+  <a href="https://www.youtube.com/@user-wp9ww8xd3y">유튜브설명</a>
   &nbsp;
-  <a href="https://github.com/kdi6033/i2r-03">메뉴얼</a>
+  <a href="https://github.com/kdi6033/i2r-13">메뉴얼</a>
 
 </ion-content>

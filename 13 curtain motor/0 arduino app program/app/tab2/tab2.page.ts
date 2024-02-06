@@ -1,8 +1,7 @@
 //tab2.page.ts
-import { Component, ElementRef, ViewChild, NgZone, ChangeDetectorRef, OnDestroy, DoCheck, AfterViewInit } from '@angular/core';
+import { Component,NgZone, ChangeDetectorRef, OnDestroy, DoCheck } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GlobalService } from '../global.service';
-import { LogMessagePage } from '../log-message/log-message.page';
 import { Router } from '@angular/router';
 import { ModalController,AlertController } from '@ionic/angular'; // Import ModalController here
 
@@ -14,65 +13,15 @@ interface Relay {
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss']
 })
+export class Tab2Page implements OnDestroy, DoCheck {
 
-export class Tab2Page implements OnDestroy, DoCheck, AfterViewInit {
-  @ViewChild('knob') knobElement!: ElementRef; // '!'를 사용하여 definite assignment assertion 적용
+  selectedAction: string = 'stop'; // 기본값 설정
 
-  ngAfterViewInit() {
-    this.setupKnob();
+  // 선택된 동작에 대한 로직
+  performAction() {
+    console.log(`선택된 동작: ${this.selectedAction}`);
+    // 여기에 선택된 동작에 대한 처리 로직을 추가할 수 있습니다.
   }
-  
-  currentKnobAngle: number = 0; // 현재 노브의 각도를 저장할 변수
-  private setupKnob() {
-    let currentRotation = 0; // 현재 회전 각도
-      
-    const calculateRotation = (touchEvent: TouchEvent) => {
-      const knobRect = this.knobElement.nativeElement.getBoundingClientRect();
-      const centerX = knobRect.left + knobRect.width / 2;
-      const centerY = knobRect.top + knobRect.height / 2;
-      const touch = touchEvent.touches[0];
-      const touchX = touch.clientX;
-      const touchY = touch.clientY;
-      const angle = Math.atan2(touchY - centerY, touchX - centerX) * (180 / Math.PI);
-      return angle;
-    };
-  
-    const updateKnobRotation = (angle: number) => {
-      // 노브 요소의 스타일 업데이트
-      this.knobElement.nativeElement.style.transform = `rotate(${angle}deg)`;
-    };
-  
-    const getNearestValue = (angle: number) => {
-      const normalizedAngle = (angle + 360) % 360;
-      if (normalizedAngle >= 135 && normalizedAngle < 225) {
-        return 2;
-      } else if (normalizedAngle >= 45 && normalizedAngle < 135) {
-        return 1;
-      } else {
-        return 0;
-      }
-    };
-  
-    this.knobElement.nativeElement.addEventListener('touchstart', (e: TouchEvent) => {
-      e.preventDefault();
-    });
-  
-    this.knobElement.nativeElement.addEventListener('touchmove', (e: TouchEvent) => {
-      const angle = calculateRotation(e);
-      currentRotation = angle;
-      updateKnobRotation(currentRotation); // 여기에서 노브 회전 적용
-      const value = getNearestValue(currentRotation);
-      console.log('Selected Value:', value); // 선택된 값 출력
-      e.preventDefault();
-    });
-  
-    this.knobElement.nativeElement.addEventListener('touchmove', (e: TouchEvent) => {
-      this.currentKnobAngle = currentRotation; // 현재 각도 저장
-    });
-
-  }
-  
-  
 
   bleLabelClass: string = 'text-blue';
   wifiLabelClass: string = 'text-green';
@@ -148,21 +97,12 @@ export class Tab2Page implements OnDestroy, DoCheck, AfterViewInit {
     // 앱 시작 시 MQTT 연결 상태 확인 및 연결 시도
     this.globalService.checkMQTTConnection();
   }
-  navigateToLogMessage() {
-    this.router.navigateByUrl('/log-message');
+
+  onActionChange(value: number) {
+    this.globalService.dev.noSelect = value;
+    this.globalService.sendData(4);
   }
-  toggleMessageLog(): void {
-    this.showMessageLog = !this.showMessageLog;
-  }
-  async openLogModal() {
-    const modal = await this.modalController.create({
-      component: LogMessagePage,
-      componentProps: {
-        messageLog: this.messageLog
-      }
-    });
-    return await modal.present();
-  }
+
   ngOnInit() {
     // MQTT 토픽 정보가 설정되어 있지만 BLE가 연결되지 않은 경우
     if (this.globalService.wifi.outTopic && !this.globalService.ble.isConnected) {
@@ -285,3 +225,4 @@ get receivedMessage() {
 }
 
 }
+

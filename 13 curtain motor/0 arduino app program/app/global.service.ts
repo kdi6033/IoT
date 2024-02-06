@@ -15,8 +15,9 @@ interface DataDevice {
   strInPre: string; // 이전 In[] 값을 저장
   sendData: string; // 보드의 입력, 출력, 전압 데이터를 json 형태로 저장
   no: number;     // 출력 밸브 번호를 전송
-  value: boolean; // 출력 밸브 번호를 전송
-  isSliderOn: boolean;
+  value: boolean; // 출력 밸브 값을 전송
+  isSliderOn: boolean;  // 와이파이 블루투스 선택
+  noSelect: number;     // up down stop 선택
 }
 
 interface DataBle {
@@ -59,7 +60,8 @@ export class GlobalService {
     sendData: "",
     no: 100,
     value: false,
-    isSliderOn: false
+    isSliderOn: false,
+    noSelect: -1
   };
 
   // DataBle 타입의 객체 초기화
@@ -217,6 +219,7 @@ public attemptAutoReconnect() {
     try {
       await BleClient.connect(device.deviceId);
       console.log('Connected to', device.name, 'with deviceId', device.deviceId);
+      this.dev.mac = device.deviceId;
       this.ble.connectedDevice = device;
       this.ble.isConnected = true;
 
@@ -352,6 +355,7 @@ async checkAndReconnectBluetooth() {
     this.processMessage(message);
   }
 
+  //블루투스와 mqtt로 들어온 메세지를 최종 처리한다.
   private processMessage(jsonString: string) {
     try {
       console.log("------------------");
@@ -376,9 +380,18 @@ async checkAndReconnectBluetooth() {
 
       if (messageObject.humidity) {
         this.dev.humidity = parseFloat(messageObject.humidity);
+      } else if (messageObject.humi) {
+        this.dev.humidity = parseFloat(messageObject.humi);
       }
+
       if (messageObject.temperature) {
         this.dev.temperature = parseFloat(messageObject.temperature);
+      } else if (messageObject.temp) {
+        this.dev.temperature = parseFloat(messageObject.temp);
+      }
+
+      if (messageObject.hasOwnProperty('noSelect')) {
+        this.dev.noSelect = messageObject.noSelect;
       }
 
       // dev.in 배열을 복사하여 로그로 출력
@@ -413,7 +426,7 @@ async checkAndReconnectBluetooth() {
     if (order === 0) {
       data = {
         order: 0,
-        fileName: "i2r-03-ai.ino.bin",
+        fileName: "i2r-13-ai.ino.bin",
         message: "download firmware"
       };
     }
@@ -442,6 +455,14 @@ async checkAndReconnectBluetooth() {
         order: 3,
         value: this.wifi.selectMqtt,
         message: "select Mqtt"
+      };
+    }
+    else if (order === 4) {
+      // 와이파이 사용하는지?
+      data = {
+        order: 4,
+        noSelect: this.dev.noSelect,
+        message: "select up down stop"
       };
     }
     else {
@@ -537,7 +558,7 @@ connectToMQTT() {
 
   setMessageListener() {
     cordova.plugins.CordovaMqTTPlugin.listen(this.wifi.inTopic, (payload: any, params: any) => {
-      // 수신된 메시지를 처리합니다.
+      // mqtt 수신된 메시지를 처리합니다.
       try {
         this.processReceivedMessage(payload);
       } catch (e) {
@@ -696,6 +717,13 @@ saveSelectMqttToLocalStorage() {
   }
 }
 
-
+  // 현장에서 동작 시켰을 때 html에 상태 표시
+  getNoSelectStatus(): string {
+    switch (this.dev.noSelect) {
+      case 0: return "올림";
+      case 1: return "내림";
+      default: return "정지";
+    }
+  }
 
 }

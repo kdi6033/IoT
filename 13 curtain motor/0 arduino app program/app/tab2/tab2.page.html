@@ -18,8 +18,9 @@
     </div>
   </div>
 </div> <br>
-<div class="value-box">출력</div>
 
+<!--
+<div class="value-box">출력</div>
 <div class="grid grid-cols-4 gap-4 mb-4">
   <div *ngFor="let relay of relays; let i = index" class="flex flex-col items-center">
     <button class="relay-button w-12 h-12 mb-2"
@@ -43,41 +44,51 @@
     </div>
   </ng-container>
 </div>
+-->
 
-<div class="content-container">
-  <!-- Voltage Readouts -->
-  <div class="flex items-center justify-between mb-4">
-    <div class="value-box">
-      <div class="font-semibold text-gray-700">온도 :</div>
-      <div id="vbatValue" class="font-semibold text-gray-700 ml-2" [class.flash]="TempUpdated">
-        {{ globalService.dev.temperature }}℃
-      </div>
-    </div>
-    <div class="value-box">
-      <div class="font-semibold text-gray-700">습도 :</div>
-      <div id="adcValue" class="font-semibold text-gray-700 ml-2" [class.flash]="HumiUpdated">
-        {{ globalService.dev.humidity }}%
-      </div>
-    </div>
+<div class="text-container">
+  현장 상태: {{ globalService.getNoSelectStatus() }}</div>
+
+
+  <div class="radio-container">
+    <form>
+      <label>
+        <input type="radio" name="controlAction" value="0" (change)="onActionChange(0)">
+        올림
+      </label>
+      <label>
+        <input type="radio" name="controlAction" value="1" (change)="onActionChange(1)">
+        내림
+      </label>
+      <label>
+        <input type="radio" name="controlAction" value="2" (change)="onActionChange(2)">
+        정지
+      </label>
+    </form>
   </div>
 
-  <div #knob class="knob">
-    <div class="knob-scale"></div>
-  </div>
 
   <div class="content-container">
-    <div>
-      <p>현재 각도: {{ currentAngle }}도</p>
+    <!-- Voltage Readouts -->
+    <div class="flex items-center justify-between mb-4">
+      <div class="value-box">
+        <div class="font-semibold text-gray-700">온도 :</div>
+        <div id="vbatValue" class="font-semibold text-gray-700 ml-2" [class.flash]="TempUpdated">
+          {{ globalService.dev.temperature }}℃
+        </div>
+      </div>
+      <div class="value-box">
+        <div class="font-semibold text-gray-700">습도 :</div>
+        <div id="adcValue" class="font-semibold text-gray-700 ml-2" [class.flash]="HumiUpdated">
+          {{ globalService.dev.humidity }}%
+        </div>
+      </div>
     </div>
-  </div>
-  
 
   <!-- Received Message Box -->
   <div class="p-4 bg-white rounded shadow">
     <div class="flex justify-between items-center">
       <div>받은 메시지</div>
-      <!-- <button (click)="toggleMessageLog()">+</button> Add this button -->
-      <ion-button (click)="openLogModal()">log 기록</ion-button>
     </div>
     <div class="mt-2 p-2 bg-gray-200 rounded">{{ receivedMessage }}</div>
   </div>

@@ -11,7 +11,7 @@ import { LoadingController, AlertController } from '@ionic/angular';
 })
 export class Tab1Page implements OnDestroy  {
   loading: any;
-  connectedDeviceName: string = 'i2r-03-IoT PLC'; // 초기값을 빈 문자열로 설정
+  connectedDeviceName: string = 'i2r-13-IoT PLC'; // 초기값을 빈 문자열로 설정
   customMqttBroker:string="";
   showWifiForm: boolean = false; // WiFi 폼 표시 여부
   ssid: string = ''; // SSID 정보
