@@ -1,0 +1,25 @@
+.led-on {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #4CAF50; /* LED가 켜졌을 때 */
+}
+
+.led-off {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: red; /* LED가 꺼졌을 때 */
+}
+
+.device-image-container {
+  max-width: 96px;
+  max-height: 96px;
+}
+
+.device-image {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+}

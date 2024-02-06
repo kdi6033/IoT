@@ -1,0 +1,86 @@
+
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Tab 2</ion-title>
+    </ion-toolbar>
+  </ion-header>
+<!-- BLE and WiFi Toggle -->
+<div class="slider-box">
+  <div class="slider-section">
+    <div class="flex justify-between mt-2">
+      <span [class]="bleLabelClass">BLE</span>
+      <div id="ble-wifi-slider" class="slider" [class.on]="globalService.dev.isSliderOn" (click)="toggleSlider()">
+        <div class="slider-circle" [class.on]="globalService.dev.isSliderOn"></div>
+      </div>
+      <span [class]="wifiLabelClass">WiFi</span>
+    </div>
+  </div>
+</div> <br>
+<div class="value-box">출력</div>
+
+<div class="grid grid-cols-4 gap-4 mb-4">
+  <div *ngFor="let relay of relays; let i = index" class="flex flex-col items-center">
+    <button class="relay-button w-12 h-12 mb-2"
+            [class.relay-on]="relay.isOn"
+            [class.relay-off]="!relay.isOn"
+            (click)="toggleRelay($event, i)">
+      {{ i }}
+    </button>
+    <div class="w-3 h-3 rounded-full"
+         [class.signal-on]="relay.isOn"
+         [class.signal-off]="!relay.isOn">
+    </div>
+  </div>
+</div>
+
+<div class="value-box">입력</div>
+<div class="led-container">
+  <ng-container *ngFor="let led of leds; let i = index">
+    <div class="led" [class.led-on]="led" [class.led-off]="!led">
+      {{ i }}
+    </div>
+  </ng-container>
+</div>
+
+<div class="content-container">
+  <!-- Voltage Readouts -->
+  <div class="flex items-center justify-between mb-4">
+    <div class="value-box">
+      <div class="font-semibold text-gray-700">온도 :</div>
+      <div id="vbatValue" class="font-semibold text-gray-700 ml-2" [class.flash]="TempUpdated">
+        {{ globalService.dev.temperature }}℃
+      </div>
+    </div>
+    <div class="value-box">
+      <div class="font-semibold text-gray-700">습도 :</div>
+      <div id="adcValue" class="font-semibold text-gray-700 ml-2" [class.flash]="HumiUpdated">
+        {{ globalService.dev.humidity }}%
+      </div>
+    </div>
+  </div>
+
+  <div #knob class="knob">
+    <div class="knob-scale"></div>
+  </div>
+
+  <div class="content-container">
+    <div>
+      <p>현재 각도: {{ currentAngle }}도</p>
+    </div>
+  </div>
+  
+
+  <!-- Received Message Box -->
+  <div class="p-4 bg-white rounded shadow">
+    <div class="flex justify-between items-center">
+      <div>받은 메시지</div>
+      <!-- <button (click)="toggleMessageLog()">+</button> Add this button -->
+      <ion-button (click)="openLogModal()">log 기록</ion-button>
+    </div>
+    <div class="mt-2 p-2 bg-gray-200 rounded">{{ receivedMessage }}</div>
+  </div>
+
+</div>
+</ion-content>

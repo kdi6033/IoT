@@ -1,0 +1,154 @@
+.led-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); // 4 columns, like the relays
+  gap: 4px; // Gap to match the relay grid
+  margin-bottom: 4px; // Margin bottom to match the relay grid
+}
+
+.led {
+  width: 50px; // Adjust if needed
+  height: 50px; // Adjust if needed
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px auto; // Centered in the grid cell
+  color: black;
+  text-align: center;
+  background-color: #d3d3d3; // Default background color
+}
+
+.led-on {
+  background-color: #4CAF50; // Green background for ON state
+}
+
+.led-off {
+  background-color: #d3d3d3; // Light gray background for OFF state
+}
+.content-container {
+  margin: 0 auto; // Center the container
+  padding: 0 15px; // Add some padding on the sides
+  max-width: 600px; // Set a max width to control the overall width
+}
+
+.relay-on {
+  background-color: #4CAF50; /* Green color for ON state */
+}
+.relay-off {
+  background-color: #d3d3d3; /* Red color for OFF state */
+}
+.signal-on {
+  color: #4CAF50; /* Green color for signal */
+}
+.signal-off {
+  color: #9CA3AF; /* Gray color for no signal */
+}
+.relay-button {
+  border-radius: 9999px;
+}
+.relay-button:active {
+  box-shadow: 0 4px #666;
+  transform: translateY(4px);
+}
+
+.value-box {
+  padding: 8px 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+}
+.slider {
+  width: 50px;
+  height: 25px;
+  border-radius: 9999px; /* equivalent to full in Tailwind's scale */
+  background-color: #0066ff; /* equivalent to bg-gray-300 in Tailwind's scale */
+  position: relative;
+  transition: all 0.3s;
+  &.on {
+    background-color: #4CAF50;
+  }
+}
+
+.slider-circle {
+  width: 25px;
+  height: 25px;
+  border-radius: 9999px; /* equivalent to full in Tailwind's scale */
+  background-color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: transform 0.3s;
+  &.on {
+    transform: translateX(25px);
+  }
+}
+.slider-box {
+
+  border: 1px solid #ffffff; // Example border
+  padding: 5px; // Example padding
+  border-radius: 8px; // Rounded corners
+  // margin: 5px 0; // Vertical margin for spacing
+  background-color: rgb(255, 255, 255);// Background color
+  // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Box shadow for depth
+  margin-top: 4%;
+  margin-left: auto;
+  margin-right: auto;
+   // Optionally, set a specific width and height
+  width: 200px; // Example fixed width
+  height: auto; // Auto height based on content
+}
+.signal-on {
+  color: #4CAF50; /* Green color for signal */
+}
+.signal-off {
+  color: #035df9; /* Gray color for no signal */
+}
+.text-blue {
+  color: #4299e1; /* equivalent to text-blue-500 in Tailwind's scale */
+}
+
+.text-green {
+  color: #4CAF50; /* equivalent to text-green-500 in Tailwind's scale */
+}
+//전압 플래시
+@keyframes flashAnimation {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.flash {
+  animation: flashAnimation 1s ease-in-out;
+}
+// log 기록
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  background-color: #f0f0f0;
+  margin-bottom: 5px;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+.knob {
+  width: 120px; /* 크기를 두 배로 늘림 */
+  height: 120px; /* 크기를 두 배로 늘림 */
+  background-color: #4CAF50;
+  border-radius: 50%;
+  position: relative;
+  /* 기타 스타일링 */
+}
+
+.knob-scale {
+  position: absolute;
+  top: 10px; /* 눈금의 위치 조정 */
+  left: 50%;
+  width: 5px; /* 눈금의 폭 */
+  height: 20px; /* 눈금의 높이 */
+  background-color: black;
+  transform: translateX(-50%);
+  /* 눈금 스타일링 */
+}

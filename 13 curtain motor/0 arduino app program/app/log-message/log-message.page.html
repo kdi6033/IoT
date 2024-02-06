@@ -1,0 +1,28 @@
+<ion-content>
+  <ion-toolbar>
+    <ion-title>Log 기록</ion-title>
+
+    <ion-buttons [collapse]="true" slot="end">
+      <ion-button (click)="deleteAllLogs()">전체 삭제</ion-button>
+      <ion-button (click)="dismissModal()">닫기</ion-button>
+    </ion-buttons>
+    
+  </ion-toolbar>
+
+  <ion-list>
+    <ion-item *ngFor="let log of paginatedLogs; let i = index">
+  {{ log }}
+  <ion-button (click)="deleteLog(i)">삭제</ion-button>
+</ion-item>
+  </ion-list>
+
+  <ion-footer>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button *ngFor="let page of [].constructor(totalPages); let i = index" (click)="changePage(i + 1)">
+          {{ i + 1 }}
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-footer>
+</ion-content>
