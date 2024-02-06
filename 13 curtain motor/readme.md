@@ -32,6 +32,8 @@ i2r-13 보드에서 order=13 을 받으면 아래표와 같이 올림 내림 정
 - 스마트폰에서 블루투스나 mqtt 통신을 이용하여 원격으로 제어하는 프로그램을 합니다.  
 - [ai.doowon.ac.kr AI&IoT](https://ai.dooqon.ac.kr:1880/login) 사이트를 접속하면 자동으로 홈페이지가 만들어지고 여러개의 기기를 원격으로 제어 할 수 있습니다.
 - 프로그램은 i2r-03 보드의 프로그램을 그대로 사용하고 이력포트 IO16, 17, 18에 따라 모터가 정회전, 역회전, 정지 되게 프로그램 했다.
+
+- 임력포트 IO 16,17,18 의 값을 읽어 모터를 동작 시킨다.
 ```
 for (int i = 0; i < 4; i++) {
       int currentState = digitalRead(inputPins[i]); // 현재 핀 상태 읽기
@@ -43,6 +45,7 @@ for (int i = 0; i < 4; i++) {
       }
     }
 ```
+모트를 정회전, 역회전, 정지를 실행 한다.
 ```
 void actMachine(int noSelect) {
   dev.noSelect = noSelect;
