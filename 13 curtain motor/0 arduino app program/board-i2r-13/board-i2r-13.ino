@@ -24,8 +24,8 @@ struct DataDevice {
   String mac = "";  // Bluetooth mac address 를 기기 인식 id로 사용한다.
   int out[8];
   int in[8];
-  float humidity;
-  float temperature;
+  float humi;
+  float temp;
   String strIn = "0000", strInPre = "0000";  // In[] 을 string으로 저장
   String sendData = "";                      // 보드의 입력,출려,전압 데이터를 json 형태로 저장
   int noSelect = 2;  // UI의 noSelect의 값에 따라 모터가 동자 0:올림 1:내림 기타:정지
@@ -115,8 +115,8 @@ void setup() {
     while (1) delay(10);
   }
 
-  dev.humidity = 0.0;
-  dev.temperature = 0.0;
+  dev.humi = 0.0;
+  dev.temp = 0.0;
 
   loadConfigFromSPIFFS();
   
@@ -126,18 +126,6 @@ void setup() {
   // 이제 BLE MAC 주소를 읽어 봅니다.
   readBleMacAddress();
   Serial.println("BLE ready!");
-  delay(500);
-  if (wifi.use) {
-    // Wi-Fi 연결 설정
-    connectToWiFi();
-    // wifi.selectMqtt = true;
-    // MQTT 설정
-    delay(1000);
-    client.setServer(wifi.mqttBroker.c_str(), 1883);
-    client.setCallback(callback);
-  } else {
-    Serial.println("Wi-Fi and MQTT setup skipped as wifi.use is false.");
-  }
 }
 
 /* 블루투스 함수 ===============================================*/
@@ -181,7 +169,7 @@ class MyServerCallbacks: public BLEServerCallbacks {
       wifi.isConnected = true; // Set the isConnected flag to true on connection
       Serial.println("Device connected");
       ble.isConnected = true;
-      wifi.selectMqtt = false;
+      //wifi.selectMqtt = false;
       event = 1;
     }
 
@@ -189,7 +177,7 @@ class MyServerCallbacks: public BLEServerCallbacks {
       wifi.isConnected = false; // Set the isConnected flag to false on disconnection
       Serial.println("Device disconnected");
       ble.isConnected = false;
-      wifi.selectMqtt = true;
+      //wifi.selectMqtt = true;
       BLEDevice::startAdvertising();  // Start advertising again after disconnect
     }
 };
@@ -360,12 +348,12 @@ void parseJSONPayload(byte *payload, unsigned int length) {
     const char *ssid = doc["ssid"] | "";
     const char *password = doc["password"] | "";
     const char *email = doc["email"] | "";
-    // const char *mqttBroker = doc["mqttBroker"] | "";
+    const char *mqttBroker = doc["mqttBroker"] | "";
 
     wifiSave.ssid = ssid;
     wifiSave.password = password;
     wifiSave.email = email;
-    wifiSave.use = 1;
+    wifiSave.mqttBroker=mqttBroker;
     returnMsg = wifiSave.ssid + " 정보가 저장 되었습니다.";
     writeToBle(101);
 
@@ -419,16 +407,16 @@ void prepareDataForMqtt() {
     sensors_event_t humidity_event, temp_event;
     aht.getEvent(&humidity_event, &temp_event);
 
-    dev.humidity = humidity_event.relative_humidity;
-    dev.temperature = temp_event.temperature;
+    dev.humi = humidity_event.relative_humidity;
+    dev.temp = temp_event.temperature;
 
     strIn=String(dev.in[0])+String(dev.in[1])+String(dev.in[2])+String(dev.in[3]);
     strOut=String(dev.out[0])+String(dev.out[1])+String(dev.out[2])+String(dev.out[3]);
-    String strHumidity = String(dev.humidity, 1);
-    String strTemp = String(dev.temperature, 1);
+    String strHumidity = String(dev.humi, 1);
+    String strTemp = String(dev.temp, 1);
     dev.strInPre=dev.strIn;
     // 데이터 변경 여부 확인
-    bool dataChanged = !dev.strIn.equals(dev.strInPre) || dev.temperature != lasttemperature || dev.humidity != lasthumidity;
+    bool dataChanged = !dev.strIn.equals(dev.strInPre) || dev.temp != lasttemperature || dev.humi != lasthumidity;
 
     if (dataChanged) {
       DynamicJsonDocument responseDoc(2048);
@@ -444,47 +432,20 @@ void prepareDataForMqtt() {
       dev.sendData = "";
       serializeJson(responseDoc, dev.sendData);
 
-      // 조건 1: BLE 연결되어 있고 wifi.selectMqtt가 false일 경우, BLE로 데이터 전송
-      if (ble.isConnected && !wifi.selectMqtt && pCharacteristic) {
-        writeToBle(2);
-        //Serial.println("BLE O > MQTT O");
-      }
-      
-      // 조건 2: BLE 연결되어 있고 wifi.selectMqtt가 true일 경우, MQTT로 데이터 전송
-      else if (ble.isConnected && wifi.selectMqtt) {
-        if (!client.connected()) {
-          reconnectMQTT();
-        }
-        if (client.connected()) {
-          publishMqtt();
-          //Serial.println("BLE O < MQTT O");
-        }
+      // MQTT에 연결되어 있을 경우 항상 MQTT로 데이터 전송
+      if (client.connected()) {
+        publishMqtt();
+        Serial.println(dev.sendData);
       } 
-
-      // 조건 3: BLE 연결이 끊어져 있고, MQTT 연결 정보가 있으며 wifi.selectMqtt가 true일 경우, MQTT로 데이터 전송
-      else if (!ble.isConnected  && wifi.selectMqtt) {
-        if (!client.connected()) {
-          reconnectMQTT();
-        }
-        if (client.connected()) {
-          publishMqtt();
-          //Serial.println("BLE X < MQTT O + Tab2 MQTT");
-        }
-      }
-      // (임시: 어플에서 BLE연결안돼있음 무조건 wifi 설정이 돼있으면 해제)
-      //조건 4: BLE 연결이 끊어져 있고, MQTT 연결 정보가 있으며 wifi.selectMqtt가 true일 경우, MQTT로 데이터 전송
-      else if (!ble.isConnected  && !wifi.selectMqtt && client.connected()) {
-        if (!client.connected()) {
-          reconnectMQTT();
-        }
-        if (client.connected()) {
-          publishMqtt();
-          //Serial.println("BLE X < MQTT O + Tab2 BLE");
-        }
+      // MQTT에 연결되어 있지 않고 BLE에 연결되어 있을 경우 BLE로 데이터 전송
+      else if (!client.connected() && ble.isConnected && pCharacteristic) {
+        writeToBle(2);
+        Serial.println("BLE");
+        Serial.println(dev.sendData);
       }
       // 이전 bat와 adc 값을 업데이트
-      lasttemperature = dev.temperature;
-      lasthumidity = dev.humidity;  
+      lasttemperature = dev.temp;
+      lasthumidity = dev.humi;  
 
     } // dataChanged
 }
@@ -599,12 +560,22 @@ void loadConfigFromSPIFFS() {
 
   wifi.ssid = doc["ssid"] | "";
   wifi.password = doc["password"] | "";
+  wifi.mqttBroker = doc["mqttBroker"] | "";
   wifi.email = doc["email"] | "";
-  wifi.use = doc["use"] | false;
+
   Serial.print("wifi.ssid: "); Serial.println(wifi.ssid);
   Serial.print("wifi.password: "); Serial.println(wifi.password);
+  Serial.print("wifi.mqttBroker: "); Serial.println(wifi.mqttBroker);
   Serial.print("wifi.email: "); Serial.println(wifi.email);
   configFile.close();
+  // 유효성 검사: ssid와 password가 비어 있지 않은지 확인
+  if (wifi.ssid.length() > 0 && wifi.password.length() > 0) {
+    connectToWiFi(); // Wi-Fi 연결 시도
+    client.setServer(wifi.mqttBroker.c_str(), 1883); // MQTT 브로커 주소와 포트 설정
+    client.setCallback(callback); // 콜백 함수 설정
+  } else {
+    Serial.println("Skipping WiFi connection");
+  }
 }
 
 void saveConfigToSPIFFS() {
@@ -642,13 +613,13 @@ void saveConfigToSPIFFS() {
   // 데이터를 구조체에서 가져온다고 가정합니다.
   doc["ssid"] = wifiSave.ssid;
   doc["password"] = wifiSave.password;
+  doc["mqttBroker"] = wifiSave.mqttBroker;
   doc["email"] = wifiSave.email;
-  doc["use"] = wifiSave.use;
 
   Serial.print("wifi.ssid: "); Serial.println(wifiSave.ssid);
   Serial.print("wifi.password: "); Serial.println(wifiSave.password);
+  Serial.print("wifi.mqttBroker: "); Serial.println(wifiSave.mqttBroker);
   Serial.print("wifi.email: "); Serial.println(wifiSave.email);
-  Serial.print("wifi.use: "); Serial.println(wifiSave.use);
 
   if (serializeJson(doc, configFile) == 0) {
     Serial.println("Failed to write to file");
@@ -698,9 +669,7 @@ bool initializeSPIFFS() {
 }
 
 void checkFactoryDefault() {
-  if ( digitalRead(TRIGGER_PIN) == LOW ) {
-    wifiSave.use = 0;
-    wifi.use = 0;
+  if (digitalRead(TRIGGER_PIN) == LOW) {
     Serial.println("Please wait over 3 min");
     SPIFFS.format();
     delay(1000);
@@ -795,7 +764,7 @@ void loop() {
   }
 
   // Wi-Fi 및 MQTT 설정을 여기서 처리
-  if (wifi.use) {
+  if (wifi.isConnected) {
     if (!client.connected()) {
       reconnectMQTT();
     }
