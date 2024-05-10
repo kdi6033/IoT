@@ -1,0 +1,412 @@
+[
+    {
+        "id": "095ba23321a01373",
+        "type": "tab",
+        "label": "플로우 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "ecf14323b3418c1b",
+        "type": "mongodb2 in",
+        "z": "095ba23321a01373",
+        "service": "_ext_",
+        "configNode": "12e86c91.be2ed3",
+        "name": "",
+        "collection": "",
+        "operation": "",
+        "x": 530,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "91e73cc6599033af",
+        "type": "inject",
+        "z": "095ba23321a01373",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"name\":\"cc\", \"power\":1}",
+        "payloadType": "str",
+        "x": 148.99998474121094,
+        "y": 142.1736183166504,
+        "wires": [
+            [
+                "8366ac8137484659"
+            ]
+        ]
+    },
+    {
+        "id": "3a5207704730a59d",
+        "type": "debug",
+        "z": "095ba23321a01373",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 715.0033798217773,
+        "y": 143.77086353302002,
+        "wires": []
+    },
+    {
+        "id": "8366ac8137484659",
+        "type": "function",
+        "z": "095ba23321a01373",
+        "name": "insert",
+        "func": "var newMsg = {};\nnewMsg.collection = 'localRecord';\n//newMsg.operation  = 'deleteOne';\nnewMsg.operation  = 'insert';\nnewMsg.payload    = { \"mac\" : msg.payload.mac , \"temp\" : msg.payload.temp, \"humi\" : msg.payload.humi};\nreturn newMsg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 279.0034408569336,
+        "y": 142.51040363311768,
+        "wires": [
+            [
+                "ecf14323b3418c1b"
+            ]
+        ]
+    },
+    {
+        "id": "123fd04263404f29",
+        "type": "function",
+        "z": "095ba23321a01373",
+        "name": "findOne",
+        "func": "var newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOne';\nnewMsg.payload    = { 'name' : 'm'};\nnewMsg.projection = { 'name' : 1 , '_id' : 0 };\nreturn newMsg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 305.9374542236328,
+        "y": 195.21177577972412,
+        "wires": [
+            [
+                "ecf14323b3418c1b"
+            ]
+        ]
+    },
+    {
+        "id": "b4683ba6a58fdff1",
+        "type": "inject",
+        "z": "095ba23321a01373",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 155.99297332763672,
+        "y": 196.1701316833496,
+        "wires": [
+            [
+                "123fd04263404f29"
+            ]
+        ]
+    },
+    {
+        "id": "0748cec2863aa820",
+        "type": "function",
+        "z": "095ba23321a01373",
+        "name": "find.toArray",
+        "func": "var newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'find.toArray';\nnewMsg.payload    = { 'value' : 100 };\nnewMsg.projection = { 'name' : 1 , '_id' : 0 };\nreturn newMsg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 315.9374313354492,
+        "y": 253.21180725097656,
+        "wires": [
+            [
+                "ecf14323b3418c1b"
+            ]
+        ]
+    },
+    {
+        "id": "75dca363ae10d516",
+        "type": "inject",
+        "z": "095ba23321a01373",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 155.93740844726562,
+        "y": 253.21179676055908,
+        "wires": [
+            [
+                "0748cec2863aa820"
+            ]
+        ]
+    },
+    {
+        "id": "40b17a29e4a8c65e",
+        "type": "inject",
+        "z": "095ba23321a01373",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 165.99991607666016,
+        "y": 427.99997115135193,
+        "wires": [
+            [
+                "c54af963e16a2ad2"
+            ]
+        ]
+    },
+    {
+        "id": "c54af963e16a2ad2",
+        "type": "mongodb2 in",
+        "z": "095ba23321a01373",
+        "service": "_ext_",
+        "configNode": "12e86c91.be2ed3",
+        "name": "",
+        "collection": "localRecord",
+        "operation": "aggregate.toArray",
+        "x": 390.9999542236328,
+        "y": 428.00004172325134,
+        "wires": [
+            [
+                "d0bdd9658c6da456"
+            ]
+        ]
+    },
+    {
+        "id": "86a73da6c410e465",
+        "type": "debug",
+        "z": "095ba23321a01373",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 888.0625457763672,
+        "y": 429.78817343711853,
+        "wires": []
+    },
+    {
+        "id": "c3604c99a74902a0",
+        "type": "mongodb2 in",
+        "z": "095ba23321a01373",
+        "service": "_ext_",
+        "configNode": "12e86c91.be2ed3",
+        "name": "",
+        "collection": "localRecord",
+        "operation": "count",
+        "x": 370,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "41fec5b12aa0a631",
+        "type": "debug",
+        "z": "095ba23321a01373",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 585.0625457763672,
+        "y": 379.5591094493866,
+        "wires": []
+    },
+    {
+        "id": "4e3f4803a4428103",
+        "type": "inject",
+        "z": "095ba23321a01373",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 168.99996185302734,
+        "y": 381.00001645088196,
+        "wires": [
+            [
+                "c3604c99a74902a0"
+            ]
+        ]
+    },
+    {
+        "id": "14f507fdbd8ce556",
+        "type": "function",
+        "z": "095ba23321a01373",
+        "name": "findOneAndUpdate",
+        "func": "var newMsg = {};\nnewMsg.collection = 'localRecord';\nnewMsg.operation  = 'findOneAndUpdate';\nnewMsg.payload = [{ 'mac': msg.payload.mac }, { $set: { 'temp': msg.payload.temp ,'humi': msg.payload.humi }} ];\nnewMsg.projection = { 'name' : 1 , '_id' : 0 };\nreturn newMsg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 331.9374237060547,
+        "y": 322.21179008483887,
+        "wires": [
+            [
+                "ecf14323b3418c1b"
+            ]
+        ]
+    },
+    {
+        "id": "d7d3ee9dfc9afa5c",
+        "type": "inject",
+        "z": "095ba23321a01373",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 157.9374008178711,
+        "y": 321.2117805480957,
+        "wires": [
+            [
+                "14f507fdbd8ce556"
+            ]
+        ]
+    },
+    {
+        "id": "d0bdd9658c6da456",
+        "type": "function",
+        "z": "095ba23321a01373",
+        "name": "get names as a list",
+        "func": "// Combines into a single list (or array)\nvar newMsg =[];\nfor (var i = 0; i < msg.payload.length; i++) {\n//newMsg.push({name:  msg.payload[i].name } ) };\nnewMsg.push(msg.payload[i].name ) };\nmsg.payload = newMsg;\nreturn  msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 688.0625457763672,
+        "y": 428.78817343711853,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6683eee4c4250dd8",
+        "type": "comment",
+        "z": "095ba23321a01373",
+        "name": "https://flows.nodered.org/flow/1720dd23b48efb0ffc5b",
+        "info": "https://www.compose.com/articles/",
+        "x": 262.93741607666016,
+        "y": 100.21178913116455,
+        "wires": []
+    },
+    {
+        "id": "4fdb31d4a681f55f",
+        "type": "mqtt in",
+        "z": "095ba23321a01373",
+        "name": "",
+        "topic": "i2r/kdi6033@gmail.com/out",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "f15d66b3.c7edf8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 190,
+        "y": 500,
+        "wires": [
+            [
+                "1cd44a98cb37de1a",
+                "14f507fdbd8ce556"
+            ]
+        ]
+    },
+    {
+        "id": "1cd44a98cb37de1a",
+        "type": "debug",
+        "z": "095ba23321a01373",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 420,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "12e86c91.be2ed3",
+        "type": "mongodb2",
+        "uri": "mongodb://localhost:27000/local",
+        "name": "local",
+        "options": "",
+        "parallelism": ""
+    },
+    {
+        "id": "f15d66b3.c7edf8",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "ai.doowon.ac.kr",
+        "port": "1883",
+        "tls": "509a45a9.089bbc",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "3",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "509a45a9.089bbc",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "94191b3ef7-certificate.pem.crt",
+        "keyname": "94191b3ef7-private.pem.key",
+        "caname": "MtestCA.pem",
+        "servername": "",
+        "verifyservercert": true,
+        "alpnprotocol": ""
+    }
+]
