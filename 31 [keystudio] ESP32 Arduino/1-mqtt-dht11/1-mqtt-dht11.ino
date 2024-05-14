@@ -16,12 +16,12 @@ void callback(char* topic, byte* payload, unsigned int length);
 
 struct WifiMqtt {
 public:
-  String ssid="405902-2.4G";
-  String password="k01033887147";
+  String ssid="";
+  String password="";
   String mqtt_server = "ai.doowon.ac.kr"; // 브로커 
   int mqtt_port = 1883;
-  char outTopic[50]="i2r/kdi6033@gmail.com/out"; 
-  char inTopic[50]="i2r/kdi6033@gmail.com/in";  
+  char outTopic[50]="i2r/out"; 
+  char inTopic[50]="i2r/in";  
   String mac="";
   void loop();
   void connectToWiFi();
