@@ -13,7 +13,8 @@ WSM-4035는 전동 스크류 드라이버로 스마트팜 농가에서 사용하
 - 무게: 2.4kg  
 - 크기: 218 x 143 x 104mm   
 ![13 회로도](https://github.com/kdi6033/IoT/assets/37902752/23d57982-7c7e-4109-8350-dbc4409fbb20)
-![13 회로도-i2r-04](https://github.com/user-attachments/assets/c6447a1a-cfc6-465b-8986-e6d73206e55d)
+
+![13 회로도-i2r-04](https://github.com/user-attachments/assets/fcd6b202-b735-4339-99d3-9d58d5c9fae1)
 
 
 ## 배선연결  
