@@ -1,4 +1,8 @@
-# IoT 센서 모음    
+# Physical AI & Device Control
+산업 현장에서 사용되는 ESP32 기반 Edge Controller 계층으로, Wi-Fi·Bluetooth·RS-485·MQTT 통신을 통해 각종 엣지 컴퓨터, 컨트롤러, 외부 시스템과 연결되며 On-Device AI 판단 결과를 현장 제어로 전달
+
+
+
 [김동일교수 유튜브보기](http://i2r.link)
 
 - 센서와 액튜에이터를 연결하기만 하면 프로그램 하지 않아도 자동으로 모니터링과 콘트롤 할 수 있는 방법을 소개하며 모든 소스 프로그램은 여기 사이트에 공개 합니다.       
