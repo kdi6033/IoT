@@ -1,7 +1,22 @@
 # Physical AI & Device Control
 산업 현장에서 사용되는 ESP32 기반 Edge Controller 계층으로, Wi-Fi·Bluetooth·RS-485·MQTT 통신을 통해 각종 엣지 컴퓨터, 컨트롤러, 외부 시스템과 연결되며 On-Device AI 판단 결과를 현장 제어로 전달
 
+## 🔷i2r 제품
 
+| i2r-01<br>IoT 통신 | i2r-02<br>IoT PLC (4ch) | i2r-03<br>IoT PLC (4ch 센서) | i2r-04<br>IoT PLC (8ch) |
+| :---: | :---: | :---: | :---: |
+| <img src="https://github.com/kdi6033/i2r-01/raw/main/images/i2r01-kc.png?raw=true" height="140"> | <img src="https://github.com/kdi6033/i2r-02/raw/main/images/i2r-02-kc.png?raw=true" height="150"> | <img src="https://github.com/kdi6033/i2r-03/raw/main/images/i2r-03-kc.png?raw=true" height="140"> | <img src="https://github.com/kdi6033/i2r-04/raw/main/images/i2r-04-kc.jpg?raw=true" height="140"> |
+| <img src="https://github.com/kdi6033/i2r-01/raw/main/images/case-i2r01-iso.png?raw=true" height="120"> | <img src="https://github.com/kdi6033/i2r-02/raw/main/images/case-i2r02-iso.png?raw=true" height="130"> | <img src="https://github.com/kdi6033/i2r-03/raw/main/images/case-i2r03-iso1.png?raw=true" height="160"> | <img src="https://github.com/kdi6033/i2r-04/raw/main/images/case-i2r04-3.png?raw=true" height="150"> |
+| <img src="https://github.com/kdi6033/i2r-01/raw/main/images/case-i2r01-kc.png?raw=true" height="140"> | <img src="https://github.com/kdi6033/i2r-02/raw/main/images/case-i2r02-kc.png?raw=true" height="140"> | <img src="https://github.com/kdi6033/i2r-03/raw/main/images/case-i2r03-kc.png?raw=true" height="140"> | <img src="https://github.com/kdi6033/i2r-04/raw/main/images/case-i2r04-kc.png?raw=true" height="135"> |
+
+
+| i2r-05<br>AI IoT 아두이노 | i2r-04-motor<br>모터제어 | i2r-05-Shield-v1<br>Shield-v1 |  |
+| :---: | :---: | :---: | :---: |
+| <img src="https://github.com/kdi6033/i2r-01/raw/main/images/i2r01-kc.png?raw=true" height="140"> | <img src="https://github.com/kdi6033/i2r-02/raw/main/images/i2r-02-kc.png?raw=true" height="150"> | <img src="https://github.com/kdi6033/i2r-03/raw/main/images/i2r-03-kc.png?raw=true" height="140"> | <img src="https://github.com/kdi6033/i2r-04/raw/main/images/i2r-04-kc.jpg?raw=true" height="140"> |
+| <img src="https://github.com/kdi6033/i2r-01/raw/main/images/case-i2r01-iso.png?raw=true" height="120"> | <img src="https://github.com/kdi6033/i2r-02/raw/main/images/case-i2r02-iso.png?raw=true" height="130"> | <img src="https://github.com/kdi6033/i2r-03/raw/main/images/case-i2r03-iso1.png?raw=true" height="160"> | <img src="https://github.com/kdi6033/i2r-04/raw/main/images/case-i2r04-3.png?raw=true" height="150"> |
+| <img src="https://github.com/kdi6033/i2r-01/raw/main/images/case-i2r01-kc.png?raw=true" height="140"> | <img src="https://github.com/kdi6033/i2r-02/raw/main/images/case-i2r02-kc.png?raw=true" height="140"> | <img src="https://github.com/kdi6033/i2r-03/raw/main/images/case-i2r03-kc.png?raw=true" height="140"> |  |
+
+---
 
 [김동일교수 유튜브보기](http://i2r.link)
 
