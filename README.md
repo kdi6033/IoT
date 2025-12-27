@@ -3,11 +3,11 @@
 
 ## 🔷i2r 제품
 
-| i2r-01<br>IoT 통신 | i2r-02<br>IoT PLC (4ch) |  |  |
+| i2r-01<br>IoT 통신 |  |  |  |
 | :---: | :---: | :---: | :---: |
-| <img src="https://github.com/kdi6033/i2r-01/raw/main/images/i2r01-kc.png?raw=true" height="140"> | <img src="https://github.com/kdi6033/i2r-02/raw/main/images/i2r-02-kc.png?raw=true" height="150"> |  |  |
-| <img src="https://github.com/kdi6033/i2r-01/raw/main/images/case-i2r01-iso.png?raw=true" height="120"> | <img src="https://github.com/kdi6033/i2r-02/raw/main/images/case-i2r02-iso.png?raw=true" height="130"> |  | |
-| <img src="https://github.com/kdi6033/i2r-01/raw/main/images/case-i2r01-kc.png?raw=true" height="140"> | <img src="https://github.com/kdi6033/i2r-02/raw/main/images/case-i2r02-kc.png?raw=true" height="140"> |  | |
+| <img src="https://github.com/kdi6033/i2r-01/raw/main/images/i2r01-kc.png?raw=true" height="140"> |  |  |  |
+| <img src="https://github.com/kdi6033/i2r-01/raw/main/images/case-i2r01-iso.png?raw=true" height="120"> |  |  | |
+| <img src="https://github.com/kdi6033/i2r-01/raw/main/images/case-i2r01-kc.png?raw=true" height="140"> |  |  | |
 
 
 | i2r-05<br>AI IoT 아두이노 | i2r-04-motor<br>모터제어 | i2r-05-Shield-v1<br>Shield-v1 |  |
