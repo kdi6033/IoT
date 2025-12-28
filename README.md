@@ -13,6 +13,7 @@
 | i2r-01 | i2r-05 |  |  |
 | :---: | :---: | :---: | :---: |
 | <img src="https://github.com/kdi6033/i2r-01/raw/main/images/i2r-01%20pin.png?raw=true?raw=true?raw=true" height="140"> | <img src="https://github.com/kdi6033/i2r-05/raw/main/images/i2r-05-circuit.png?raw=true?raw=true" height="140"> |  |  |
+| <img src="https://github.com/kdi6033/i2r-01/raw/main/images/ESP32-wroom-32.png?raw=true?raw=true?raw=true?raw=true" height="140"> | <img src="https://github.com/kdi6033/i2r-05/raw/main/images/i2r-05-circuit.png?raw=true?raw=true" height="140"> |  |  |
 
 ---
 
