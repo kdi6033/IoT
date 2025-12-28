@@ -7,7 +7,7 @@
 | :---: | :---: | :---: | :---: |
 | <img src="https://github.com/kdi6033/i2r-01/raw/main/images/i2r01-kc.png?raw=true" height="140"> | <img src="https://github.com/kdi6033/i2r-05/raw/main/images/i2r-05-kc.png?raw=true?raw=true" height="140"> |  |  |
 | <img src="https://github.com/kdi6033/i2r-01/raw/main/images/case-i2r01-iso.png?raw=true" height="120"> | <img src="https://github.com/kdi6033/i2r-05/raw/main/images/i2r05-2.png?raw=true?raw=true" height="120"> |  | |
-| <img src="https://github.com/kdi6033/i2r-01/raw/main/images/case-i2r01-kc.png?raw=true" height="140"> | <img src="https://github.com/kdi6033/i2r-01/raw/main/images/case-i2r01-kc.png?raw=true" height="140"> |  | |
+| <img src="https://github.com/kdi6033/i2r-01/raw/main/images/case-i2r01-kc.png?raw=true" height="140"> | <img src="https://github.com/kdi6033/i2r-05/raw/main/images/i2r05-1.png?raw=true?raw=true" height="140"> |  | |
 
 
 ---
